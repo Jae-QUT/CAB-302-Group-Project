@@ -1,0 +1,81 @@
+/* Background gradient like the reference */
+.app-root {
+    -fx-background-color: linear-gradient(to bottom right, #1c86ff, #2bb8ff);
+    -fx-padding: 32;
+}
+
+/* Card shell */
+.card {
+    -fx-background-color: transparent; /* panes define their own bg */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.32), 24, 0.2, 0, 10);
+    -fx-background-radius: 16;
+}
+
+/* Left side (image) */
+.left-pane {
+    -fx-background-radius: 16 0 0 16;
+    -fx-min-width: 520;
+    -fx-max-width: 520;
+    -fx-alignment: center;
+}
+.left-overlay {
+    -fx-padding: 24;
+}
+.brand {
+    -fx-text-fill: white;
+    -fx-font-size: 35px;
+    -fx-font-weight: bold;
+}
+.tagline {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 13px;
+    -fx-max-width: 360;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+.primary {
+    -fx-background-color: #0f7aff;
+    -fx-text-fill: white;
+    -fx-background-radius: 24;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+}
+
+/* Right side (form) */
+.right-pane {
+    -fx-background-color: rgba(255,255,255,0.88);
+    -fx-background-radius: 0 16 16 0;
+    -fx-padding: 28 32;
+    -fx-min-width: 420;
+    -fx-max-width: 420;
+}
+
+/* Inputs: rounded “pill” look */
+.text-field, .password-field {
+    -fx-background-radius: 22;
+    -fx-background-color: white;
+    -fx-padding: 10 14;
+    -fx-border-radius: 22;
+    -fx-border-color: #c7d2fe;
+    -fx-border-width: 1;
+    -fx-font-size: 13px;
+}
+
+/* Big login button */
+.button:default {
+    -fx-background-color: #1f8fff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 24;
+    -fx-padding: 10 22;
+}
+.button:default:hover {
+    -fx-background-color: #167cf0;
+}
+
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0b1b3a;
+    -fx-padding: 0 0 6 0;
+}

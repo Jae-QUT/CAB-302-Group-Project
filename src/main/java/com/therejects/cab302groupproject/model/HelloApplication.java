@@ -1,4 +1,4 @@
-package com.therejects.cab302groupproject;
+package com.therejects.cab302groupproject.model;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package com.therejects.cab302groupproject;
+package com.therejects.cab302groupproject.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

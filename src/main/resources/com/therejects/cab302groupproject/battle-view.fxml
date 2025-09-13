@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.therejects.cab302groupproject.controller.BattleGUI">
+
+   <top>
+      <VBox alignment="CENTER" spacing="5">
+         <Label fx:id="enemyLabel" text="Wild Pikachu Lv.5"/>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox alignment="CENTER" spacing="5">
+         <Label fx:id="playerLabel" text="Charmander Lv.5"/>
+      </VBox>
+   </center>
+
+   <bottom>
+      <VBox spacing="10" style="-fx-padding: 10;">
+         <Label fx:id="battleLog" text="What will Charmander do?"/>
+         <HBox spacing="10" alignment="CENTER">
+            <Button fx:id="fightBtn" text="Fight"/>
+            <Button fx:id="bagBtn" text="Bag"/>
+            <Button fx:id="pokemonBtn" text="Pokémon"/>
+            <Button fx:id="forfeitBtn" text="Forfeit"/>
+         </HBox>
+      </VBox>
+   </bottom>
+</BorderPane>

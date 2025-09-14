@@ -13,8 +13,9 @@ import javafx.scene.image.ImageView;
 
 public class BattleGUI {
 
-    @FXML private ProgressBar playerHp;
-    @FXML private ProgressBar enemyHp;
+    @FXML private ProgressBar playerHp, enemyHp;
+    @FXML private Label playerHpLabel;
+    @FXML private ProgressBar playerMana;
     @FXML private ImageView playerSprite;
     @FXML private ImageView enemySprite;
     @FXML private Label battleMessage;
@@ -23,14 +24,20 @@ public class BattleGUI {
     @FXML private Label playerName;
     @FXML private Label enemyName;
 
+    private int playerMaxHp = 50;
+    private int enemyMaxHp = 50;
+
+    private int playerCurrentHp = playerMaxHp;
+    private int enemyCurrentHp = enemyMaxHp;
+
     @FXML
     private void initialize() {
         // initial visibility
         mainMenu.setVisible(true);
         subMenu.setVisible(false);
         battleMessage.setText("What will Zabird do?");
-        playerName.setText("Zabird Lv.5");
-        enemyName.setText("Opponent Lv.5");
+        playerName.setText("Zabird");
+        enemyName.setText("Anqchor");
 
         try {
             Image p = new Image(getClass().getResourceAsStream("/images/player.png"));
@@ -62,16 +69,17 @@ public class BattleGUI {
     // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
-        back.setPrefWidth(180);
+        back.setPrefWidth(150);
         back.setPrefHeight(44);
         back.setOnAction(e -> {
             subMenu.getChildren().clear();
             subMenu.setVisible(false);
             mainMenu.setVisible(true);
-            battleMessage.setText("What will Pikachu do?");
+            battleMessage.setText("What will Zabird do?");
         });
         return back;
     }
+
 
     // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
@@ -81,6 +89,19 @@ public class BattleGUI {
         mainMenu.setVisible(true);
     }
 
+    // helper method to refresh HP bars + text
+    private void updateHpBars() {
+        playerHp.setProgress((double) playerCurrentHp / playerMaxHp);
+        enemyHp.setProgress((double) enemyCurrentHp / enemyMaxHp);
+
+        playerHpLabel.setText(playerCurrentHp + " / " + playerMaxHp);
+
+        // Disabled activity if Hp = 0
+        if (enemyCurrentHp == 0 || playerCurrentHp == 0){
+            mainMenu.setDisable(true);
+        }
+    }
+
     /* ---------- button handlers ---------- */
 
     @FXML
@@ -88,22 +109,21 @@ public class BattleGUI {
         Button light = new Button("Light Attack");
         Button heavy = new Button("Heavy Attack");
 
-        light.setPrefWidth(180);
+        light.setPrefWidth(150);
         light.setPrefHeight(44);
-        heavy.setPrefWidth(180);
+        heavy.setPrefWidth(150);
         heavy.setPrefHeight(44);
 
         light.setOnAction(e -> {
-            // example: deal small damage to enemy
-            double newProg = Math.max(0, enemyHp.getProgress() - 0.12);
-            enemyHp.setProgress(newProg);
-            finishAction("Charmander used Light Attack!");
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10); // 10 damage
+            updateHpBars();
+            finishAction("Zabird used Light Attack!");
         });
 
         heavy.setOnAction(e -> {
-            double newProg = Math.max(0, enemyHp.getProgress() - 0.30);
-            enemyHp.setProgress(newProg);
-            finishAction("Charmander used Heavy Attack!");
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 20); // 20 damage
+            updateHpBars();
+            finishAction("Zabird used Heavy Attack!");
         });
 
         showSubMenu("Attack", light, heavy);
@@ -111,49 +131,54 @@ public class BattleGUI {
 
     @FXML
     private void onItems() {
-        Button potion = new Button("Potion");
-        Button superPotion = new Button("Super Potion");
+        Button potion = new Button("Health Potion");
+        Button manaRestore = new Button("Mana Restore (not working)");
 
-        potion.setPrefWidth(140);
-        superPotion.setPrefWidth(140);
+        potion.setPrefWidth(150);
+        potion.setPrefHeight(44);
+        manaRestore.setPrefWidth(150);
+        manaRestore.setPrefHeight(44);
 
         potion.setOnAction(e -> {
             playerHp.setProgress(Math.min(1.0, playerHp.getProgress() + 0.20));
             finishAction("Used Potion!");
         });
 
-        superPotion.setOnAction(e -> {
+        manaRestore.setOnAction(e -> {
             playerHp.setProgress(Math.min(1.0, playerHp.getProgress() + 0.45));
-            finishAction("Used Super Potion!");
+            finishAction("Used Mana Restore!");
         });
 
-        showSubMenu("Choose an item:", potion, superPotion);
+        showSubMenu("Choose an item:", potion, manaRestore);
     }
 
     @FXML
     private void onSwitch() {
-        Button mon1 = new Button("Charmander");
-        Button mon2 = new Button("Pidgey");
+        Button mon1 = new Button("Hawtosaur");
+        Button mon2 = new Button("Anqchor");
 
-        mon1.setPrefWidth(140);
-        mon2.setPrefWidth(140);
+        mon1.setPrefWidth(150);
+        mon1.setPrefHeight(44);
+        mon2.setPrefWidth(150);
+        mon2.setPrefHeight(44);
 
         mon1.setOnAction(e -> {
             // place-holder behaviour
-            finishAction("Switched to Charmander!");
+            finishAction("Switched to Hawtosaur!");
         });
 
         mon2.setOnAction(e -> {
-            finishAction("Switched to Pidgey!");
+            finishAction("Switched to Anqchor!");
         });
 
-        showSubMenu("Choose a Pokémon:", mon1, mon2);
+        showSubMenu("Choose a Mon:", mon1, mon2);
     }
 
     @FXML
     private void onForfeit() {
         Button confirm = new Button("Confirm Forfeit");
-        confirm.setPrefWidth(140);
+        confirm.setPrefWidth(150);
+        confirm.setPrefHeight(44);
         confirm.setOnAction(e -> {
             finishAction("You forfeited the battle!");
             // optionally disable main menu so you can't act after forfeiting

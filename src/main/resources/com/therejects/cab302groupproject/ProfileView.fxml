@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
+<VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.therejects.cab302groupproject.controller.ProfileController">
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.therejects.cab302groupproject.controller.ProfileController">
-   <children>
-      <TextField layoutX="67.0" layoutY="66.0" />
-      <TextField layoutX="68.0" layoutY="115.0" />
-      <TextField layoutX="68.0" layoutY="167.0" />
-      <ComboBox layoutX="368.0" layoutY="66.0" prefWidth="150.0" />
-      <Button layoutX="519.0" layoutY="349.0" mnemonicParsing="false" text="Button" />
-      <Label layoutX="401.0" layoutY="171.0" text="Label" />
-   </children>
-</AnchorPane>
+   <Label text="Profile" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+   <TextField fx:id="usernameField" promptText="Username" editable="false"/>
+   <TextField fx:id="emailField" promptText="Email"/>
+   <TextField fx:id="yearLevelField" promptText="Year Level"/>
+
+   <Button text="Save Changes" onAction="#handleSave"/>
+</VBox>

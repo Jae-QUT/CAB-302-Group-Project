@@ -9,7 +9,7 @@ public class BattleApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxml = new FXMLLoader(BattleApplication.class.getResource("/com/therejects/cab302groupproject/battle-view.fxml"));
-        Scene scene = new Scene(fxml.load(), 600, 400);
+        Scene scene = new Scene(fxml.load(), 980, 560);
         stage.setScene(scene);
         stage.setTitle("Pokémon Battle GUI");
         stage.show();

@@ -1,33 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.therejects.cab302groupproject.controller.BattleGUI">
+            fx:controller="com.therejects.cab302groupproject.controller.BattleGUI"
+            prefWidth="800" prefHeight="600">
 
-   <top>
-      <VBox alignment="CENTER" spacing="5">
-         <Label fx:id="enemyLabel" text="Wild Pikachu Lv.5"/>
-      </VBox>
-   </top>
-
+   <!-- TOP: Sprites and HP bars (about 4/5 of vertical) -->
    <center>
-      <VBox alignment="CENTER" spacing="5">
-         <Label fx:id="playerLabel" text="Charmander Lv.5"/>
+      <VBox spacing="20" alignment="CENTER" prefHeight="480" BorderPane.alignment="CENTER">
+         <HBox spacing="40" alignment="CENTER">
+            <!-- Player HP -->
+            <VBox spacing="5" alignment="CENTER_LEFT">
+               <Label fx:id="playerName" text="PLAYER" />
+               <ProgressBar fx:id="playerHp" prefWidth="250" progress="0.8"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Enemy HP -->
+            <VBox spacing="5" alignment="CENTER_RIGHT">
+               <Label fx:id="enemyName" text="ENEMY" />
+               <ProgressBar fx:id="enemyHp" prefWidth="250" progress="0.9"/>
+            </VBox>
+         </HBox>
+
+         <!-- Sprites -->
+         <HBox spacing="120" alignment="CENTER">
+            <ImageView fx:id="playerSprite" fitWidth="220" fitHeight="220" preserveRatio="true"/>
+            <ImageView fx:id="enemySprite" fitWidth="220" fitHeight="220" preserveRatio="true"/>
+         </HBox>
       </VBox>
    </center>
 
+   <!-- BOTTOM: battle hub (1/5 screen) -->
    <bottom>
-      <VBox spacing="10" style="-fx-padding: 10;">
-         <Label fx:id="battleLog" text="What will Charmander do?"/>
-         <HBox spacing="10" alignment="CENTER">
-            <Button fx:id="fightBtn" text="Fight"/>
-            <Button fx:id="bagBtn" text="Bag"/>
-            <Button fx:id="pokemonBtn" text="Pokémon"/>
-            <Button fx:id="forfeitBtn" text="Forfeit"/>
-         </HBox>
-      </VBox>
+      <!-- AnchorPane so we can place message left and 2x2 grid bottom-right -->
+      <AnchorPane prefHeight="120" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
+         <!-- Battle message on left -->
+         <Label fx:id="battleMessage"
+                text="What will Pikachu do?"
+                style="-fx-font-size: 16px;"
+                AnchorPane.leftAnchor="12" AnchorPane.topAnchor="12"/>
+
+         <!-- Main 2x2 grid (bottom-right) -->
+         <GridPane fx:id="mainMenu" hgap="10" vgap="10"
+                   AnchorPane.rightAnchor="12" AnchorPane.bottomAnchor="12"
+                   alignment="CENTER">
+            <columnConstraints>
+               <ColumnConstraints percentWidth="50"/>
+               <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints percentHeight="50"/>
+               <RowConstraints percentHeight="50"/>
+            </rowConstraints>
+
+            <Button fx:id="fightButton" text="Attack" onAction="#onFight"
+                    GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="140" prefHeight="44"/>
+<!--            change to generate question generator instead of onFight&ndash;&gt;-->
+            <Button fx:id="itemButton" text="Items" onAction="#onItems"
+                    GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="140" prefHeight="44"/>
+            <Button fx:id="switchButton" text="Mons" onAction="#onSwitch"
+                    GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="140" prefHeight="44"/>
+            <Button fx:id="forfeitButton" text="Forfeit" onAction="#onForfeit"
+                    GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="140" prefHeight="44"/>
+         </GridPane>
+
+         <!-- Submenu overlays mainMenu when active (same anchoring) -->
+         <VBox fx:id="subMenu" spacing="8" AnchorPane.rightAnchor="12" AnchorPane.bottomAnchor="12" visible="false" alignment="CENTER"/>
+      </AnchorPane>
    </bottom>
 </BorderPane>

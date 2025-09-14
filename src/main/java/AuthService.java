@@ -1,4 +1,5 @@
 import com.therejects.cab302groupproject.model.UserDAO;
+import com.therejects.cab302groupproject.model.User;
 
 import java.sql.SQLException;
 

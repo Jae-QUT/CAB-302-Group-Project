@@ -1,20 +1,15 @@
 package com.therejects.cab302groupproject.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class BattleGUI {
 
@@ -33,9 +28,9 @@ public class BattleGUI {
         // initial visibility
         mainMenu.setVisible(true);
         subMenu.setVisible(false);
-        battleMessage.setText("What will Pikachu do?");
-        playerName.setText("Charmander Lv.5");
-        enemyName.setText("Wild Pikachu Lv.5");
+        battleMessage.setText("What will Zabird do?");
+        playerName.setText("Zabird Lv.5");
+        enemyName.setText("Opponent Lv.5");
 
         try {
             Image p = new Image(getClass().getResourceAsStream("/images/player.png"));
@@ -49,22 +44,26 @@ public class BattleGUI {
     /* ---------- helper UI methods ---------- */
 
     // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
-    private void showSubMenu(String title, Button... buttons) {
-        mainMenu.setVisible(false);
+    private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
-        subMenu.setVisible(true);
+
         battleMessage.setText(title);
 
-        for (Button b : buttons) {
-            subMenu.getChildren().add(b);
-        }
-        subMenu.getChildren().add(createBackButton());
+        // horizontal box for the options
+        HBox optionRow = new HBox(10); // spacing = 10
+        optionRow.getChildren().addAll(options);
+
+        subMenu.getChildren().addAll(optionRow, createBackButton());
+
+        mainMenu.setVisible(false);
+        subMenu.setVisible(true);
     }
 
     // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
-        back.setPrefWidth(140);
+        back.setPrefWidth(180);
+        back.setPrefHeight(44);
         back.setOnAction(e -> {
             subMenu.getChildren().clear();
             subMenu.setVisible(false);
@@ -89,8 +88,10 @@ public class BattleGUI {
         Button light = new Button("Light Attack");
         Button heavy = new Button("Heavy Attack");
 
-        light.setPrefWidth(140);
-        heavy.setPrefWidth(140);
+        light.setPrefWidth(180);
+        light.setPrefHeight(44);
+        heavy.setPrefWidth(180);
+        heavy.setPrefHeight(44);
 
         light.setOnAction(e -> {
             // example: deal small damage to enemy
@@ -105,7 +106,7 @@ public class BattleGUI {
             finishAction("Charmander used Heavy Attack!");
         });
 
-        showSubMenu("Choose a move:", light, heavy);
+        showSubMenu("Attack", light, heavy);
     }
 
     @FXML

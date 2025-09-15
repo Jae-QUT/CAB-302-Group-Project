@@ -21,8 +21,9 @@ public class MainMenuController {
     private void initialize() {
         Platform.runLater(() -> btnPlay.requestFocus());
         root.setOnKeyPressed(e -> {
-            if (e.getCode().toString().equals("ESCAPE")) {
-                onLogout();
+            switch (e.getCode()) {
+                case ESCAPE -> onLogout(); // ESC to logout
+                default -> {}
             }
         });
     }
@@ -34,6 +35,6 @@ public class MainMenuController {
 
     private void navigate(String screenId) {
         if (navigator != null) navigator.accept(screenId);
-        else System.err.println("Navigator not set: " + screenId);
+        else System.err.println("Navigator not set for: " + screenId);
     }
 }

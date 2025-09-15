@@ -1,11 +1,9 @@
-package com.therejects.cab302groupproject;
+package com.therejects.cab302groupproject.controller;
 
+import com.therejects.cab302groupproject.HelloApplication;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.Objects;
 
 public class LoginController {
     @FXML private ImageView heroImage;

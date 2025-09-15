@@ -6,6 +6,8 @@ module com.therejects.cab302groupproject {
     requires net.synedra.validatorfx;
     requires com.almasb.fxgl.all;
 
+    opens com.therejects.cab302groupproject to javafx.fxml;
+    exports com.therejects.cab302groupproject;
     opens com.therejects.cab302groupproject.Navigation to javafx.fxml;
     exports com.therejects.cab302groupproject.controller;
     opens com.therejects.cab302groupproject.controller to javafx.fxml;

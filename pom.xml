@@ -92,7 +92,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.therejects.cab302groupproject/com.therejects.cab302groupproject.model.HelloApplication
+                                com.therejects.cab302groupproject/com.therejects.cab302groupproject.LoginLauncher
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

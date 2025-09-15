@@ -1,4 +1,4 @@
-package com.therejects.cab302groupproject.model;
+package com.therejects.cab302groupproject;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class LoginLauncher extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/therejects/cab302groupproject/MainMenu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginLauncher.class.getResource("/com/therejects/cab302groupproject/MainMenu.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);

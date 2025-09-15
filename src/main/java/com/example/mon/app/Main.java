@@ -1,4 +1,4 @@
-package com.example.addressbook;
+package com.example.mon.app;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

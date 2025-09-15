@@ -1,3 +1,5 @@
+package com.example.mon.app;
+
 public class User {
     private String username;
     private String password;

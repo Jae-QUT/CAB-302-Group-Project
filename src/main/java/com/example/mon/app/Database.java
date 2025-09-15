@@ -1,3 +1,5 @@
+package com.example.mon.app;
+
 import java.sql.*;
 
 public final class Database {

@@ -9,13 +9,14 @@
         <VBox spacing="16" alignment="CENTER"
               AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
               AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-            <Label text="Main Menu" styleClass="app-title"/>
+            <Label text="Math Battle Monsters" styleClass="app-title"/>
             <VBox spacing="10" maxWidth="320" alignment="CENTER">
-                <Button fx:id="btnPlay"        text="_Play"        onAction="#onPlay"        mnemonicParsing="true"/>
+                <Button fx:id="btnPlay"       text="_Play"        onAction="#onPlay"       mnemonicParsing="true"/>
                 <Button fx:id="btnLeaderboard" text="_Leaderboard" onAction="#onLeaderboard" mnemonicParsing="true"/>
-                <Button fx:id="btnChangeTeam"  text="_Change Team" onAction="#onChangeTeam"  mnemonicParsing="true"/>
-                <Button fx:id="btnLogout"      text="_Logout"      onAction="#onLogout"      mnemonicParsing="true"/>
+                <Button fx:id="btnChangeTeam" text="_Change Team" onAction="#onChangeTeam" mnemonicParsing="true"/>
+                <Button fx:id="btnLogout"     text="_Logout"      onAction="#onLogout"     mnemonicParsing="true"/>
             </VBox>
+            <Label text="v0.1.0" styleClass="version"/>
         </VBox>
     </AnchorPane>
 </StackPane>

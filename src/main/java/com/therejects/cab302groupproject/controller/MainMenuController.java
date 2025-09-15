@@ -3,8 +3,10 @@ package com.therejects.cab302groupproject.controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class MainMenuController {
@@ -21,9 +23,8 @@ public class MainMenuController {
     private void initialize() {
         Platform.runLater(() -> btnPlay.requestFocus());
         root.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case ESCAPE -> onLogout(); // ESC to logout
-                default -> {}
+            if (Objects.requireNonNull(e.getCode()) == KeyCode.ESCAPE) {
+                onLogout(); // ESC to logout
             }
         });
     }

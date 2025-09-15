@@ -186,7 +186,7 @@ public class LoginScreenFX extends Application {
     /** Sets the username field text. */
     public void setUsername(String username) { usernameField.setText(username); }
 
-    /** Sets the passord in both hidden and shown fiEld. */
+    /** Sets the password in both hidden and shown fiEld. */
     public void setPassword(String password) {
         passwordHidden.setText(password);
         passwordShown.setText(password);
@@ -199,8 +199,7 @@ public class LoginScreenFX extends Application {
     public void setShowPasswordChecked(boolean b) { showPasswordCheckBox.setSelected(b); }
 
     /**
-     * Launches the JavaFX application.
-     *
+     * Launches the JavaFX application
      *  args CLI args, unused.
      */
     public static void main(String[] args) {

@@ -8,7 +8,7 @@ public class UserDao {
     public boolean insert(User u) throws SQLException {
         String sql = """
             INSERT INTO LoginRegisterUI
-              (Username, Password, StudentEmail, "Grade/Year Level")
+              (Username, Password, StudentEmail, "GradeYearLevel")
             VALUES (?, ?, ?, ?);
         """;
         try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
@@ -34,7 +34,7 @@ public class UserDao {
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("StudentEmail"),
-                        rs.getInt("Grade/Year Level")
+                        rs.getInt("GradeYearLevel")
                 ));
             }
         }

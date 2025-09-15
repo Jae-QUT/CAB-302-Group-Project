@@ -23,7 +23,7 @@ public class RegisterDialog extends Dialog<RegisterResult> {
         TextField email    = new TextField();
         TextField grade    = new TextField();
 
-        // Password fields (hidden + visible for show/hide)
+        // Password fields show/hide
         PasswordField pwHidden = new PasswordField();
         TextField     pwShown  = new TextField();
         pwShown.setManaged(false);
@@ -58,7 +58,7 @@ public class RegisterDialog extends Dialog<RegisterResult> {
         grid.add(new Label("Confirm Password"),  0, r); grid.add(pw2Hidden,1, r); grid.add(pw2Shown, 1, r++);
         grid.add(show, 1, r);
 
-        // Enable "Create" only when fields are non-empty
+
         Node createBtn = getDialogPane().lookupButton(createBtnType);
         Runnable enableCheck = () -> {
             boolean ok = !username.getText().trim().isEmpty()

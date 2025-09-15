@@ -12,4 +12,6 @@ module com.therejects.cab302groupproject {
     exports com.therejects.cab302groupproject.model;
     opens com.therejects.cab302groupproject.model to javafx.fxml;
 //    exports com.therejects.cab302groupproject;
+    opens com.therejects.cab302groupproject to javafx.fxml;
+    exports com.therejects.cab302groupproject;
 }

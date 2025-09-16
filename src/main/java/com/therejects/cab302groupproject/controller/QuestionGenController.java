@@ -19,7 +19,7 @@ public class QuestionGenController {
     public boolean submitted;
 
 
-    private QuestionGenerator generator = new QuestionGenerator();
+    public QuestionGenerator generator = new QuestionGenerator();
 
     public void setQuestionGenerator(QuestionGenerator generator) {
         if (generator != null) this.generator = generator;
@@ -48,7 +48,7 @@ public class QuestionGenController {
             boolean correct = generator.checkAnswer(userAnswer);
             feedbackLabel.setText(correct ? "Correct!" : "Wrong!");
 
-            if (correct)((Stage) answerField.getScene().getWindow()).close();
+            ((Stage) answerField.getScene().getWindow()).close();
         } catch (NumberFormatException ex) {
             feedbackLabel.setText("Numbers only!!!");
         }

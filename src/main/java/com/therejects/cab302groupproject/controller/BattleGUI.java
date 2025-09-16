@@ -1,7 +1,7 @@
 package com.therejects.cab302groupproject.controller;
 
 import com.almasb.fxgl.quest.Quest;
-import com.therejects.cab302groupproject.Navigation.ScreenManager;
+import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenDemo;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
 import javafx.fxml.FXML;
@@ -35,6 +35,20 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private VBox subMenu;
     @FXML private Label playerName;
     @FXML private Label enemyName;
+
+    private ScreenManager screenManager;
+    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
+
+    // helper to use it safely
+    private ScreenManager sm() {
+        if (screenManager == null) {
+            // fallback if someone forgot to inject; build from current window
+            Stage stage = (Stage) battleMessage.getScene().getWindow();
+            screenManager = new ScreenManager(stage);
+        }
+        return screenManager;
+    }
+
 
     private String winner;
     private String loser;
@@ -142,7 +156,7 @@ public class BattleGUI extends QuestionGenerator {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
             Parent root = loader.load();
             QuestionGenController ctrl = loader.getController();
-            QuestionGenerator qGen = new QuestionGenerator();
+            QuestionGenerator qGen = ctrl.generator;
             ctrl.setQuestionGenerator(qGen);
 
             Stage popup = new Stage();
@@ -153,14 +167,16 @@ public class BattleGUI extends QuestionGenerator {
             popup.initOwner(owner);
             popup.showAndWait();
 
-            if(qGen.checkAnswer(ctrl.userAnswer)){
+            if(qGen.checkAnswer(ctrl.userAnswer))
+            {
                     enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
                     updateHpBars();
                     finishAction("Correct! Attack landed.");
-            }else
-            if(Objects.equals(getResponse(), "Correct!")) {
-                     finishAction("Wrong! Your Attack Missed!");
-                 }
+            }
+            else
+            {
+                finishAction("Wrong! Your Attack Missed!");
+            }
 
 
 
@@ -232,6 +248,7 @@ public class BattleGUI extends QuestionGenerator {
         showSubMenu("Choose a Mon:", mon1, mon2);
     }
 
+
     @FXML
     private void onForfeit() {
         Button confirm = new Button("Confirm Forfeit");
@@ -243,6 +260,9 @@ public class BattleGUI extends QuestionGenerator {
             mainMenu.setDisable(true);
         });
         showSubMenu("Are you sure?", confirm);
+        sm().navigateTo("MAIN_MENU");
+
+
     }
 
 }

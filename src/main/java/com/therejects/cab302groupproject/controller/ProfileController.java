@@ -97,6 +97,7 @@ public class ProfileController {
         if (screenManager == null) screenManager = new ScreenManager(stage);
         screenManager.navigateTo("MAIN_MENU");
     }
+
 //    }
 ////        stepBack.setPrefWidth(150);
 //        stepBack.setPrefHeight(44);

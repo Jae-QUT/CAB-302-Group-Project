@@ -40,7 +40,7 @@ public class BattleGUI extends QuestionGenerator {
     public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
 
     // helper to use it safely
-    private ScreenManager sm() {
+    public ScreenManager sm() {
         if (screenManager == null) {
             // fallback if someone forgot to inject; build from current window
             Stage stage = (Stage) battleMessage.getScene().getWindow();

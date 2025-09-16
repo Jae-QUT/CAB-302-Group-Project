@@ -39,7 +39,7 @@ public class MainMenuController {
         navigate("LEADERBOARD");
     }
 
-    @FXML private void onChangeTeam()
+    @FXML private void onPlayerProfile()
     { navigate("PLAYER_PROFILE");
     }
 
@@ -53,6 +53,4 @@ public class MainMenuController {
         else System.err.println("Navigator not set for: " + screenId);
     }
 
-    public void onPlayerProfile(ActionEvent actionEvent) {
-    }
 }

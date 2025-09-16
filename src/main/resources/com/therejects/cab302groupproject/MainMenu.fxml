@@ -14,7 +14,7 @@
             <VBox spacing="10" maxWidth="320" alignment="CENTER">
                 <Button fx:id="btnPlay"       text="_Play"        onAction="#onPlay"/>
                 <Button fx:id="btnLeaderboard" text="_Leaderboard" onAction="#onLeaderboard"/>
-                <Button fx:id="btnChangeTeam" text="_PlayerProfile" onAction="#onPlayerProfile"/>
+                <Button fx:id="btnChangeTeam" text="_Player Profile" onAction="#onPlayerProfile"/>
                 <Button fx:id="btnLogout"     text="_Logout"      onAction="#onLogout"/>
             </VBox>
 

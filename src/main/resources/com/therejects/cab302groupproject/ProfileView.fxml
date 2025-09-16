@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 
 <VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.therejects.cab302groupproject.controller.ProfileController">
+      fx:controller="com.therejects.cab302groupproject.controller.ProfileController"  fx:id="profileCtrl">
 
    <Label text="Profile" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
@@ -12,8 +12,10 @@
    <TextField fx:id="emailField" promptText="Email"/>
    <TextField fx:id="yearLevelField" promptText="Year Level"/>
 
-   <Button text="Save Changes" onAction="#handleSave"/>
-
+   <Button text="Save Changes" onAction="#handleSave"
+   />
+   <Button text="Back" onAction="#stepBack"
+   />
    <Separator/>
 
    <Label text="Stats" style="-fx-font-weight: bold;"/>

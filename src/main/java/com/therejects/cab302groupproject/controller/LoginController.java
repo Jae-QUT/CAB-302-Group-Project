@@ -33,7 +33,7 @@ public class LoginController {
             return;
         }
         new Alert(Alert.AlertType.INFORMATION, "Welcome, " + u + "!").showAndWait();
-        // TODO: navigate to your main scene
+        
     }
 
     @FXML

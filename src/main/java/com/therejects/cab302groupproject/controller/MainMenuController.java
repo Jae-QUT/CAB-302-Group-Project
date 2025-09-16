@@ -30,6 +30,8 @@ public class MainMenuController {
     }
 
     @FXML private void onPlay()        { navigate("PLAY"); }
+
+
     @FXML private void onLeaderboard() { navigate("LEADERBOARD"); }
     @FXML private void onChangeTeam()  { navigate("CHANGE_TEAM"); }
     @FXML private void onLogout()      { navigate("LOGOUT"); }

@@ -96,8 +96,8 @@ public class ProfileController {
     /**
      * Displays alert + message to user
      *
-     * @param type
-     * @param message
+     * @param type error type
+     * @param message error message
      */
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);

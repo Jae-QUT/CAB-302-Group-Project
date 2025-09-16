@@ -1,9 +1,13 @@
 package com.therejects.cab302groupproject.controller;
 
 import com.therejects.cab302groupproject.MainMenuLauncher;
+import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
 
 public class LoginController {
     @FXML private ImageView heroImage;
@@ -31,9 +35,15 @@ public class LoginController {
         if (u == null || u.isBlank() || p == null || p.length() < 4) {
             new Alert(Alert.AlertType.ERROR, "Invalid credentials. Try again.").showAndWait();
             return;
+        }else{
+            new Alert(Alert.AlertType.INFORMATION, "Welcome, " + u + "!").showAndWait();
+
         }
-        new Alert(Alert.AlertType.INFORMATION, "Welcome, " + u + "!").showAndWait();
-        
+
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        ScreenManager sm = new ScreenManager(stage);
+        sm.navigateTo("MAIN_MENU");
+        stage.show();
     }
 
     @FXML

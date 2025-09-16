@@ -1,6 +1,4 @@
 package com.therejects.cab302groupproject;
-
-import com.therejects.cab302groupproject.controller.*;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,8 +19,7 @@ public class MainMenuLauncher extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ScreenManager sm = new ScreenManager(stage);
-        sm.navigateTo("MAIN_MENU");
-
+        sm.navigateTo("LOGOUT");
         stage.show();
 
 //        FXMLLoader fxmlLoader = new FXMLLoader(MainMenuLauncher.class.getResource("/com/therejects/cab302groupproject/MainMenu.fxml"));

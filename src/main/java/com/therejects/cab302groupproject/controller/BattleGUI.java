@@ -1,0 +1,189 @@
+package com.therejects.cab302groupproject.controller;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class BattleGUI {
+
+    @FXML private ProgressBar playerHp, enemyHp;
+    @FXML private Label playerHpLabel;
+    @FXML private ProgressBar playerMana;
+    @FXML private ImageView playerSprite;
+    @FXML private ImageView enemySprite;
+    @FXML private Label battleMessage;
+    @FXML private GridPane mainMenu;
+    @FXML private VBox subMenu;
+    @FXML private Label playerName;
+    @FXML private Label enemyName;
+
+    private int playerMaxHp = 50;
+    private int enemyMaxHp = 50;
+
+    private int playerCurrentHp = playerMaxHp;
+    private int enemyCurrentHp = enemyMaxHp;
+
+    @FXML
+    private void initialize() {
+        // initial visibility
+        mainMenu.setVisible(true);
+        subMenu.setVisible(false);
+        battleMessage.setText("What will Zabird do?");
+        playerName.setText("Zabird");
+        enemyName.setText("Anqchor");
+
+        try {
+            Image p = new Image(getClass().getResourceAsStream("/images/player.png"));
+            playerSprite.setImage(p);
+            Image e = new Image(getClass().getResourceAsStream("/images/enemy.png"));
+            if (p != null) playerSprite.setImage(p);
+            if (e != null) enemySprite.setImage(e);
+        } catch (Exception ignored) { /* not critical */ }
+    }
+
+    /* ---------- helper UI methods ---------- */
+
+    // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
+    private void showSubMenu(String title, Button... options) {
+        subMenu.getChildren().clear();
+
+        battleMessage.setText(title);
+
+        // horizontal box for the options
+        HBox optionRow = new HBox(10); // spacing = 10
+        optionRow.getChildren().addAll(options);
+
+        subMenu.getChildren().addAll(optionRow, createBackButton());
+
+        mainMenu.setVisible(false);
+        subMenu.setVisible(true);
+    }
+
+    // create the universal "Back" button
+    private Button createBackButton() {
+        Button back = new Button("Back");
+        back.setPrefWidth(150);
+        back.setPrefHeight(44);
+        back.setOnAction(e -> {
+            subMenu.getChildren().clear();
+            subMenu.setVisible(false);
+            mainMenu.setVisible(true);
+            battleMessage.setText("What will Zabird do?");
+        });
+        return back;
+    }
+
+
+    // common routine to finish an action (restore main menu)
+    private void finishAction(String resultText) {
+        battleMessage.setText(resultText);
+        subMenu.getChildren().clear();
+        subMenu.setVisible(false);
+        mainMenu.setVisible(true);
+    }
+
+    // helper method to refresh HP bars + text
+    private void updateHpBars() {
+        playerHp.setProgress((double) playerCurrentHp / playerMaxHp);
+        enemyHp.setProgress((double) enemyCurrentHp / enemyMaxHp);
+
+        playerHpLabel.setText(playerCurrentHp + " / " + playerMaxHp);
+
+        // Disabled activity if Hp = 0
+        if (enemyCurrentHp == 0 || playerCurrentHp == 0){
+            mainMenu.setDisable(true);
+        }
+    }
+
+    /* ---------- button handlers ---------- */
+
+    @FXML
+    private void onFight() {
+        Button light = new Button("Light Attack");
+        Button heavy = new Button("Heavy Attack");
+
+        light.setPrefWidth(150);
+        light.setPrefHeight(44);
+        heavy.setPrefWidth(150);
+        heavy.setPrefHeight(44);
+
+        light.setOnAction(e -> {
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10); // 10 damage
+            updateHpBars();
+            finishAction("Zabird used Light Attack!");
+        });
+
+        heavy.setOnAction(e -> {
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 20); // 20 damage
+            updateHpBars();
+            finishAction("Zabird used Heavy Attack!");
+        });
+
+        showSubMenu("Attack", light, heavy);
+    }
+
+    @FXML
+    private void onItems() {
+        Button potion = new Button("Health Potion");
+        Button manaRestore = new Button("Mana Restore (not working)");
+
+        potion.setPrefWidth(150);
+        potion.setPrefHeight(44);
+        manaRestore.setPrefWidth(150);
+        manaRestore.setPrefHeight(44);
+
+        potion.setOnAction(e -> {
+            playerHp.setProgress(Math.min(1.0, playerHp.getProgress() + 0.20));
+            finishAction("Used Potion!");
+        });
+
+        manaRestore.setOnAction(e -> {
+            playerHp.setProgress(Math.min(1.0, playerHp.getProgress() + 0.45));
+            finishAction("Used Mana Restore!");
+        });
+
+        showSubMenu("Choose an item:", potion, manaRestore);
+    }
+
+    @FXML
+    private void onSwitch() {
+        Button mon1 = new Button("Hawtosaur");
+        Button mon2 = new Button("Anqchor");
+
+        mon1.setPrefWidth(150);
+        mon1.setPrefHeight(44);
+        mon2.setPrefWidth(150);
+        mon2.setPrefHeight(44);
+
+        mon1.setOnAction(e -> {
+            // place-holder behaviour
+            finishAction("Switched to Hawtosaur!");
+        });
+
+        mon2.setOnAction(e -> {
+            finishAction("Switched to Anqchor!");
+        });
+
+        showSubMenu("Choose a Mon:", mon1, mon2);
+    }
+
+    @FXML
+    private void onForfeit() {
+        Button confirm = new Button("Confirm Forfeit");
+        confirm.setPrefWidth(150);
+        confirm.setPrefHeight(44);
+        confirm.setOnAction(e -> {
+            finishAction("You forfeited the battle!");
+            // optionally disable main menu so you can't act after forfeiting
+            mainMenu.setDisable(true);
+        });
+        showSubMenu("Are you sure?", confirm);
+    }
+}

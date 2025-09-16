@@ -5,6 +5,7 @@ module com.therejects.cab302groupproject {
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
     requires jdk.compiler;
 
     opens com.therejects.cab302groupproject to javafx.fxml;

@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.therejects.cab302groupproject.controller.ProfileController"  fx:id="ctrlProfile">
+<VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1" fx:controller="com.therejects.cab302groupproject.controller.ProfileController">
 
-   <Label text="Profile" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+   <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Profile" />
 
-   <TextField fx:id="usernameField" promptText="Username" editable="false"/>
-   <TextField fx:id="emailField" promptText="Email"/>
-   <TextField fx:id="yearLevelField" promptText="Year Level"/>
+   <TextField fx:id="usernameField" editable="false" promptText="Username" />
+   <TextField fx:id="emailField" promptText="Email" />
+   <TextField fx:id="yearLevelField" promptText="Year Level" />
 
-   <Button text="Save Changes" onAction="#handleSave"/>
-<Button text="Back" onAction="#stepBack" fx:id="backButton"
-/>
-   <Separator/>
+   <Button onAction="#handleSave" text="Save Changes" />
+<Button fx:id="backButton" onAction="#stepBack" text="Back" />
+   <Separator />
 
-   <Label text="Stats" style="-fx-font-weight: bold;"/>
-   <Label fx:id="statsLabel" text="Games: 0 | Won: 0 | Lost: 0"/>
+   <Label style="-fx-font-weight: bold;" text="Stats" />
+   <Label fx:id="statsLabel" text="Games: 0 | Won: 0 | Lost: 0" />
 
-   <Label text="Badges" style="-fx-font-weight: bold;"/>
-   <ListView fx:id="badgesList" prefHeight="80"/>
+   <Label style="-fx-font-weight: bold;" text="Badges" />
+   <ListView fx:id="badgesList" prefHeight="80" />
 
-   <Label text="Friends" style="-fx-font-weight: bold;"/>
-   <ListView fx:id="friendsList" prefHeight="80"/>
+   <Label style="-fx-font-weight: bold;" text="Friends" />
+   <ListView fx:id="friendsList" prefHeight="80" />
 </VBox>

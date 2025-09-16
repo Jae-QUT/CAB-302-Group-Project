@@ -2,7 +2,6 @@ package com.therejects.cab302groupproject.controller;
 
 //import com.almasb.fxgl.quest.Quest;
 import com.therejects.cab302groupproject.Navigation.*;
-import com.therejects.cab302groupproject.model.QuestionGenDemo;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.PopupWindow;
 import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class BattleGUI extends QuestionGenerator {
 
@@ -80,15 +77,6 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
-    private String Outcome(String winner, String loser){
-        if(playerCurrentHp != 0 && enemyCurrentHp == 0){
-            return user = winner;
-//            return outcome;
-        }else if (playerCurrentHp == 0 && enemyCurrentHp != 0){
-            return user = loser;
-        }return null;
-
-    }
 
 
 

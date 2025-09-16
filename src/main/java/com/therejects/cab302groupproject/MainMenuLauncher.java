@@ -21,7 +21,7 @@ public class MainMenuLauncher extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ScreenManager sm = new ScreenManager(stage);
-        sm.navigateTo("LOGOUT");
+        sm.navigateTo("PLAY");
         stage.show();
         stage.setTitle("Login!");
 

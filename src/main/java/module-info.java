@@ -7,19 +7,20 @@ module com.therejects.cab302groupproject {
     // Extra UI libraries
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
+//    requires com.almasb.fxgl.all;
+    requires java.desktop;
+    requires jdk.compiler;
 
     // com.therejects.cab302groupproject.model.Database + logging
     requires java.sql;
     requires java.logging;
 
-    // Export base package
-    exports com.therejects.cab302groupproject;
     opens com.therejects.cab302groupproject to javafx.fxml;
-
-    // Export controller + model packages
-    exports com.therejects.cab302groupproject.controller;
+    exports com.therejects.cab302groupproject;
+    opens com.therejects.cab302groupproject.Navigation to javafx.fxml;
+    exports com.therejects.cab302groupproject.Navigation;
     opens com.therejects.cab302groupproject.controller to javafx.fxml;
-
-    exports com.therejects.cab302groupproject.model;
+    exports com.therejects.cab302groupproject.controller;
     opens com.therejects.cab302groupproject.model to javafx.fxml;
+    exports com.therejects.cab302groupproject.model;
 }

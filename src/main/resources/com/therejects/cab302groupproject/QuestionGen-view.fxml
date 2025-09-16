@@ -18,7 +18,7 @@
         <HBox spacing="8">
             <TextField fx:id="answerField" promptText="Enter answer"/>
             <Button fx:id="submitButton" text="Submit" onAction="#onSubmitClick"/>
-            <Button fx:id="nextButton" text="New Question" onAction="#onGenerateClick"/>
+<!--            <Button fx:id="nextButton" text="New Question" onAction="#onGenerateClick"/>-->
         </HBox>
         <Label fx:id="feedbackLabel" textFill="gray"/>
     </VBox>

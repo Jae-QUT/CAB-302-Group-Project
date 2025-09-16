@@ -1,6 +1,8 @@
 package com.therejects.cab302groupproject.model;
 
 import java.util.Random;
+import javafx.stage.PopupWindow;
+
 //import java.util.Scanner; // Might use this later
 
 /**
@@ -65,6 +67,11 @@ public class QuestionGenerator {
         return questionText;
     }
 
+
+    public String getQuestionText(){
+        return questionText;
+    }
+
     /**
      * This is an accuracy checker for the question. We can use this to determine whether
      * attacks land or miss
@@ -78,5 +85,9 @@ public class QuestionGenerator {
         boolean rightOrWrong = (userAnswer == answer);
         response = rightOrWrong ? "Correct!" : "Wrong!";
         return rightOrWrong;
+    }
+
+    public String getResponse(){
+        return response;
     }
 }

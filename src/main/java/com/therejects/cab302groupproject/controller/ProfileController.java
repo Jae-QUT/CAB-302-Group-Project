@@ -1,21 +1,24 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.therejects.cab302groupproject.model.User;
-import com.therejects.cab302groupproject.model.UserDAO;
+import com.therejects.cab302groupproject.Navigation.ScreenManager;
+import com.therejects.cab302groupproject.model.*;           // * means "ALL". Takes ALL things from that menu
+//import com.therejects.cab302groupproject.model.UserDAO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Controller for the profile page. Handles the display and update of
  * user details, stats, badges, friends
  */
 public class ProfileController {
+    private ScreenManager screenManager;
 
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
@@ -23,6 +26,9 @@ public class ProfileController {
     @FXML private Label statsLabel;
     @FXML private ListView<String> badgesList;
     @FXML private ListView<String> friendsList;
+    private Consumer<String> navigator;
+    @FXML private StackPane root;
+    @FXML private Button backButton;
 
     private final UserDAO userDAO = new UserDAO();
     private User currentUser;
@@ -105,4 +111,18 @@ public class ProfileController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-}
+
+    @FXML
+    private void stepBack(ActionEvent e) {
+        Stage stage = (Stage) ((Button) e.getSource()).getScene().getWindow();
+        if (screenManager == null) screenManager = new ScreenManager(stage);
+        screenManager.navigateTo("MAIN_MENU");
+    }
+
+//    }
+////        stepBack.setPrefWidth(150);
+//        stepBack.setPrefHeight(44);
+//        backButton.setOnAction(e -> {12345678
+//        );
+
+    }

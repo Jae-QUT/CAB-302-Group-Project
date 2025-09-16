@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class QuestionGenController {
 
@@ -14,7 +15,11 @@ public class QuestionGenController {
     @FXML private Button submitButton;
     @FXML private Button nextButton;
 
-    private QuestionGenerator generator = new QuestionGenerator();
+    public int userAnswer;
+    public boolean submitted;
+
+
+    public QuestionGenerator generator = new QuestionGenerator();
 
     public void setQuestionGenerator(QuestionGenerator generator) {
         if (generator != null) this.generator = generator;
@@ -29,20 +34,23 @@ public class QuestionGenController {
         nextQuestion();
     }
 
-    @FXML
-    private void onGenerateClick() { nextQuestion(); }
+//    This was for testing sake and to make sure all the question types would generate
+//    @FXML
+//    private void onGenerateClick() {nextQuestion(); }
 
     @FXML
     private void onSubmitClick() {
         String text = answerField.getText().trim();
         if (text.isEmpty()) { feedbackLabel.setText("Please enter a number."); return; }
         try {
-            int userAnswer = Integer.parseInt(text);
+            userAnswer = Integer.parseInt(text);
+            submitted = true;
             boolean correct = generator.checkAnswer(userAnswer);
             feedbackLabel.setText(correct ? "Correct!" : "Wrong!");
-            if (correct) nextQuestion();
+
+            ((Stage) answerField.getScene().getWindow()).close();
         } catch (NumberFormatException ex) {
-            feedbackLabel.setText("Numbers only 🙂");
+            feedbackLabel.setText("Numbers only!!!");
         }
     }
 

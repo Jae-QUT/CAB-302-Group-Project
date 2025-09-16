@@ -10,7 +10,7 @@ public class ProfileTestApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/therejects/cab302groupproject/view/ProfileView.fxml")
+                getClass().getResource("/com/therejects/cab302groupproject/ProfileView.fxml")
         );
         Scene scene = new Scene(loader.load(), 500, 500);
         stage.setTitle("Profile Test");

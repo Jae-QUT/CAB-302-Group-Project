@@ -1,6 +1,6 @@
-package com.therejects.cab302groupproject.model;
+package com.therejects.cab302groupproject.controller;
 
-import com.therejects.cab302groupproject.LoginLauncher;
+import com.therejects.cab302groupproject.MainMenuLauncher;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -13,7 +13,7 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        var url = LoginLauncher.class.getResource("/images/MMLogin.png");
+        var url = MainMenuLauncher.class.getResource("/images/MMLogin.png");
         if (url != null) {
             heroImage.setImage(new javafx.scene.image.Image(url.toExternalForm()));
         } else {

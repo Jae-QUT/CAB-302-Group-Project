@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:sqlite:C:/Users/jacks/OneDrive/Desktop/Cab302 Databases/MonDatabase.db";
+        String url = "jdbc:sqlite:C:/Users/jacks/OneDrive/Desktop/Cab302 Databases/auth.db";
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {

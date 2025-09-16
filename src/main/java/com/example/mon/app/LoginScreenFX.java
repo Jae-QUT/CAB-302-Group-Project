@@ -38,7 +38,7 @@ public class LoginScreenFX extends Application {
     private final Hyperlink forgotPasswordLink = new Hyperlink("Forgot password?");
 
     // --- Authentication service ---
-    private final AuthService auth = new AuthService();
+    public final AuthService auth = new AuthService();
 
     /**
      * Entry point for the JavaFX application.

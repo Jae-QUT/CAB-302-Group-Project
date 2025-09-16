@@ -3,12 +3,31 @@ package com.example.mon.app;
 import java.sql.*;
 import java.util.Optional;
 
+
+/**
+ * Data Access Object (DAO) for {@link User} entities.
+ * <p>
+ * This class provides CRUD-like operations for interacting with the
+ * {@code LoginRegisterUI} table in the authentication database.
+ * It supports inserting new users, checking if a username exists,
+ * and retrieving user details by username.
+ *
+ * <p>The schema is defined in {@link AuthDatabase#ensureSchema()}:
+ * <pre>
+ * CREATE TABLE IF NOT EXISTS LoginRegisterUI (
+ *   Username      TEXT PRIMARY KEY,
+ *   PasswordHash  TEXT NOT NULL,
+ *   StudentEmail  TEXT NOT NULL,
+ *   GradeYearLevel INTEGER NOT NULL
+ * );
+ * </pre>
+ */
 public class UserDao {
 
     public boolean insert(User u) throws SQLException {
         String sql = """
             INSERT INTO LoginRegisterUI
-              (Username, Password, StudentEmail, "GradeYearLevel")
+              (Username, PasswordHash, StudentEmail, GradeYearLevel)
             VALUES (?, ?, ?, ?);
         """;
         try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
@@ -22,7 +41,7 @@ public class UserDao {
 
     public Optional<User> findByUsername(String username) throws SQLException {
         String sql = """
-            SELECT Username, Password, StudentEmail, "Grade/Year Level"
+            SELECT Username, PasswordHash, StudentEmail, "GradeYearLevel"
             FROM LoginRegisterUI
             WHERE Username = ?;
         """;
@@ -32,7 +51,7 @@ public class UserDao {
                 if (!rs.next()) return Optional.empty();
                 return Optional.of(new User(
                         rs.getString("Username"),
-                        rs.getString("Password"),
+                        rs.getString("PasswordHash"),
                         rs.getString("StudentEmail"),
                         rs.getInt("GradeYearLevel")
                 ));

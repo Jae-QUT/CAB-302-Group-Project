@@ -2,7 +2,7 @@ package com.example.mon.app;
 import java.sql.SQLException;
 
 public class AuthService {
-    public final UserDao userDao = new UserDao();
+    private final UserDao userDao = new UserDao();
 
     // DEMO password check (plain text). Replace with hashing in production.
     public boolean login(String username, String password) throws SQLException {
@@ -18,7 +18,9 @@ public class AuthService {
             throw new IllegalStateException("Username already exists.");
         return userDao.insert(newUser);
     }
-
-    public void register(String u, String pw, String email, int grade) {
+    public boolean register(String u, String pw, String email, int grade) throws SQLException {
+        return register(new User(u, pw, email, grade));
     }
+
+
 }

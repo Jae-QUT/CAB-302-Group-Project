@@ -6,13 +6,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.Objects;
-
+/**
+ * A controller class responsible for managing the login screen of the application.
+ * It handles the initialization of the hero image, validates user credentials, and
+ * provides interactivity for the login and "View More" actions.
+ */
 public class LoginController {
     @FXML private ImageView heroImage;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private CheckBox rememberMe;
 
+    /**
+     * Initializes the login screen by loading and displaying the hero image.
+     */
     @FXML
     public void initialize() {
         var url = HelloApplication.class.getResource("/images/MMLogin.png");
@@ -25,6 +32,9 @@ public class LoginController {
     }
 
 
+    /**
+     * Handles the login action by validating credentials and showing alerts.
+     */
     @FXML
     private void onLogin() {
         String u = usernameField.getText();
@@ -38,6 +48,9 @@ public class LoginController {
         // TODO: navigate to your main scene
     }
 
+    /**
+     * Displays additional information about upcoming features.
+     */
     @FXML
     private void onViewMore() {
         new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer / feature rundown.").showAndWait();

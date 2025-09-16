@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxml = new FXMLLoader(HelloApplication.class.getResource("/ui/login-view.fxml"));
+        FXMLLoader fxml = new FXMLLoader(HelloApplication.class.getResource("/com/therejects/cab302groupproject/login-view.fxml"));
         Scene scene = new Scene(fxml.load(), 980, 560);
         stage.setTitle("<Math Monsters> — Sign in");
         stage.setScene(scene);

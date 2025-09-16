@@ -1,6 +1,8 @@
 package com.therejects.cab302groupproject.controller;
 
+import com.therejects.cab302groupproject.model.QuestionGenerator;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -11,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class BattleGUI {
+public class BattleGUI extends QuestionGenerator {
 
     @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
@@ -24,11 +26,16 @@ public class BattleGUI {
     @FXML private Label playerName;
     @FXML private Label enemyName;
 
+    private Boolean winner;
+    private Boolean loser;
+    private String outcome;
     private int playerMaxHp = 50;
     private int enemyMaxHp = 50;
 
     private int playerCurrentHp = playerMaxHp;
     private int enemyCurrentHp = enemyMaxHp;
+
+    private String enemy = "AI";
 
     @FXML
     private void initialize() {
@@ -46,8 +53,15 @@ public class BattleGUI {
             if (p != null) playerSprite.setImage(p);
             if (e != null) enemySprite.setImage(e);
         } catch (Exception ignored) { /* not critical */ }
+
     }
 
+    private String Outcome(Boolean winner){
+
+        new Alert(Alert.AlertType.INFORMATION, "Congratulations! " + winner + " has defeated " + loser + "!").showAndWait();
+
+        return winner;
+    }
     /* ---------- helper UI methods ---------- */
 
     // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
@@ -102,10 +116,14 @@ public class BattleGUI {
         }
     }
 
+
+
     /* ---------- button handlers ---------- */
 
     @FXML
     private void onFight() {
+
+
         Button light = new Button("Light Attack");
         Button heavy = new Button("Heavy Attack");
 
@@ -186,4 +204,5 @@ public class BattleGUI {
         });
         showSubMenu("Are you sure?", confirm);
     }
+
 }

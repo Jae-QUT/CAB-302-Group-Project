@@ -30,7 +30,7 @@ public class QuestionGenController {
     }
 
     @FXML
-    private void onGenerateClick() { nextQuestion(); }
+    private void onGenerateClick() {nextQuestion(); }
 
     @FXML
     private void onSubmitClick() {

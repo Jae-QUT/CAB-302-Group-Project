@@ -1,5 +1,7 @@
 package com.therejects.cab302groupproject;
+
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,15 +23,16 @@ public class MainMenuLauncher extends Application {
         ScreenManager sm = new ScreenManager(stage);
         sm.navigateTo("LOGOUT");
         stage.show();
+        stage.setTitle("Login!");
 
-//        FXMLLoader fxmlLoader = new FXMLLoader(MainMenuLauncher.class.getResource("/com/therejects/cab302groupproject/MainMenu.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-//        Object controller = fxmlLoader.getController();
-//        System.out.println("Loaded controller class: " + (controller != null ? controller.getClass() : "null"));
+        /*FXMLLoader fxmlLoader = new FXMLLoader(MainMenuLauncher.class.getResource("LOGIN.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Object controller = fxmlLoader.getController();
+        System.out.println("Loaded controller class: " + (controller != null ? controller.getClass() : "null"));
+        stage.setScene(scene);
+        stage.show();*/
 
-        stage.setTitle("Hello!");
-//        stage.setScene(scene);
-//        stage.show();
+
     }
 
     public static void main(String[] args) {

@@ -11,7 +11,7 @@ public class ScreenManager {
     public enum Screen
     {
         MAIN_MENU("/com/therejects/cab302groupproject/MainMenu.fxml", "Main Menu"),
-        PLAY("/com/therejects/cab302groupproject/Play.fxml", "Play"),
+        PLAY("/com/therejects/cab302groupproject/battle-view.fxml", "Battle View"),
         LEADERBOARD("/com/therejects/cab302groupproject/Leaderboard.fxml", "Leaderboard"),
         CHANGE_TEAM("/com/therejects/cab302groupproject/ChangeTeam.fxml", "Change Team"),
         LOGOUT("/com/therejects/cab302groupproject/login-view.fxml", "Login");

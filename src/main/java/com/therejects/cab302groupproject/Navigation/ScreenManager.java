@@ -13,7 +13,7 @@ public class ScreenManager {
         MAIN_MENU("/com/therejects/cab302groupproject/MainMenu.fxml", "Main Menu"),
         PLAY("/com/therejects/cab302groupproject/battle-view.fxml", "Battle View"),
         LEADERBOARD("/com/therejects/cab302groupproject/Leaderboard.fxml", "Leaderboard"),
-        CHANGE_TEAM("/com/therejects/cab302groupproject/ChangeTeam.fxml", "Change Team"),
+        PLAYER_PROFILE("/com/therejects/cab302groupproject/ProfileView.fxml", "Player Profile"),
         LOGOUT("/com/therejects/cab302groupproject/login-view.fxml", "Login");
 
         private final String fxml;
@@ -88,7 +88,7 @@ public class ScreenManager {
         switch (screenId) {
             case "PLAY"        -> loadScreen(Screen.PLAY);
             case "LEADERBOARD" -> loadScreen(Screen.LEADERBOARD);
-            case "CHANGE_TEAM" -> loadScreen(Screen.CHANGE_TEAM);
+            case "PLAYER_PROFILE" -> loadScreen(Screen.PLAYER_PROFILE);
             case "LOGOUT"      -> loadScreen(Screen.LOGOUT);
             case "MAIN_MENU" -> loadScreen(Screen.MAIN_MENU);       //
 //            case "" -> loadScreen(Screen.);

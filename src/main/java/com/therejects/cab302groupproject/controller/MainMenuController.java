@@ -2,6 +2,7 @@ package com.therejects.cab302groupproject.controller;
 
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -39,7 +40,7 @@ public class MainMenuController {
     }
 
     @FXML private void onChangeTeam()
-    { navigate("CHANGE_TEAM");
+    { navigate("PLAYER_PROFILE");
     }
 
     @FXML private void onLogout()
@@ -52,4 +53,6 @@ public class MainMenuController {
         else System.err.println("Navigator not set for: " + screenId);
     }
 
+    public void onPlayerProfile(ActionEvent actionEvent) {
+    }
 }

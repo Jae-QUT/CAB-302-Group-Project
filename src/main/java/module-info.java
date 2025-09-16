@@ -7,7 +7,7 @@ module com.therejects.cab302groupproject {
     // Extra UI libraries
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
-    requires com.almasb.fxgl.all;
+//    requires com.almasb.fxgl.all;
     requires java.desktop;
     requires jdk.compiler;
 

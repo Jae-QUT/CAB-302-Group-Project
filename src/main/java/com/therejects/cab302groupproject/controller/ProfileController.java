@@ -4,6 +4,8 @@ import com.therejects.cab302groupproject.model.User;
 import com.therejects.cab302groupproject.model.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
@@ -14,6 +16,9 @@ public class ProfileController {
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
     @FXML private TextField yearLevelField;
+    @FXML private Label statsLabel;
+    @FXML private ListView<String> badgesList;
+    @FXML private ListView<String> friendsList;
 
     private final UserDAO userDAO = new UserDAO();
     private User currentUser;
@@ -26,12 +31,29 @@ public class ProfileController {
                 usernameField.setText(currentUser.getUsername());
                 emailField.setText(currentUser.getStudentEmail());
                 yearLevelField.setText(String.valueOf(currentUser.getGradeYearLevel()));
+
+                currentUser.setGamesPlayed(10);
+                currentUser.setGamesWon(7);
+                currentUser.setGamesLost(3);
+                currentUser.getBadges().addAll(java.util.List.of("Math Novice", "Quick Thinker"));
+                currentUser.getFriends().addAll(java.util.List.of("Alice", "Bob"));
+
+                refreshExtras();
             } else {
                 showAlert(Alert.AlertType.ERROR, "User not found");
             }
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Database error loading profile");
         }
+    }
+
+    private void refreshExtras() {
+        statsLabel.setText("Games: " + currentUser.getGamesPlayed()
+                + " | Won: " + currentUser.getGamesWon()
+                + " | Lost: " + currentUser.getGamesLost());
+
+        badgesList.getItems().setAll(currentUser.getBadges());
+        friendsList.getItems().setAll(currentUser.getFriends());
     }
 
     @FXML

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
 <VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml"
@@ -13,4 +13,15 @@
    <TextField fx:id="yearLevelField" promptText="Year Level"/>
 
    <Button text="Save Changes" onAction="#handleSave"/>
+
+   <Separator/>
+
+   <Label text="Stats" style="-fx-font-weight: bold;"/>
+   <Label fx:id="statsLabel" text="Games: 0 | Won: 0 | Lost: 0"/>
+
+   <Label text="Badges" style="-fx-font-weight: bold;"/>
+   <ListView fx:id="badgesList" prefHeight="80"/>
+
+   <Label text="Friends" style="-fx-font-weight: bold;"/>
+   <ListView fx:id="friendsList" prefHeight="80"/>
 </VBox>

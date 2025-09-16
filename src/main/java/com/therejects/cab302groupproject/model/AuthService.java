@@ -1,12 +1,11 @@
-import com.therejects.cab302groupproject.model.UserDAO;
-import com.therejects.cab302groupproject.model.User;
+package com.therejects.cab302groupproject.model;
 
 import java.sql.SQLException;
 
 public class AuthService {
     public final UserDAO userDao = new UserDAO();
 
-    // DEMO password check (plain text). Replace with hashing in production.
+    // DEMO password check (plain text).
     public boolean login(String username, String password) throws SQLException {
         return userDao.findByUsername(username)
                 .map(u -> u.getPassword().equals(password))

@@ -8,7 +8,7 @@ module com.therejects.cab302groupproject {
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
 
-    // com.therejects.cab302groupproject.Database + logging
+    // com.therejects.cab302groupproject.model.Database + logging
     requires java.sql;
     requires java.logging;
 

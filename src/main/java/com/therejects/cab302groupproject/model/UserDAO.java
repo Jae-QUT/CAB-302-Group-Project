@@ -1,7 +1,5 @@
 package com.therejects.cab302groupproject.model;
 
-import com.therejects.cab302groupproject.Database;
-
 import java.sql.*;
 import java.util.Optional;
 

@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
@@ -15,7 +14,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ProfileController {
-    public VBox profileCtrl;
     private ScreenManager screenManager;
 
     @FXML private TextField usernameField;

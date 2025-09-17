@@ -1,17 +1,30 @@
 package com.therejects.cab302groupproject.controller;
 
+//import com.almasb.fxgl.quest.Quest;
+import com.therejects.cab302groupproject.Navigation.*;
+import com.therejects.cab302groupproject.model.QuestionGenerator;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import java.io.IOException;
 
-public class BattleGUI {
+/**
+ * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
+ * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
+ * after choosing an action.
+ */
+public class BattleGUI extends QuestionGenerator {
 
     @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
@@ -24,11 +37,36 @@ public class BattleGUI {
     @FXML private Label playerName;
     @FXML private Label enemyName;
 
+    private ScreenManager screenManager;
+    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
+
+    // helper to use it safely
+
+    /**
+     *
+     * @return
+     */
+    public ScreenManager sm() {
+        if (screenManager == null) {
+            // fallback if someone forgot to inject; build from current window
+            Stage stage = (Stage) battleMessage.getScene().getWindow();
+            screenManager = new ScreenManager(stage);
+        }
+        return screenManager;
+    }
+
+
+    private String winner;
+    private String loser;
+    private String outcome;
     private int playerMaxHp = 50;
     private int enemyMaxHp = 50;
 
     private int playerCurrentHp = playerMaxHp;
     private int enemyCurrentHp = enemyMaxHp;
+    private String user = this.user;
+    private String enemy = "AI";
+
 
     @FXML
     private void initialize() {
@@ -46,11 +84,11 @@ public class BattleGUI {
             if (p != null) playerSprite.setImage(p);
             if (e != null) enemySprite.setImage(e);
         } catch (Exception ignored) { /* not critical */ }
+
     }
 
     /* ---------- helper UI methods ---------- */
-
-    // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
+// show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
 
@@ -80,7 +118,6 @@ public class BattleGUI {
         return back;
     }
 
-
     // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
@@ -97,16 +134,46 @@ public class BattleGUI {
         playerHpLabel.setText(playerCurrentHp + " / " + playerMaxHp);
 
         // Disabled activity if Hp = 0
-        if (enemyCurrentHp == 0 || playerCurrentHp == 0){
+        if (enemyCurrentHp == 0 || playerCurrentHp == 0) {
             mainMenu.setDisable(true);
+            new Alert(Alert.AlertType.INFORMATION, "Congratulations! " + winner + " has defeated " + loser + "!").showAndWait();
+
         }
+
     }
 
-    /* ---------- button handlers ---------- */
+    /* ---------- Button Handlers ---------- */
 
     @FXML
-    private void onFight() {
-        Button light = new Button("Light Attack");
+    private void onFight() throws IOException {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
+            Parent root = loader.load();
+            QuestionGenController ctrl = loader.getController();
+            QuestionGenerator qGen = ctrl.generator;
+            ctrl.setQuestionGenerator(qGen);
+
+            Stage popup = new Stage();
+            popup.setTitle("Answer to Attack!");
+            popup.setScene(new Scene(root));
+            popup.initModality(Modality.WINDOW_MODAL);
+            Window owner = battleMessage.getScene().getWindow();
+            popup.initOwner(owner);
+            popup.showAndWait();
+
+            if(qGen.checkAnswer(ctrl.userAnswer))
+            {
+                    enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+                    updateHpBars();
+                    finishAction("Correct! Attack landed.");
+            }
+            else
+            {
+                finishAction("Wrong! Your Attack Missed!");
+            }
+
+
+
+        /*Button light = new Button("Light Attack");
         Button heavy = new Button("Heavy Attack");
 
         light.setPrefWidth(150);
@@ -126,7 +193,7 @@ public class BattleGUI {
             finishAction("Zabird used Heavy Attack!");
         });
 
-        showSubMenu("Attack", light, heavy);
+        showSubMenu("Attack", light, heavy);*/
     }
 
     @FXML
@@ -174,6 +241,7 @@ public class BattleGUI {
         showSubMenu("Choose a Mon:", mon1, mon2);
     }
 
+
     @FXML
     private void onForfeit() {
         Button confirm = new Button("Confirm Forfeit");
@@ -185,5 +253,9 @@ public class BattleGUI {
             mainMenu.setDisable(true);
         });
         showSubMenu("Are you sure?", confirm);
+        sm().navigateTo("MAIN_MENU");
+
+
     }
+
 }

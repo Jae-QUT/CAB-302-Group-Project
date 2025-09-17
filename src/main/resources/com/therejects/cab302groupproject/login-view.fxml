@@ -6,7 +6,8 @@
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.therejects.cab302groupproject.controller.LoginController"
-           stylesheets="@login.css" styleClass="app-root">
+           stylesheets="@../../../ui/login.css" styleClass="app-root">
+
 
     <HBox alignment="CENTER">
         <StackPane styleClass="card" HBox.hgrow="NEVER">

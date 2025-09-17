@@ -48,7 +48,12 @@
                         <CheckBox fx:id="rememberMe" text="Remember me"/>
                         <Hyperlink text="Forgot password?"/>
                     </HBox>
-                    <Button text="LOGIN" defaultButton="true" onAction="#onLogin" maxWidth="160"/>
+
+                    <!-- Register Button & Login-->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="LOGIN" defaultButton="true" onAction="#onLogin" maxWidth="160"/>
+                        <Hyperlink text="Register" onAction="#onRegister"/>
+                    </HBox>
                 </VBox>
 
             </HBox>

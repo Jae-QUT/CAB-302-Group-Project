@@ -130,6 +130,10 @@ public class LoginScreenFX extends Application {
             if (auth.login(u, p)) {
                 new Alert(Alert.AlertType.INFORMATION,
                         "Welcome, " + u + "!").showAndWait();
+                ScreenManager sm = new ScreenManager(owner);
+                sm.navigateTo("MAIN_MENU");
+                owner.show();
+                owner.setTitle("Main Menu");
                 // TODO: open your main game window here
             } else {
                 Alert a = new Alert(Alert.AlertType.WARNING,

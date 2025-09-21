@@ -1,5 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
+import com.example.mon.app.LoginScreenFX;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -44,8 +45,14 @@ public class MainMenuController {
     }
 
     @FXML private void onLogout()
-    { navigate("LOGOUT");
-
+//    { navigate("LOGOUT");
+    {try {
+        javafx.stage.Stage stage = (javafx.stage.Stage) root.getScene().getWindow();
+        LoginScreenFX login = new LoginScreenFX();
+        login.start(stage); // reuses the same stage
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     }
 
     private void navigate(String screenId) {

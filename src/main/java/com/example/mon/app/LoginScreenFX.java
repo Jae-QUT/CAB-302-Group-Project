@@ -36,9 +36,9 @@ public class LoginScreenFX extends Application {
     private final Button signInButton = new Button("Sign in");
     private final Button createAccountButton = new Button("Create account");
     private final Hyperlink forgotPasswordLink = new Hyperlink("Forgot password?");
-
-    // --- Authentication service ---
     private final AuthService auth = new AuthService();
+    // --- Authentication service ---
+    //private final AuthService auth = new AuthService();
 
     /**
      * Entry point for the JavaFX application.

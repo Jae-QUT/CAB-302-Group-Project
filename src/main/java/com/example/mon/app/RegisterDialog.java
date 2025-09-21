@@ -11,6 +11,18 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 import javafx.scene.control.CheckBox;
 
+/**
+ * JavaFX dialog for registering a new user account.
+ * Connects to the 'Show' checkbox that can be clicked to toggle the visibility of the password
+ * Automatically enables/disables the create button in 'Register'
+ * Handles GUI
+ * Validates matching passwords and ensures numeric input in year level
+ *
+ */
+
+
+
+
 public class RegisterDialog extends Dialog<RegisterResult> {
 
     public RegisterDialog() {

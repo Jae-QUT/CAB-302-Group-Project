@@ -8,7 +8,7 @@ public class UserDao {
     public boolean insert(User u) throws SQLException {
         String sql = """
             INSERT INTO LoginRegisterUI
-              (Username, Password, StudentEmail, "Grade/Year Level")
+              (Username, PasswordHash, StudentEmail, "GradeYearLevel")
             VALUES (?, ?, ?, ?);
         """;
         try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
@@ -22,7 +22,7 @@ public class UserDao {
 
     public Optional<User> findByUsername(String username) throws SQLException {
         String sql = """
-            SELECT Username, Password, StudentEmail, "Grade/Year Level"
+            SELECT Username, PasswordHash, StudentEmail, "GradeYearLevel"
             FROM LoginRegisterUI
             WHERE Username = ?;
         """;
@@ -32,9 +32,9 @@ public class UserDao {
                 if (!rs.next()) return Optional.empty();
                 return Optional.of(new User(
                         rs.getString("Username"),
-                        rs.getString("Password"),
+                        rs.getString("PasswordHash"),
                         rs.getString("StudentEmail"),
-                        rs.getInt("Grade/Year Level")
+                        rs.getInt("GradeYearLevel")
                 ));
             }
         }

@@ -4,10 +4,10 @@ import java.sql.SQLException;
 public class AuthService {
     public final UserDao userDao = new UserDao();
 
-    // DEMO password check (plain text). Replace with hashing in production.
+    //TODO Complete the hashing !!!!!!!
     public boolean login(String username, String password) throws SQLException {
         return userDao.findByUsername(username)
-                .map(u -> u.getPassword().equals(password))
+                .map(u -> PasswordUtil.verifyPassword(password, u.getPassword()))
                 .orElse(false);
     }
 
@@ -16,9 +16,15 @@ public class AuthService {
             throw new IllegalArgumentException("Username is required.");
         if (userDao.exists(newUser.getUsername()))
             throw new IllegalStateException("Username already exists.");
+
+
+        String hashed = PasswordUtil.hashPassword(newUser.getPassword());
+        newUser.setPassword(hashed);
+
         return userDao.insert(newUser);
     }
 
-    public void register(String u, String pw, String email, int grade) {
+    public boolean register(String u, String pw, String email, int grade) throws SQLException {
+        return register(new User(u, pw, email, grade));
     }
 }

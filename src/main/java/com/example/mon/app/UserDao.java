@@ -79,7 +79,7 @@ public class UserDao {
     public boolean updateProfile(User u) throws SQLException {
         String sql = """
                   UPDATE LoginRegisterUI
-                  SET StudentEmail = ?, "Grade/Year Level" = ?
+                  SET StudentEmail = ?, "GradeYearLevel" = ?
                   WHERE Username = ?
                 """;
         try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {

@@ -1,8 +1,9 @@
 package com.therejects.cab302groupproject.controller;
 
+import com.example.mon.app.*;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import com.therejects.cab302groupproject.model.*;           // * means "ALL". Takes ALL things from that menu
-//import com.therejects.cab302groupproject.model.UserDAO;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -30,7 +31,7 @@ public class ProfileController {
     @FXML private StackPane root;
     @FXML private Button backButton;
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserDao userDao = new UserDao();
     private User currentUser;
 
     /**
@@ -40,7 +41,7 @@ public class ProfileController {
      */
     public void loadProfile(String username) {
         try {
-            Optional<User> result = userDAO.findByUsername(username);
+            Optional<User> result = userDao.findByUsername(username);
             if (result.isPresent()) {
                 currentUser = result.get();
                 usernameField.setText(currentUser.getUsername());
@@ -85,7 +86,7 @@ public class ProfileController {
             currentUser.setStudentEmail(emailField.getText());
             currentUser.setGradeYearLevel(Integer.parseInt(yearLevelField.getText()));
 
-            boolean success = userDAO.updateProfile(currentUser);
+            boolean success = userDao.updateProfile(currentUser);
 
             if (success) {
                 showAlert(Alert.AlertType.INFORMATION, "Profile updated successfully!");

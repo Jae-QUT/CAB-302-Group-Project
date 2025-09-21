@@ -24,5 +24,9 @@ public final class AuthDatabase {
     );
 """;
         try (Statement st = get().createStatement()) { st.execute(sql); }
+
+
+    public static void override(Connection c) {
+        conn = c;
     }
 }

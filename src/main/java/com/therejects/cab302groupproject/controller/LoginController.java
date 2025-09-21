@@ -189,6 +189,17 @@ import java.util.regex.Pattern;
         public final String name, email, username, password, studentNumber, classroomNumber;
         public final Integer yearLevel;
 
+        /**
+         * This is the storage when creating a new user. This is referenced throughout the registration process.
+         * Is currently linked to the login that is not in use.
+         * @param name User's name
+         * @param email User's school email
+         * @param username User's chosen display name
+         * @param password User's password stored as a hash
+         * @param studentNumber User's student number
+         * @param classroomNumber User's assigned classroom
+         * @param yearLevel User's grade level
+         */
         public RegistrationData(String name, String email, String username, String password,
                                 String studentNumber, String classroomNumber, Integer yearLevel) {
             this.name = name;

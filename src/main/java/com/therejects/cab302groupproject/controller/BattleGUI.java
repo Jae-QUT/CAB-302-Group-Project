@@ -19,6 +19,9 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
+/**
+ *
+ */
 public class BattleGUI extends QuestionGenerator {
 
     @FXML
@@ -34,9 +37,19 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private Label enemyName;
 
     private ScreenManager screenManager;
+
+    /**
+     * Creates the current instance of the screen manager for navigating between screens
+     * @param sm Is the instance of the screen manager that we'll reference
+     */
     public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
 
     // helper to use it safely
+
+    /**
+     *
+     * @return the screenManager if there is an issue injecting into the manager. It will return
+     */
     public ScreenManager sm() {
         if (screenManager == null) {
             // fallback if someone forgot to inject; build from current window

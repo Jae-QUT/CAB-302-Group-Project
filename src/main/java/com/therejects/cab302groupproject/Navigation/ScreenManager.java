@@ -7,8 +7,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Management system to easily add new screens and switch between them when needed.
+ */
 public class ScreenManager {
-
+    /**
+     * The values that get added when we incorporate a new screen and the constructor
+     */
     public enum Screen
     {
         MAIN_MENU("/com/therejects/cab302groupproject/MainMenu.fxml", "Main Menu"),
@@ -65,6 +70,10 @@ public class ScreenManager {
 
 //    < NEED TO COME BACK AND CHANGE THESE AS THEY ARE PLACEHOLDERS >
 
+    /**
+     * Function that is used to determine which {@link Screen} is assigned to each displau
+     * @param screenId is the enumerable that was assigned in {@link Screen}
+     */
     public void navigateTo(String screenId) {
         switch (screenId) {
             case "PLAY"        -> loadScreen(Screen.PLAY);

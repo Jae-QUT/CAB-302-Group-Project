@@ -27,8 +27,8 @@ import java.io.IOException;
  */
 public class BattleGUI extends QuestionGenerator {
 
-
-    @FXML private ProgressBar playerHp, enemyHp;
+    @FXML
+    private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
     @FXML private ProgressBar playerMana;
     @FXML private ImageView playerSprite;
@@ -43,11 +43,6 @@ public class BattleGUI extends QuestionGenerator {
     public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
 
     // helper to use it safely
-
-    /**
-     *
-     * @return
-     */
     public ScreenManager sm() {
         if (screenManager == null) {
             // fallback if someone forgot to inject; build from current window
@@ -69,7 +64,6 @@ public class BattleGUI extends QuestionGenerator {
     private String user = this.user;
     private String enemy = "AI";
 
-
     @FXML
     private void initialize() {
         // initial visibility
@@ -89,6 +83,10 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
+
+
+
+    /* ---------- helper UI methods ---------- */
 // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
@@ -119,6 +117,7 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
+
     // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
@@ -143,7 +142,8 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
-    /* ---------- Button Handlers ---------- */
+
+    /* ---------- button handlers ---------- */
 
     @FXML
     private void onFight() throws IOException {

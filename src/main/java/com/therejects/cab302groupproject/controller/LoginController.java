@@ -71,7 +71,7 @@ import java.util.regex.Pattern;
 
     @FXML
     private void onRegister() {
-        Dialog<com.therejects.cab302groupproject.LoginController.RegistrationData> dialog = new Dialog<>();
+        Dialog<com.therejects.cab302groupproject.controller.LoginController.RegistrationData> dialog = new Dialog<>();
         dialog.setTitle("Create account");
         dialog.setHeaderText("Enter your details");
 
@@ -142,7 +142,7 @@ import java.util.regex.Pattern;
 
         dialog.setResultConverter(btn -> {
             if (btn == createBtnType) {
-                return new com.therejects.cab302groupproject.LoginController.RegistrationData(
+                return new com.therejects.cab302groupproject.controller.LoginController.RegistrationData(
                         nameField.getText().trim(),
                         emailField.getText().trim().toLowerCase(),
                         username.getText().trim(),
@@ -155,7 +155,7 @@ import java.util.regex.Pattern;
             return null;
         });
 
-        Optional<com.therejects.cab302groupproject.LoginController.RegistrationData> result = dialog.showAndWait();
+        Optional<com.therejects.cab302groupproject.controller.LoginController.RegistrationData> result = dialog.showAndWait();
         result.ifPresent(data -> {
             // TODO: call your real registration service here
             System.out.println("Registering: " + data);

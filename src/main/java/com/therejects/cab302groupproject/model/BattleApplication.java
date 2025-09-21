@@ -13,7 +13,7 @@ public class BattleApplication extends Application {
         stage.setScene(scene);
         stage.setTitle("Battle GUI");
         stage.show();
-    }
+    }   
 
     public static void main(String[] args) {
         launch();

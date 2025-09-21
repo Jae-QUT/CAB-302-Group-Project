@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Controller for the profile page. Handles the display and update of
+ * user details, stats, badges, friends
+ */
 public class ProfileController {
     private ScreenManager screenManager;
 
@@ -29,6 +33,11 @@ public class ProfileController {
     private final UserDAO userDAO = new UserDAO();
     private User currentUser;
 
+    /**
+     * Loads the profile data for the given username from SQlite DB, and populates fields.
+     *
+     * @param username the username of the profile to load
+     */
     public void loadProfile(String username) {
         try {
             Optional<User> result = userDAO.findByUsername(username);
@@ -53,6 +62,9 @@ public class ProfileController {
         }
     }
 
+    /**
+     * Refresh stats, badges and friend sections with data from current user
+     */
     private void refreshExtras() {
         statsLabel.setText("Games: " + currentUser.getGamesPlayed()
                 + " | Won: " + currentUser.getGamesWon()
@@ -62,6 +74,9 @@ public class ProfileController {
         friendsList.getItems().setAll(currentUser.getFriends());
     }
 
+    /**
+     * Saves changes to the users profile, updates email and yr level in DB.
+     */
     @FXML
     private void handleSave() {
         if (currentUser == null) return;
@@ -84,6 +99,12 @@ public class ProfileController {
         }
     }
 
+    /**
+     * Displays alert + message to user
+     *
+     * @param type error type
+     * @param message error message
+     */
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
         alert.setHeaderText(null);

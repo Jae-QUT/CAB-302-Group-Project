@@ -52,7 +52,7 @@
                     <!-- Register Button & Login-->
                     <HBox spacing="10" alignment="CENTER_LEFT">
                         <Button text="LOGIN" defaultButton="true" onAction="#onLogin" maxWidth="160"/>
-                        <Hyperlink text="Register" onAction="#onRegister"/>
+                        <Hyperlink text="No Account? Register Now" onAction="#onRegister"/>
                     </HBox>
                 </VBox>
 

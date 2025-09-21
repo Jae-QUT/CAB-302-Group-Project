@@ -10,6 +10,13 @@ import javafx.scene.layout.GridPane;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+/**
+ * Controller class responsible for handling the login, registration,
+ * and additional interactions on the login screen.
+ * <p>
+ * Provides methods to initialize the UI, validate credentials,
+ * display a registration dialog, and enforce input validation.
+ */
 public class LoginController {
 
     @FXML private ImageView heroImage;
@@ -17,6 +24,10 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private CheckBox rememberMe;
 
+    /**
+     * Initializes the login screen by loading the hero image.
+     * If the image cannot be found, an error is logged to the console.
+     */
     @FXML
     public void initialize() {
         var url = HelloApplication.class.getResource("/images/MMLogin.png");
@@ -30,6 +41,12 @@ public class LoginController {
 
     // ===== Login & View More =====
 
+    /**
+     * Handles login button actions.
+     * Validates that both username and password are provided,
+     * with password being at least 4 characters long.
+     * If valid, shows a welcome message; otherwise, shows an error alert.
+     */
     @FXML
     private void onLogin() {
         String u = usernameField.getText();
@@ -43,6 +60,10 @@ public class LoginController {
         // TODO: navigate to your main scene
     }
 
+    /**
+     * Displays an informational dialog when the "View More" button is clicked.
+     * Intended to showcase future trailer or feature rundowns.
+     */
     @FXML
     private void onViewMore() {
         new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer / feature rundown.").showAndWait();
@@ -50,6 +71,13 @@ public class LoginController {
 
     // ===== Register dialog =====
 
+    /**
+     * Opens the registration dialog allowing a new user
+     * to create an account by entering their details.
+     * Input fields include name, email, username, password,
+     * student number, classroom number, and year level.
+     * Input validation ensures correctness before enabling the Create button.
+     */
     @FXML
     private void onRegister() {
         Dialog<RegistrationData> dialog = new Dialog<>();
@@ -64,6 +92,7 @@ public class LoginController {
         grid.setVgap(10);
         grid.setPadding(new Insets(16, 20, 12, 20));
 
+        // Input fields
         TextField nameField = new TextField();
         nameField.setPromptText("Full name");
 
@@ -150,6 +179,12 @@ public class LoginController {
 
     // ===== helpers =====
 
+    /**
+     * Ensures that only numeric input can be entered into a {@link TextField}.
+     * Non-digit characters are automatically stripped out.
+     *
+     * @param tf the text field to enforce numeric input on
+     */
     private static void enforceNumeric(TextField tf) {
         tf.textProperty().addListener((obs, old, val) -> {
             if (val != null && !val.matches("\\d*")) {
@@ -158,18 +193,38 @@ public class LoginController {
         });
     }
 
+    /** Regex pattern used to validate email addresses. */
     private static final Pattern EMAIL_RX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", Pattern.CASE_INSENSITIVE);
 
+    /**
+     * Validates whether the provided string is in a valid email format.
+     *
+     * @param s the string to validate
+     * @return true if the string is a valid email address; false otherwise
+     */
     private static boolean isEmail(String s) {
         return s != null && EMAIL_RX.matcher(s.trim()).matches();
     }
 
-    /** Simple DTO for registration results. */
+    /**
+     * Simple DTO for storing registration details collected from the dialog.
+     */
     public static class RegistrationData {
         public final String name, email, username, password, studentNumber, classroomNumber;
         public final Integer yearLevel;
 
+        /**
+         * Constructs a new {@code RegistrationData} object with the given details.
+         *
+         * @param name            full name of the user
+         * @param email           email address of the user
+         * @param username        chosen username
+         * @param password        chosen password
+         * @param studentNumber   student number
+         * @param classroomNumber classroom number
+         * @param yearLevel       year level
+         */
         public RegistrationData(String name, String email, String username, String password,
                                 String studentNumber, String classroomNumber, Integer yearLevel) {
             this.name = name;

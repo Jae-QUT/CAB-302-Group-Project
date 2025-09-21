@@ -19,10 +19,18 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
+
+
+/**
+ * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
+ * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
+ * after choosing an action.
+
+ */
 public class BattleGUI extends QuestionGenerator {
 
-    @FXML
-    private ProgressBar playerHp, enemyHp;
+
+    @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
     @FXML private ProgressBar playerMana;
     @FXML private ImageView playerSprite;
@@ -34,9 +42,19 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private Label enemyName;
 
     private ScreenManager screenManager;
+
+    /**
+     * Creates the current instance of the screen manager for navigating between screens
+     * @param sm Is the instance of the screen manager that we'll reference
+     */
     public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
 
     // helper to use it safely
+
+    /**
+     *
+     * @return the screenManager if there is an issue injecting into the manager. It will return
+     */
     public ScreenManager sm() {
         if (screenManager == null) {
             // fallback if someone forgot to inject; build from current window
@@ -58,6 +76,7 @@ public class BattleGUI extends QuestionGenerator {
     private String user = this.user;
     private String enemy = "AI";
 
+
     @FXML
     private void initialize() {
         // initial visibility
@@ -77,10 +96,6 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
-
-
-
-    /* ---------- helper UI methods ---------- */
 // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
@@ -111,7 +126,6 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
-
     // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
@@ -136,8 +150,7 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
-
-    /* ---------- button handlers ---------- */
+    /* ---------- Button Handlers ---------- */
 
     @FXML
     private void onFight() throws IOException {

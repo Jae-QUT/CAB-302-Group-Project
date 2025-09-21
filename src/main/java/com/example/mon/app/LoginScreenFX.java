@@ -1,4 +1,5 @@
 package com.example.mon.app;
+import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,6 +9,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * JavaFX implementation of the login screen for the PokéMath application.
@@ -46,7 +49,7 @@ public class LoginScreenFX extends Application {
      * @param stage The primary stage provided by the JavaFX runtime.
      */
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         stage.setTitle("PokéMath — Sign in");
 
         // Ensure the separate AUTH database/table exists
@@ -109,6 +112,8 @@ public class LoginScreenFX extends Application {
 
         // --- Scene setup ---
         Scene scene = new Scene(grid, 520, 340);
+        ScreenManager sm = new ScreenManager(stage);
+        sm.navigateTo("LOGOUT");
         stage.setScene(scene);
         stage.show();
     }
@@ -125,6 +130,10 @@ public class LoginScreenFX extends Application {
             if (auth.login(u, p)) {
                 new Alert(Alert.AlertType.INFORMATION,
                         "Welcome, " + u + "!").showAndWait();
+                ScreenManager sm = new ScreenManager(owner);
+                sm.navigateTo("MAIN_MENU");
+                owner.show();
+                owner.setTitle("Main Menu");
                 // TODO: open your main game window here
             } else {
                 Alert a = new Alert(Alert.AlertType.WARNING,

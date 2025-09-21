@@ -14,19 +14,18 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
- * Controller for the login screen.
- * Initializes the hero image, validates credentials, supports registration,
- * and navigates to the main menu on successful login.
+ * A controller class responsible for managing the login screen of the application.
+ * It handles the initialization of the hero image, validates user credentials, and
+ * provides interactivity for the login and "View More" actions.
  */
-public class LoginController {
-
+ public class LoginController {
     @FXML private ImageView heroImage;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private CheckBox rememberMe;
 
     /**
-     * Load and display the hero image.
+     * Initializes the login screen by loading and displaying the hero image.
      */
     @FXML
     public void initialize() {
@@ -34,14 +33,13 @@ public class LoginController {
         if (url != null) {
             heroImage.setImage(new javafx.scene.image.Image(url.toExternalForm()));
         } else {
-            System.err.println("Missing /images/MMLogin.png on classpath. Put it under src/main/resources/images/ and rebuild.");
+            System.err.println("Missing /images/MMLogin.png on classpath. " +
+                    "Put it under src/main/resources/images/ and rebuild.");
         }
     }
 
-    // ===== Login & View More =====
-
     /**
-     * Validate username and password, then navigate to the main menu.
+     * Handles the login action by validating credentials and showing alerts.
      */
     @FXML
     private void onLogin() {
@@ -51,35 +49,29 @@ public class LoginController {
         if (u == null || u.isBlank() || p == null || p.length() < 4) {
             new Alert(Alert.AlertType.ERROR, "Invalid credentials. Try again.").showAndWait();
             return;
+        }else{
+            new Alert(Alert.AlertType.INFORMATION, "Welcome, " + u + "!").showAndWait();
+
         }
-
-        // Example: show welcome then navigate. Replace with real auth.
-        new Alert(Alert.AlertType.INFORMATION, "Welcome, " + u + "!").showAndWait();
-
+        // This Navigates to the Main Scene using Screen Manager
         Stage stage = (Stage) usernameField.getScene().getWindow();
-        if (stage != null) {
-            ScreenManager sm = new ScreenManager(stage);
-            sm.navigateTo("MAIN_MENU");
-            stage.show();
-        }
+        ScreenManager sm = new ScreenManager(stage);
+        sm.navigateTo("MAIN_MENU");
+        stage.show();
     }
 
     /**
-     * Show a simple info dialog for future features.
+     * Displays additional information about upcoming features.
      */
     @FXML
     private void onViewMore() {
-        new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer and feature rundown.").showAndWait();
+        new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer / feature rundown.").showAndWait();
     }
-
     // ===== Register dialog =====
 
-    /**
-     * Open a registration dialog with validation and return data to prefill login.
-     */
     @FXML
     private void onRegister() {
-        Dialog<RegistrationData> dialog = new Dialog<>();
+        Dialog<com.therejects.cab302groupproject.controller.LoginController.RegistrationData> dialog = new Dialog<>();
         dialog.setTitle("Create account");
         dialog.setHeaderText("Enter your details");
 
@@ -116,13 +108,13 @@ public class LoginController {
         yearLevel.setPromptText("Year level");
 
         int r = 0;
-        grid.add(new Label("Name"),              0, r); grid.add(nameField,   1, r++);
-        grid.add(new Label("Student Email"),     0, r); grid.add(emailField,  1, r++);
-        grid.add(new Label("Username"),          0, r); grid.add(username,    1, r++);
-        grid.add(new Label("Password"),          0, r); grid.add(password,    1, r++);
-        grid.add(new Label("Student number"),    0, r); grid.add(studentNo,   1, r++);
-        grid.add(new Label("Classroom number"),  0, r); grid.add(classroomNo, 1, r++);
-        grid.add(new Label("Year level"),        0, r); grid.add(yearLevel,   1, r++);
+        grid.add(new Label("Name"),              0, r); grid.add(nameField,  1, r++);
+        grid.add(new Label("Student Email"),     0, r); grid.add(emailField, 1, r++);
+        grid.add(new Label("Username"),          0, r); grid.add(username,   1, r++);
+        grid.add(new Label("Password"),          0, r); grid.add(password,   1, r++);
+        grid.add(new Label("Student number"),    0, r); grid.add(studentNo,  1, r++);
+        grid.add(new Label("Classroom number"),  0, r); grid.add(classroomNo,1, r++);
+        grid.add(new Label("Year level"),        0, r); grid.add(yearLevel,  1, r++);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -150,7 +142,7 @@ public class LoginController {
 
         dialog.setResultConverter(btn -> {
             if (btn == createBtnType) {
-                return new RegistrationData(
+                return new com.therejects.cab302groupproject.controller.LoginController.RegistrationData(
                         nameField.getText().trim(),
                         emailField.getText().trim().toLowerCase(),
                         username.getText().trim(),
@@ -163,12 +155,12 @@ public class LoginController {
             return null;
         });
 
-        Optional<RegistrationData> result = dialog.showAndWait();
+        Optional<com.therejects.cab302groupproject.controller.LoginController.RegistrationData> result = dialog.showAndWait();
         result.ifPresent(data -> {
-            // TODO: replace with real registration service call
+            // TODO: call your real registration service here
             System.out.println("Registering: " + data);
 
-            // UX: prefill username and focus password for quick login
+            // Optional UX: fill the login form & focus password
             usernameField.setText(data.username);
             passwordField.requestFocus();
             new Alert(Alert.AlertType.INFORMATION, "Account created. Please log in.").showAndWait();
@@ -178,9 +170,9 @@ public class LoginController {
     // ===== helpers =====
 
     private static void enforceNumeric(TextField tf) {
-        tf.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null && !newVal.matches("\\d*")) {
-                tf.setText(newVal.replaceAll("\\D", ""));
+        tf.textProperty().addListener((obs, old, val) -> {
+            if (val != null && !val.matches("\\d*")) {
+                tf.setText(val.replaceAll("\\D", ""));
             }
         });
     }
@@ -197,6 +189,17 @@ public class LoginController {
         public final String name, email, username, password, studentNumber, classroomNumber;
         public final Integer yearLevel;
 
+        /**
+         * This is the storage when creating a new user. This is referenced throughout the registration process.
+         * Is currently linked to the login that is not in use.
+         * @param name User's name
+         * @param email User's school email
+         * @param username User's chosen display name
+         * @param password User's password stored as a hash
+         * @param studentNumber User's student number
+         * @param classroomNumber User's assigned classroom
+         * @param yearLevel User's grade level
+         */
         public RegistrationData(String name, String email, String username, String password,
                                 String studentNumber, String classroomNumber, Integer yearLevel) {
             this.name = name;
@@ -208,8 +211,7 @@ public class LoginController {
             this.yearLevel = yearLevel;
         }
 
-        @Override
-        public String toString() {
+        @Override public String toString() {
             return "RegistrationData{" +
                     "name='" + name + '\'' +
                     ", email='" + email + '\'' +

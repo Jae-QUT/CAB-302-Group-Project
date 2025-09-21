@@ -77,7 +77,7 @@ public class QuestionGenerator {
      * attacks land or miss
      * @param userAnswer is the response from the student which is then used to compare against
      *                   the true answer
-     * @return whether or not the user's answer was correct or if they were wrong. If the
+     * @return whether the user's answer was correct or if they were wrong. If the
      * boolean == true, they are right. if bool == false, they're wrong.
      */
     public boolean checkAnswer(int userAnswer)

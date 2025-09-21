@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.therejects.cab302groupproject.controller.LoginController"
+           stylesheets="@../../../ui/login.css" styleClass="app-root">
+
+    <HBox alignment="CENTER">
+        <StackPane styleClass="card" HBox.hgrow="NEVER">
+            <HBox>
+
+                <!-- LEFT: image with overlay -->
+                <StackPane styleClass="left-pane">
+                    <ImageView fx:id="heroImage" fitWidth="520" preserveRatio="true"/>
+
+                    <!-- overlay pinned near bottom-center -->
+                    <VBox alignment="CENTER" spacing="6" styleClass="left-overlay"
+                          StackPane.alignment="BOTTOM_CENTER">
+                        <StackPane.margin>
+                            <Insets top="250" right="0" bottom="20" left="0"/>
+                        </StackPane.margin>
+
+                        <Label text="Math Monsters" styleClass="brand"
+                               snapToPixel="true" style="-fx-font-smoothing-type: gray;">
+                            <VBox.margin><Insets top="0" right="0" bottom="2" left="0"/></VBox.margin>
+                        </Label>
+
+                        <Label text="Catch Monsters. Build Teams. Learn Maths."
+                               wrapText="true" textAlignment="CENTER" maxWidth="420"
+                               styleClass="tagline">
+                            <VBox.margin><Insets top="0" right="0" bottom="10" left="0"/></VBox.margin>
+                        </Label>
+
+                        <Button text="VIEW MORE" onAction="#onViewMore" styleClass="primary"/>
+                    </VBox>
+                </StackPane>
+
+                <!-- RIGHT: login form -->
+                <VBox styleClass="right-pane" spacing="14" alignment="CENTER_LEFT">
+                    <Label text="Sign in to the site" styleClass="title"/>
+                    <TextField fx:id="usernameField" promptText="Username" maxWidth="320"/>
+                    <PasswordField fx:id="passwordField" promptText="Password" maxWidth="320"/>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <CheckBox fx:id="rememberMe" text="Remember me"/>
+                        <Hyperlink text="Forgot password?"/>
+                    </HBox>
+                    <Button text="LOGIN" defaultButton="true" onAction="#onLogin" maxWidth="160"/>
+                </VBox>
+
+            </HBox>
+        </StackPane>
+    </HBox>
+</StackPane>

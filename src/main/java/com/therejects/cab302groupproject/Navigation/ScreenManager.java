@@ -1,4 +1,4 @@
-package com.therejects.cab302groupproject.navigation;
+package com.therejects.cab302groupproject.Navigation;
 
 import com.therejects.cab302groupproject.controller.MainMenuController;
 import javafx.fxml.FXMLLoader;

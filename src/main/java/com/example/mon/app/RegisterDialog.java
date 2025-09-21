@@ -24,7 +24,11 @@ import javafx.scene.control.CheckBox;
 
 
 public class RegisterDialog extends Dialog<RegisterResult> {
-
+    /**
+     * {@link RegisterDialog} is the application that launches the registration popup for when a
+     * new user makes their account.
+     * Done as an application but should be revised into the FXML format to be in line with the unit requirements
+     */
     public RegisterDialog() {
         setTitle("Create Account");
 

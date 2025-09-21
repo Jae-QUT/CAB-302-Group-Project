@@ -20,10 +20,12 @@ import javafx.stage.Window;
 import java.io.IOException;
 
 
+
 /**
  * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
  * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
  * after choosing an action.
+
  */
 public class BattleGUI extends QuestionGenerator {
 
@@ -40,13 +42,18 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private Label enemyName;
 
     private ScreenManager screenManager;
+
+    /**
+     * Creates the current instance of the screen manager for navigating between screens
+     * @param sm Is the instance of the screen manager that we'll reference
+     */
     public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
 
     // helper to use it safely
 
     /**
      *
-     * @return
+     * @return the screenManager if there is an issue injecting into the manager. It will return
      */
     public ScreenManager sm() {
         if (screenManager == null) {

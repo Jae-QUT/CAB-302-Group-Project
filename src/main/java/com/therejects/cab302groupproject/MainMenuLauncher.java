@@ -3,8 +3,6 @@ package com.therejects.cab302groupproject;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;

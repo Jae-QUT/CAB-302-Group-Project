@@ -19,13 +19,18 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
+
+
 /**
- *
+ * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
+ * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
+ * after choosing an action.
+
  */
 public class BattleGUI extends QuestionGenerator {
 
-    @FXML
-    private ProgressBar playerHp, enemyHp;
+
+    @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
     @FXML private ProgressBar playerMana;
     @FXML private ImageView playerSprite;
@@ -71,6 +76,7 @@ public class BattleGUI extends QuestionGenerator {
     private String user = this.user;
     private String enemy = "AI";
 
+
     @FXML
     private void initialize() {
         // initial visibility
@@ -90,10 +96,6 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
-
-
-
-    /* ---------- helper UI methods ---------- */
 // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
@@ -124,7 +126,6 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
-
     // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
@@ -149,8 +150,7 @@ public class BattleGUI extends QuestionGenerator {
 
     }
 
-
-    /* ---------- button handlers ---------- */
+    /* ---------- Button Handlers ---------- */
 
     @FXML
     private void onFight() throws IOException {

@@ -3,6 +3,9 @@ package com.therejects.cab302groupproject.controller;
 //import com.almasb.fxgl.quest.Quest;
 import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,8 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Random;
 
 
 
@@ -64,7 +69,6 @@ public class BattleGUI extends QuestionGenerator {
         return screenManager;
     }
 
-
     private String winner;
     private String loser;
     private String outcome;
@@ -76,6 +80,7 @@ public class BattleGUI extends QuestionGenerator {
     private String user = this.user;
     private String enemy = "AI";
 
+    private boolean isBattleOver = false;
 
     @FXML
     private void initialize() {
@@ -93,7 +98,13 @@ public class BattleGUI extends QuestionGenerator {
             if (p != null) playerSprite.setImage(p);
             if (e != null) enemySprite.setImage(e);
         } catch (Exception ignored) { /* not critical */ }
+    }
 
+    // Adds a few seconds before displaying next message
+    private void waitThen(double seconds, Runnable next) {
+        PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
+        pause.setOnFinished(e -> next.run());
+        pause.play();
     }
 
 // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
@@ -136,18 +147,38 @@ public class BattleGUI extends QuestionGenerator {
 
     // helper method to refresh HP bars + text
     private void updateHpBars() {
-        playerHp.setProgress((double) playerCurrentHp / playerMaxHp);
-        enemyHp.setProgress((double) enemyCurrentHp / enemyMaxHp);
+        double playerPercent = (double) playerCurrentHp / playerMaxHp;
+        double enemyPercent = (double) enemyCurrentHp / enemyMaxHp;
+
+        playerHp.setProgress(playerPercent);
+        enemyHp.setProgress(enemyPercent);
 
         playerHpLabel.setText(playerCurrentHp + " / " + playerMaxHp);
 
-        // Disabled activity if Hp = 0
-        if (enemyCurrentHp == 0 || playerCurrentHp == 0) {
-            mainMenu.setDisable(true);
-            new Alert(Alert.AlertType.INFORMATION, "Congratulations! " + winner + " has defeated " + loser + "!").showAndWait();
+        // Color thresholds
+        setHpBarColor(playerHp, playerPercent);
+        setHpBarColor(enemyHp, enemyPercent);
 
+//        if (enemyCurrentHp == 0 || playerCurrentHp == 0) {
+//            mainMenu.setDisable(true);
+//            winner = (enemyCurrentHp == 0) ? playerName.getText() : enemyName.getText();
+//            loser = (enemyCurrentHp == 0) ? enemyName.getText() : playerName.getText();
+//            new Alert(Alert.AlertType.INFORMATION, "Congratulations! " + winner + " has defeated " + loser + "!").showAndWait();
+//        }
+    }
+
+    private void setHpBarColor(ProgressBar hpBar, double percent) {
+        hpBar.getStyleClass().removeAll("hp-green", "hp-yellow", "hp-orange", "hp-red");
+
+        if (percent <= 0.2) {
+            hpBar.getStyleClass().add("hp-red");
+        } else if (percent <= 0.4) {
+            hpBar.getStyleClass().add("hp-orange");
+        } else if (percent <= 0.6) {
+            hpBar.getStyleClass().add("hp-yellow");
+        } else {
+            hpBar.getStyleClass().add("hp-green");
         }
-
     }
 
     /* ---------- Button Handlers ---------- */
@@ -168,20 +199,21 @@ public class BattleGUI extends QuestionGenerator {
             popup.initOwner(owner);
             popup.showAndWait();
 
-            if(qGen.checkAnswer(ctrl.userAnswer))
-            {
-                    enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
-                    updateHpBars();
-                    finishAction("Correct! Attack landed.");
+            if (qGen.checkAnswer(ctrl.userAnswer)) {
+                enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+                updateHpBars();
+                finishAction("Correct! Attack landed.");
+                if (!isBattleOver) {
+                    enemyTurn();
+                }
+            } else {
+                finishAction("Incorrect! Your Attack Missed!");
+                if (!isBattleOver) {
+                    enemyTurn();
+                }
             }
-            else
-            {
-                finishAction("Wrong! Your Attack Missed!");
-            }
 
-
-
-        /*Button light = new Button("Light Attack");
+        /* Button light = new Button("Light Attack");
         Button heavy = new Button("Heavy Attack");
 
         light.setPrefWidth(150);
@@ -215,13 +247,19 @@ public class BattleGUI extends QuestionGenerator {
         manaRestore.setPrefHeight(44);
 
         potion.setOnAction(e -> {
-            playerHp.setProgress(Math.min(1.0, playerHp.getProgress() + 0.20));
-            finishAction("Used Potion!");
+            playerCurrentHp = Math.max(0, playerCurrentHp + 10);
+            finishAction("You Used Potion!");
+            updateHpBars();
+            if (!isBattleOver) {
+                enemyTurn();
+            }
         });
 
         manaRestore.setOnAction(e -> {
-            playerHp.setProgress(Math.min(1.0, playerHp.getProgress() + 0.45));
-            finishAction("Used Mana Restore!");
+            finishAction("Used Mana Restore! (not implemented)");
+            if (!isBattleOver) {
+                enemyTurn();
+            }
         });
 
         showSubMenu("Choose an item:", potion, manaRestore);
@@ -240,15 +278,20 @@ public class BattleGUI extends QuestionGenerator {
         mon1.setOnAction(e -> {
             // place-holder behaviour
             finishAction("Switched to Hawtosaur!");
+            if (!isBattleOver) {
+                enemyTurn();
+            }
         });
 
         mon2.setOnAction(e -> {
             finishAction("Switched to Anqchor!");
+            if (!isBattleOver) {
+                enemyTurn();
+            }
         });
 
         showSubMenu("Choose a Mon:", mon1, mon2);
     }
-
 
     @FXML
     private void onForfeit() {
@@ -257,13 +300,78 @@ public class BattleGUI extends QuestionGenerator {
         confirm.setPrefHeight(44);
         confirm.setOnAction(e -> {
             finishAction("You forfeited the battle!");
-            // optionally disable main menu so you can't act after forfeiting
+            isBattleOver = true;
             mainMenu.setDisable(true);
         });
         showSubMenu("Are you sure?", confirm);
         sm().navigateTo("MAIN_MENU");
 
+    }
 
+    // Enemy Turn Based
+    private void enemyTurn() {
+        mainMenu.setDisable(true);
+
+        waitThen(1.5, () -> {
+            battleMessage.setText("Waiting for opponent");
+
+            // Animate "..." while waiting
+            Timeline dotsAnimation = new Timeline(
+                    new KeyFrame(Duration.seconds(0.5), e -> battleMessage.setText("Waiting for opponent .")),
+                    new KeyFrame(Duration.seconds(1.0), e -> battleMessage.setText("Waiting for opponent ..")),
+                    new KeyFrame(Duration.seconds(1.5), e -> battleMessage.setText("Waiting for opponent ..."))
+            );
+            dotsAnimation.setCycleCount(3);
+            dotsAnimation.play();
+
+            // After waiting 3–6 seconds, choose action
+            int delay = 2 + new Random().nextInt(4); // random 2–6 seconds
+            PauseTransition wait = new PauseTransition(Duration.seconds(delay));
+            wait.setOnFinished(e -> {
+                dotsAnimation.stop(); // stop the animation when turn executes
+                doEnemyAction(); // pick attack/miss/potion/switch
+            });
+            wait.play();
+        });
+    }
+
+    private void doEnemyAction() {
+        Random rand = new Random();
+        int roll = rand.nextInt(100);
+
+        if (roll < 60) {
+            int damage = 10;
+            playerCurrentHp = Math.max(0, playerCurrentHp - damage);
+            battleMessage.setText(enemyName.getText() + " attacked and dealt " + damage + " damage!");
+        } else if (roll < 75) {
+            battleMessage.setText(enemyName.getText() + " tried to attack but missed!");
+        } else if (roll < 90){ // change condition to be && potion != 0
+            battleMessage.setText(enemyName.getText() + " used a potion!");
+            // to implement how many times of times can use potion,
+            // you can do a set potion amount and subtract it each time using it (print for debugging)
+            // then if potion is 0, then it is enemy turn again to try and roll a different number
+            enemyCurrentHp = Math.max(0, enemyCurrentHp + 10);
+        } else {
+            battleMessage.setText(enemyName.getText() + " switched mons!");
+            // switch logic later
+        }
+        updateHpBars();
+        checkBattleEnd();
+        waitThen(1, () -> {
+            mainMenu.setDisable(false);
+        });
+    }
+
+    private void checkBattleEnd() { // DEBUG THIS
+        if (playerCurrentHp == 0) {
+            battleMessage.setText(playerName.getText() + " fainted! You lose.");
+            isBattleOver = true;
+            mainMenu.setDisable(true);
+        } else if (enemyCurrentHp == 0) {
+            battleMessage.setText(enemyName.getText() + " fainted! You win!");
+            isBattleOver = true;
+            mainMenu.setDisable(true);
+        }
     }
 
 }

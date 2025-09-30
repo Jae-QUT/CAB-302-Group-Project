@@ -308,8 +308,11 @@ public class BattleGUI extends QuestionGenerator {
 
     // Enemy Turn Based
     private void enemyTurn() {
+        if (isBattleOver) {
+            return;
+        }
         mainMenu.setDisable(true);
-
+        checkBattleEnd();
         waitThen(1.5, () -> {
             battleMessage.setText("Waiting for opponent");
 
@@ -334,6 +337,7 @@ public class BattleGUI extends QuestionGenerator {
     }
 
     private void doEnemyAction() {
+        mainMenu.setDisable(true);
         Random rand = new Random();
         int roll = rand.nextInt(100);
 
@@ -356,20 +360,38 @@ public class BattleGUI extends QuestionGenerator {
         updateHpBars();
         checkBattleEnd();
         waitThen(1, () -> {
+            battleMessage.setText("What will Zabird do?");
             mainMenu.setDisable(false);
         });
     }
 
-    private void checkBattleEnd() { // DEBUG THIS
-        if (playerCurrentHp == 0) {
+    private void checkBattleEnd() {
+        if (playerCurrentHp == 0 && !isBattleOver) {
+            isBattleOver = true;
+            winner = enemyName.getText();
+            loser = playerName.getText();
             battleMessage.setText(playerName.getText() + " fainted! You lose.");
+            endBattlePopup();
+        } else if (enemyCurrentHp == 0 && !isBattleOver) {
             isBattleOver = true;
-            mainMenu.setDisable(true);
-        } else if (enemyCurrentHp == 0) {
+            winner = playerName.getText();
+            loser = enemyName.getText();
             battleMessage.setText(enemyName.getText() + " fainted! You win!");
-            isBattleOver = true;
-            mainMenu.setDisable(true);
+            endBattlePopup();
         }
     }
 
+    private void endBattlePopup() {
+        mainMenu.setDisable(true);
+        subMenu.setDisable(true);
+
+        Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
+        resultAlert.setTitle("Battle Over");
+        resultAlert.setHeaderText(null);
+        resultAlert.setContentText("🏆 " + winner + " has defeated " + loser + "!");
+
+        resultAlert.showAndWait();
+
+        sm().navigateTo("MAIN_MENU");
+    }
 }

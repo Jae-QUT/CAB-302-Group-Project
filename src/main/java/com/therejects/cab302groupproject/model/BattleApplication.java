@@ -14,7 +14,7 @@ public class BattleApplication extends Application {
         FXMLLoader fxml = new FXMLLoader(BattleApplication.class.getResource("/com/therejects/cab302groupproject/battle-view.fxml"));
         Scene scene = new Scene(fxml.load(), 980, 560);
         stage.setScene(scene);
-        stage.setTitle("Battle GUI");
+        stage.setTitle("Battle");
         stage.show();
     }   
 

@@ -3,8 +3,16 @@ package com.example.mon.app;
 import java.sql.*;
 import java.util.Optional;
 
+/**
+ *
+ */
 public class UserDao {
-
+    /**
+     *
+     * @param u
+     * @return
+     * @throws SQLException
+     */
     public boolean insert(User u) throws SQLException {
         String sql = """
                     INSERT INTO LoginRegisterUI
@@ -20,6 +28,12 @@ public class UserDao {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public Optional<User> findByUsername(String username) throws SQLException {
         String sql = """
                     SELECT Username, PasswordHash, StudentEmail, "GradeYearLevel"
@@ -40,6 +54,12 @@ public class UserDao {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public boolean exists(String username) throws SQLException {
         String sql = "SELECT 1 FROM LoginRegisterUI WHERE Username = ? LIMIT 1;";
         try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
@@ -50,6 +70,12 @@ public class UserDao {
         }
     }
 
+    /**
+     *
+     * @param u
+     * @return
+     * @throws SQLException
+     */
     public boolean updateProfile(User u) throws SQLException {
         String sql = """
                   UPDATE LoginRegisterUI

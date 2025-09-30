@@ -24,6 +24,8 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Random;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -54,6 +56,14 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private Label enemyName;
 
     private ScreenManager screenManager;
+
+    /**
+     * Creates the current instance of the screen manager for navigating between screens
+     * @param sm Is the instance of the screen manager that we'll reference
+     */
+    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
+
+    // helper to use it safely
 
     /**
      *
@@ -100,6 +110,7 @@ public class BattleGUI extends QuestionGenerator {
 
     private String winner;
     private String loser;
+    private String outcome;
     private int playerMaxHp = 50;
     private int playerPotions = 2;
     private int enemyMaxHp = 50;
@@ -186,7 +197,7 @@ public class BattleGUI extends QuestionGenerator {
         pause.play();
     }
 
-    // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
+// show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
 
@@ -215,6 +226,7 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
+    // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
         subMenu.getChildren().clear();

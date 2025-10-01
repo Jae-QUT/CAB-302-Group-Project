@@ -574,6 +574,13 @@ public class BattleGUI extends QuestionGenerator {
         }
     }
 
+    private boolean allMonsFainted(Monster[] mons) {
+        for (Monster mon : mons) {
+            if (mon.getCurrentHp() > 0) return false;
+        }
+        return true;
+    }
+
     private void checkBattleEnd() {
         if (playerCurrentHp <= 0) {
             playerMons[activePlayerIndex].setCurrentHp(0);

@@ -24,6 +24,7 @@ public final class Database {
         return conn;
     }
 
+
     /**
      * Ensures that mon creation happens in the exact way we want it to
      * @throws SQLException Throws a specific exception in the case of SQL errors for better management purposes

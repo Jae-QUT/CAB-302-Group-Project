@@ -38,6 +38,7 @@ import java.util.Random;
  * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
  * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
  * after choosing an action.
+
  */
 public class BattleGUI extends QuestionGenerator {
 
@@ -195,7 +196,7 @@ public class BattleGUI extends QuestionGenerator {
         pause.play();
     }
 
-// show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
+    // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
 
@@ -459,6 +460,8 @@ public class BattleGUI extends QuestionGenerator {
             showBattleEndPopup(false);
         });
         showSubMenu("Are you sure?", confirm);
+//        sm().navigateTo("MAIN_MENU");
+
     }
 
     // Enemy Turn Based
@@ -538,7 +541,6 @@ public class BattleGUI extends QuestionGenerator {
                 battleMessage.setText(enemy + " attacked and dealt " + damage + " damage!");
             }
         }
-
         updateHpBars();
         checkBattleEnd();
         if (isBattleOver) return;
@@ -643,4 +645,3 @@ public class BattleGUI extends QuestionGenerator {
         });
     }
 }
-

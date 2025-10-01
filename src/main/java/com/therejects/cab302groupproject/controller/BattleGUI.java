@@ -42,8 +42,8 @@ import java.util.Random;
  */
 public class BattleGUI extends QuestionGenerator {
 
-    @FXML
-    private ProgressBar playerHp, enemyHp;
+
+    @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
     @FXML private ProgressBar playerMana;
     @FXML private ImageView playerSprite;
@@ -571,6 +571,13 @@ public class BattleGUI extends QuestionGenerator {
                 mainMenu.setDisable(false);
             });
         }
+    }
+
+    private boolean allMonsFainted(Monster[] mons) {
+        for (Monster mon : mons) {
+            if (mon.getCurrentHp() > 0) return false;
+        }
+        return true;
     }
 
     private void checkBattleEnd() {

@@ -209,7 +209,7 @@ public class BattleGUI extends QuestionGenerator {
         pause.play();
     }
 
-// show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
+    // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
 

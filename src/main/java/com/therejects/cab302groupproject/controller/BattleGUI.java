@@ -34,6 +34,7 @@ import java.util.Objects;
 import java.util.Random;
 
 
+
 /**
  * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
  * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
@@ -125,6 +126,16 @@ public class BattleGUI extends QuestionGenerator {
     private Monster[] enemyMons;
     private int activeEnemyIndex = 0;  // current active mon
 
+    /**
+     * Setter for pre-selected monsters from selection screen
+     * @param selectedMons List of selected monsters
+     */
+    public void setPlayerMons(Monster[] selectedMons) {
+        this.playerMons = selectedMons;
+        activePlayerIndex = 0;
+        loadActiveMon();
+    }
+
     private boolean isBattleOver = false;
 
     @FXML
@@ -212,6 +223,7 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
+    // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
         back.setPrefWidth(200);
@@ -283,7 +295,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {

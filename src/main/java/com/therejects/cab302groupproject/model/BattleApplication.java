@@ -6,9 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * An app to test the Battle screen worked consistently
- */
 public class BattleApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {

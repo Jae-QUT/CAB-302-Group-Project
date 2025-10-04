@@ -225,6 +225,7 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
+    // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
         back.setPrefWidth(200);

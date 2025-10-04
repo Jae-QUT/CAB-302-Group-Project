@@ -224,6 +224,7 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
+    // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
         back.setPrefWidth(200);
@@ -295,7 +296,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {

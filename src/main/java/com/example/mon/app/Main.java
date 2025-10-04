@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:sqlite:auth.db";  // Path to your DB file
+        String url = "jdbc:sqlite:/Users/uni/Documents/auth/monster.db";  // Path to your DB file
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
@@ -28,7 +28,6 @@ public class Main {
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }

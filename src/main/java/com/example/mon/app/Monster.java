@@ -1,4 +1,4 @@
-package com.therejects.cab302groupproject.controller;
+package com.example.mon.app;
 
 public class Monster {
     private String name;

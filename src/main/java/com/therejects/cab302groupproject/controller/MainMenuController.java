@@ -54,6 +54,10 @@ public class MainMenuController {
     { navigate("PLAYER_PROFILE");
     }
 
+    @FXML private void onBackToMainMenu(){
+        navigate("LEADERBOARD");
+    }
+
     @FXML private void onLogout()
 //    { navigate("LOGOUT");
     {try {

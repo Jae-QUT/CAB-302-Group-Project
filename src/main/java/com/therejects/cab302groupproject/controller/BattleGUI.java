@@ -84,6 +84,7 @@ public class BattleGUI extends QuestionGenerator {
     private String outcome;
     private int playerMaxHp = 50;
     private int enemyMaxHp = 50;
+    private int enemyPotions = 2;
 
     private int playerCurrentHp = playerMaxHp;
     private int enemyCurrentHp = enemyMaxHp;
@@ -91,7 +92,10 @@ public class BattleGUI extends QuestionGenerator {
     private String enemy = "AI";
 
     private Monster[] playerMons;
-    private int activePlayerIndex = 0; // which monster is active
+    private int activePlayerIndex = 0;
+
+    private Monster[] enemyMons;
+    private int activeEnemyIndex = 0;  // current active mon
 
     /**
      * Setter for pre-selected monsters from selection screen
@@ -239,7 +243,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {
@@ -407,32 +411,43 @@ public class BattleGUI extends QuestionGenerator {
 
     private void doEnemyAction() {
         mainMenu.setDisable(true);
-        Random rand = new Random();
-        int roll = rand.nextInt(100);
 
-        if (roll < 100) {
-            playerCurrentHp = Math.max(0, playerCurrentHp - 50);
-            battleMessage.setText(enemyName.getText() + " attacked and dealt " + 10 + " damage!");
-        } else if (roll < 75) {
-            battleMessage.setText(enemyName.getText() + " tried to attack but missed!");
-        } else if (roll < 90){ // change condition to be && potion != 0
-            battleMessage.setText(enemyName.getText() + " used a potion!");
-            // to implement how many times of times can use potion,
-            // you can do a set potion amount and subtract it each time using it (print for debugging)
-            // then if potion is 0, then it is enemy turn again to try and roll a different number
-            enemyCurrentHp = Math.max(0, enemyCurrentHp + 10);
-        } else {
-            battleMessage.setText(enemyName.getText() + " switched mons!");
-            // switch logic later
+        double enemyHpPercent = (double) enemyCurrentHp / enemyMaxHp;
+        double playerHpPercent = (double) playerCurrentHp / playerMaxHp;
+
+        // Debug
+        // System.out.println("AI Decision Check: enemyHP=" + enemyHpPercent + " playerHP=" + playerHpPercent);
+
+        String enemy = enemyName.getText();
+        Random rand = new Random();
+
+        if (enemyHpPercent <= 0.3 && enemyPotions > 0) {
+            int healAmount = 10;
+            enemyCurrentHp = Math.min(enemyMaxHp, enemyCurrentHp + healAmount);
+            enemyPotions--;
+            battleMessage.setText(enemy + " used a potion and recovered " + healAmount + " HP!");
         }
+        else if (enemyHpPercent < playerHpPercent * 0.5 && rand.nextDouble() < 0.2) {
+            battleMessage.setText(enemy + " decided to switch mons!");
+            // switch logic (to add later)
+        }
+        else {
+            // Normal attack or miss
+            if (rand.nextDouble() < 0.1) {
+                battleMessage.setText(enemy + " tried to attack but missed!");
+            } else {
+                int damage = 10;
+                playerCurrentHp = Math.max(0, playerCurrentHp - damage);
+                battleMessage.setText(enemy + " attacked and dealt " + damage + " damage!");
+            }
+        }
+
         updateHpBars();
         checkBattleEnd();
+        if (isBattleOver) return;
 
-        if (isBattleOver) {
-            return;
-        }
-
-        waitThen(1, () -> {
+        // Wait a bit before player’s next move
+        waitThen(1.2, () -> {
             battleMessage.setText("What will " + playerMons[activePlayerIndex].getName() + " do?");
             mainMenu.setDisable(false);
         });

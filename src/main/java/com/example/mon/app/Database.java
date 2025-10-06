@@ -30,8 +30,6 @@ public final class Database {
      * Ensures that mon creation happens in the exact way we want it to
      * @throws SQLException Throws a specific exception in the case of SQL errors for better management purposes
      */
-    // Call once on startup to ensure table exists (safe if it already exists)
-    // -- THIS IS A COPY OF AUTHDATABASE REBUILD THIS WHEN USED --
     public static void ensureMonsterSchema() throws SQLException {
         String sql = """
             CREATE TABLE IF NOT EXISTS monsters (

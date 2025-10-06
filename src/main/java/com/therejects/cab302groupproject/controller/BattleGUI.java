@@ -1,5 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
+import com.example.mon.app.Database;
 import com.example.mon.app.MonDatabase;
 import com.example.mon.app.Monster;
 import com.therejects.cab302groupproject.Navigation.*;
@@ -110,7 +111,6 @@ public class BattleGUI extends QuestionGenerator {
 
     private String winner;
     private String loser;
-    private String outcome;
     private int playerMaxHp = 50;
     private int playerPotions = 2;
     private int enemyMaxHp = 50;
@@ -223,7 +223,6 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
-    // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
         back.setPrefWidth(200);
@@ -237,7 +236,6 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
-    // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
         subMenu.getChildren().clear();
@@ -295,7 +293,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {
@@ -597,6 +595,7 @@ public class BattleGUI extends QuestionGenerator {
         if (playerCurrentHp <= 0) {
             playerMons[activePlayerIndex].setCurrentHp(0);
 
+            // Check if other mons are still alive
             boolean hasOtherMons = false;
             for (Monster mon : playerMons) {
                 if (mon.getCurrentHp() > 0) {

@@ -24,7 +24,7 @@
          </children>
       </StackPane>
 
-      <GridPane alignment="TOP_CENTER" layoutX="10.0" layoutY="76.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="566.0" prefWidth="956.0" stylesheets="@../../../ui/JaeGen.css" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="75.0">
+      <GridPane fx:id="leaderboardGrid" alignment="TOP_CENTER" layoutX="10.0" layoutY="76.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="566.0" prefWidth="956.0" stylesheets="@../../../ui/JaeGen.css" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="75.0">
 
          <columnConstraints>
             <ColumnConstraints fx:id="scorePosition" halignment="CENTER" hgrow="ALWAYS" maxWidth="271.0" minWidth="0.0" prefWidth="266.0" />

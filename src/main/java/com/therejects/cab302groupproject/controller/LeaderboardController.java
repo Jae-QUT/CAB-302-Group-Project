@@ -21,16 +21,10 @@ public class LeaderboardController {
     private Button backToMenu;
     @FXML
     private TextField usernameSearch;
+    @FXML
+    private GridPane leaderboardGrid;
 
     private ScreenManager screenManager;
-
-    /**
-     * Creates the current instance of the screen manager for navigating between screens
-     * @param sm Is the instance of the screen manager that we'll reference
-     */
-    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
-
-    // helper to use it safely
 
     /**
      *
@@ -52,6 +46,11 @@ public class LeaderboardController {
 
     @FXML
     protected void onUsernameSearch() {
+
+    }
+
+    @FXML
+    protected void leaderboardGrid() {
 
     }
 }

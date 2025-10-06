@@ -296,7 +296,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {

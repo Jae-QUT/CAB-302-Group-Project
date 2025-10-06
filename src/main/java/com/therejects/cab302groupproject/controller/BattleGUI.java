@@ -1,6 +1,5 @@
 package com.therejects.cab302groupproject.controller;
 
-//import com.almasb.fxgl.quest.Quest;
 import com.example.mon.app.Database;
 import com.example.mon.app.Monster;
 import com.therejects.cab302groupproject.Navigation.*;
@@ -25,7 +24,9 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -53,14 +54,6 @@ public class BattleGUI extends QuestionGenerator {
     private ScreenManager screenManager;
 
     /**
-     * Creates the current instance of the screen manager for navigating between screens
-     * @param sm Is the instance of the screen manager that we'll reference
-     */
-    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
-
-    // helper to use it safely
-
-    /**
      *
      * @return
      */
@@ -79,9 +72,32 @@ public class BattleGUI extends QuestionGenerator {
         loadActiveMon();
     }
 
+    private void initializeEnemyTeam() {
+        try {
+            List<Monster> allMons = Database.getAllMonsters();
+
+            Collections.shuffle(allMons);
+            enemyMons = allMons.stream().limit(3).toArray(Monster[]::new);
+
+            activeEnemyIndex = 0;
+            loadActiveEnemy();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load enemy mons from DB. Using default mons.");
+            // fallback hardcoded monsters
+            enemyMons = new Monster[]{
+                    new Monster("Zabird", "/images/Sprites/Zabird.png", 50),
+                    new Monster("Anqchor", "/images/Sprites/Anqchor.png", 50),
+                    new Monster("Sharkle", "/images/Sprites/Sharkle.png", 50)
+            };
+            activeEnemyIndex = 0;
+            loadActiveEnemy();
+        }
+    }
+
     private String winner;
     private String loser;
-    private String outcome;
     private int playerMaxHp = 50;
     private int enemyMaxHp = 50;
     private int enemyPotions = 2;
@@ -89,23 +105,12 @@ public class BattleGUI extends QuestionGenerator {
     private int playerCurrentHp = playerMaxHp;
     private int enemyCurrentHp = enemyMaxHp;
     private String user = this.user;
-    private String enemy = "AI";
 
     private Monster[] playerMons;
     private int activePlayerIndex = 0;
 
     private Monster[] enemyMons;
     private int activeEnemyIndex = 0;  // current active mon
-
-    /**
-     * Setter for pre-selected monsters from selection screen
-     * @param selectedMons List of selected monsters
-     */
-    public void setPlayerMons(Monster[] selectedMons) {
-        this.playerMons = selectedMons;
-        activePlayerIndex = 0;
-        loadActiveMon();
-    }
 
     private boolean isBattleOver = false;
 
@@ -118,7 +123,6 @@ public class BattleGUI extends QuestionGenerator {
                 playerMons = monsFromDb.toArray(new Monster[0]);
             } catch (SQLException e) {
                 e.printStackTrace();
-                // fallback to default
                 playerMons = new Monster[] {
                         new Monster(playerMons[activePlayerIndex].getName(), "/images/Sprites/" + playerMons[activePlayerIndex] + ".png", 50)
                 };
@@ -129,25 +133,50 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(false);
         battleMessage.setText("What will " + playerMons[activePlayerIndex].getName() + " do?");
         playerName.setText(playerMons[activePlayerIndex].getName());
-        enemyName.setText("Anqchor");
         loadActiveMon();
 
-        try {
-            Image e = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Sprites/Anqchor.png")));
-            if (e != null) enemySprite.setImage(e);
-        } catch (Exception ignored) { /* not critical */ }
+        initializeEnemyTeam();
+        activeEnemyIndex = 0;
+        enemyName.setText(enemyMons[0].getName());
+        String path = enemyMons[0].getSpritePath();
+        URL imageUrl = getClass().getResource(path);
+
+        if (imageUrl == null) {
+            System.err.println("Sprite not found: " + path);
+        } else {
+            enemySprite.setImage(new Image(imageUrl.toString()));
+        }
+
+        enemyCurrentHp = enemyMons[0].getCurrentHp();
+        enemyMaxHp = enemyMons[0].getMaxHp();
+        updateHpBars();
     }
 
     private void loadActiveMon() {
         Monster active = playerMons[activePlayerIndex];
         playerName.setText(active.getName());
         playerSprite.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(active.getSpritePath()))));
-        playerCurrentHp = active.getCurrentHp(); // ✅ Keep saved HP
+        playerCurrentHp = active.getCurrentHp();
         playerMaxHp = active.getMaxHp();
         updateHpBars();
     }
 
-    // Adds a few seconds before displaying next message
+    private void loadActiveEnemy() {
+        Monster activeEnemy = enemyMons[activeEnemyIndex];
+        enemyName.setText(activeEnemy.getName());
+        enemySprite.setImage(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream(activeEnemy.getSpritePath()))
+        ));
+        enemyCurrentHp = activeEnemy.getCurrentHp();
+        enemyMaxHp = activeEnemy.getMaxHp();
+        updateHpBars();
+        battleMessage.setText("Enemy sent out " + activeEnemy.getName() + "!");
+        waitThen(1.5, () -> {
+            battleMessage.setText("What will " + playerMons[activePlayerIndex].getName() + " do?");
+        });
+    }
+
+    // Adds a few seconds before displaying next action
     private void waitThen(double seconds, Runnable next) {
         PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
         pause.setOnFinished(e -> next.run());
@@ -170,7 +199,6 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
-    // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
         back.setPrefWidth(150);
@@ -184,7 +212,6 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
-    // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
         subMenu.getChildren().clear();
@@ -192,7 +219,6 @@ public class BattleGUI extends QuestionGenerator {
         mainMenu.setVisible(true);
     }
 
-    // helper method to refresh HP bars + text
     private void updateHpBars() {
         double playerPercent = (double) playerCurrentHp / playerMaxHp;
         double enemyPercent = (double) enemyCurrentHp / enemyMaxHp;
@@ -243,15 +269,17 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {
+                enemyMons[activeEnemyIndex].setCurrentHp(enemyCurrentHp);
                 enemyTurn();
             }
         } else {
             finishAction("Incorrect! Your Attack Missed!");
             if (!isBattleOver) {
+                enemyMons[activeEnemyIndex].setCurrentHp(enemyCurrentHp);
                 enemyTurn();
             }
         }
@@ -331,10 +359,9 @@ public class BattleGUI extends QuestionGenerator {
         for (int i = 0; i < playerMons.length; i++) {
             Monster mon = playerMons[i];
             Button btn = new Button(mon.getName() + " (" + mon.getCurrentHp() + " HP)");
-            btn.setPrefWidth(150);
+            btn.setPrefWidth(200);
             btn.setPrefHeight(44);
 
-            // disable if fainted or already active
             if (mon.getCurrentHp() == 0 || i == activePlayerIndex) {
                 btn.setDisable(true);
             }
@@ -344,7 +371,6 @@ public class BattleGUI extends QuestionGenerator {
                 // Save current active mon’s HP before switching
                 playerMons[activePlayerIndex].setCurrentHp(playerCurrentHp);
 
-                // Switch to the new one
                 activePlayerIndex = idx;
                 loadActiveMon();
                 finishAction("Go! " + mon.getName() + "!");
@@ -398,12 +424,11 @@ public class BattleGUI extends QuestionGenerator {
             dotsAnimation.setCycleCount(3);
             dotsAnimation.play();
 
-            // After waiting 3–6 seconds, choose action
             int delay = 2 + new Random().nextInt(4); // random 2–6 seconds
             PauseTransition wait = new PauseTransition(Duration.seconds(delay));
             wait.setOnFinished(e -> {
-                dotsAnimation.stop(); // stop the animation when turn executes
-                doEnemyAction(); // pick attack/miss/potion/switch
+                dotsAnimation.stop();
+                doEnemyAction();
             });
             wait.play();
         });
@@ -428,11 +453,26 @@ public class BattleGUI extends QuestionGenerator {
             battleMessage.setText(enemy + " used a potion and recovered " + healAmount + " HP!");
         }
         else if (enemyHpPercent < playerHpPercent * 0.5 && rand.nextDouble() < 0.2) {
-            battleMessage.setText(enemy + " decided to switch mons!");
-            // switch logic (to add later)
+            // Low HP – consider switching if another mon is alive
+            boolean canSwitch = false;
+            for (int i = 0; i < enemyMons.length; i++) {
+                if (i != activeEnemyIndex && enemyMons[i].getCurrentHp() > 0) {
+                    canSwitch = true;
+                    break;
+                }
+            }
+
+            if (canSwitch) {
+                battleMessage.setText(enemyName.getText() + " decided to switch mons!");
+                waitThen(1.5, this::switchEnemyMon);
+                return;
+            } else {
+                int damage = 25 + rand.nextInt(10);
+                playerCurrentHp = Math.max(0, playerCurrentHp - damage);
+                battleMessage.setText(enemyName.getText() + " attacked and dealt 10 damage!");
+            }
         }
         else {
-            // Normal attack or miss
             if (rand.nextDouble() < 0.1) {
                 battleMessage.setText(enemy + " tried to attack but missed!");
             } else {
@@ -446,19 +486,38 @@ public class BattleGUI extends QuestionGenerator {
         checkBattleEnd();
         if (isBattleOver) return;
 
-        // Wait a bit before player’s next move
-        waitThen(1.2, () -> {
+        waitThen(1, () -> {
             battleMessage.setText("What will " + playerMons[activePlayerIndex].getName() + " do?");
             mainMenu.setDisable(false);
         });
     }
 
+    private void switchEnemyMon() {
+        for (int i = 0; i < enemyMons.length; i++) {
+            if (i != activeEnemyIndex && enemyMons[i].getCurrentHp() > 0) {
+                activeEnemyIndex = i;
+                Monster newMon = enemyMons[i];
+
+                enemyName.setText(newMon.getName());
+                enemySprite.setImage(new Image(getClass().getResource(newMon.getSpritePath()).toString()));
+                enemyCurrentHp = newMon.getCurrentHp();
+                enemyMaxHp = newMon.getMaxHp();
+
+                battleMessage.setText("Enemy switched to " + newMon.getName() + "!");
+                updateHpBars();
+                return;
+            }
+            waitThen(1, () -> {
+                battleMessage.setText("What will " + playerMons[activePlayerIndex].getName() + " do?");
+                mainMenu.setDisable(false);
+            });
+        }
+    }
+
     private void checkBattleEnd() {
-        // If player's current Mon fainted
         if (playerCurrentHp <= 0) {
             playerMons[activePlayerIndex].setCurrentHp(0);
 
-            // Check if other mons are still alive
             boolean hasOtherMons = false;
             for (Monster mon : playerMons) {
                 if (mon.getCurrentHp() > 0) {
@@ -480,14 +539,28 @@ public class BattleGUI extends QuestionGenerator {
             }
         }
 
-        // If enemy’s HP hits 0
         if (enemyCurrentHp <= 0) {
-            enemyCurrentHp = 0;
+            enemyMons[activeEnemyIndex].setCurrentHp(0);
             updateHpBars();
-            battleMessage.setText(enemyName.getText() + " fainted! You win!");
-            isBattleOver = true;
-            mainMenu.setDisable(true);
-            showBattleEndPopup(true);
+
+            boolean hasOtherMons = false;
+            for (int i = 0; i < enemyMons.length; i++) {
+                if (enemyMons[i].getCurrentHp() > 0) {
+                    hasOtherMons = true;
+                    activeEnemyIndex = i;
+                    break;
+                }
+            }
+
+            if (hasOtherMons) {
+                battleMessage.setText(enemyName.getText() + " fainted! Enemy is sending out another Mon!");
+                waitThen(1.5, this::loadActiveEnemy);
+            } else {
+                battleMessage.setText(enemyName.getText() + " fainted! You win!");
+                isBattleOver = true;
+                mainMenu.setDisable(true);
+                showBattleEndPopup(true);
+            }
         }
     }
 
@@ -496,7 +569,7 @@ public class BattleGUI extends QuestionGenerator {
 
         String title = playerWon ? "Victory!" : "Defeat!";
         String msg = playerWon
-                ? "🏆 You have defeated " + enemyName.getText() + "!"
+                ? "🏆 You have defeated all enemy Mons!"
                 : "💀 All your Mons have fainted...";
 
         Platform.runLater(() -> {

@@ -112,7 +112,6 @@ public class BattleGUI extends QuestionGenerator {
 
     private String winner;
     private String loser;
-    private String outcome;
     private int playerMaxHp = 50;
     private int playerPotions = 2;
     private int enemyMaxHp = 50;
@@ -225,7 +224,6 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
-    // create the universal "Back" button
     private Button createBackButton() {
         Button back = new Button("Back");
         back.setPrefWidth(200);
@@ -239,7 +237,6 @@ public class BattleGUI extends QuestionGenerator {
         return back;
     }
 
-    // common routine to finish an action (restore main menu)
     private void finishAction(String resultText) {
         battleMessage.setText(resultText);
         subMenu.getChildren().clear();

@@ -295,7 +295,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             if (!isBattleOver) {
@@ -593,6 +593,7 @@ public class BattleGUI extends QuestionGenerator {
     }
 
     private void checkBattleEnd() {
+        // If player's current Mon fainted
         if (playerCurrentHp <= 0) {
             playerMons[activePlayerIndex].setCurrentHp(0);
 

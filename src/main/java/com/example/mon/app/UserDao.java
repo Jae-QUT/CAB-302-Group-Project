@@ -82,7 +82,7 @@ public class UserDao {
                   SET StudentEmail = ?, "Grade/Year Level" = ?
                   WHERE Username = ?
                 """;
-        try (PreparedStatement ps = Database.get().prepareStatement(sql)) {
+        try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
             ps.setString(1, u.getStudentEmail());
             ps.setInt(2, u.getGradeYearLevel());
             ps.setString(3, u.getUsername());

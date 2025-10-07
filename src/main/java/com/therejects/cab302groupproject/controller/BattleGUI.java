@@ -101,6 +101,7 @@ public class BattleGUI extends QuestionGenerator {
     private String winner;
     private String loser;
     private int playerMaxHp = 50;
+    private int playerPotions = 2;
     private int enemyMaxHp = 50;
     private int enemyPotions = 2;
 
@@ -203,7 +204,7 @@ public class BattleGUI extends QuestionGenerator {
 
     private Button createBackButton() {
         Button back = new Button("Back");
-        back.setPrefWidth(150);
+        back.setPrefWidth(200);
         back.setPrefHeight(44);
         back.setOnAction(e -> {
             subMenu.getChildren().clear();
@@ -311,31 +312,75 @@ public class BattleGUI extends QuestionGenerator {
 
     @FXML
     private void onItems() {
-        Button potion = new Button("Health Potion");
-        Button manaRestore = new Button("Mana Restore (not working)");
+        Button potion = new Button("Health Potion (x"+ playerPotions +")");
+        // Button manaRestore = new Button("Mana Restore (not working)");
 
-        potion.setPrefWidth(150);
+        potion.setPrefWidth(200);
         potion.setPrefHeight(44);
-        manaRestore.setPrefWidth(150);
-        manaRestore.setPrefHeight(44);
+        // manaRestore.setPrefWidth(200);
+        // manaRestore.setPrefHeight(44);
+
+        // Disable potion if none left
+        if (playerPotions <= 0) {
+            potion.setDisable(true);
+            potion.setText("No Potions Left");
+        }
 
         potion.setOnAction(e -> {
-            playerCurrentHp = Math.max(0, playerCurrentHp + 10);
-            finishAction("You Used Potion!");
-            updateHpBars();
-            if (!isBattleOver) {
-                enemyTurn();
+            if (playerPotions <= 0) {
+                finishAction("No potions left!");
+                return;
+            }
+
+            try {
+                // Load question popup
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
+                Parent root = loader.load();
+                QuestionGenController ctrl = loader.getController();
+                QuestionGenerator qGen = ctrl.generator;
+                ctrl.setQuestionGenerator(qGen);
+
+                Stage popup = new Stage();
+                popup.setTitle("Answer for Potion!");
+                popup.setScene(new Scene(root));
+                popup.initModality(Modality.WINDOW_MODAL);
+                popup.initOwner(battleMessage.getScene().getWindow());
+                popup.showAndWait();
+
+                int healAmount;
+                if (qGen.checkAnswer(ctrl.userAnswer)) {
+                    healAmount = 20;
+                    finishAction("Correct! Potion restored 20 HP!");
+                } else {
+                    healAmount = 10;
+                    finishAction("Incorrect! Potion only restored 10 HP!");
+                }
+
+                // Apply healing without exceeding max HP
+                playerCurrentHp = Math.min(playerMaxHp, playerCurrentHp + healAmount);
+                updateHpBars();
+
+                // Reduce potion count
+                playerPotions--;
+
+                if (!isBattleOver) {
+                    enemyTurn();
+                }
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                finishAction("Something went wrong with the potion.");
             }
         });
 
-        manaRestore.setOnAction(e -> {
-            finishAction("Used Mana Restore! (not implemented)");
-            if (!isBattleOver) {
-                enemyTurn();
-            }
-        });
+//        manaRestore.setOnAction(e -> {
+//            finishAction("Used Mana Restore! (not implemented)");
+//            if (!isBattleOver) {
+//                enemyTurn();
+//            }
+//        });
 
-        showSubMenu("Choose an item:", potion, manaRestore);
+        showSubMenu("Choose an item:", potion); // manaRestore);
     }
 
     @FXML
@@ -396,7 +441,7 @@ public class BattleGUI extends QuestionGenerator {
     @FXML
     private void onForfeit() {
         Button confirm = new Button("Confirm Forfeit");
-        confirm.setPrefWidth(150);
+        confirm.setPrefWidth(200);
         confirm.setPrefHeight(44);
         confirm.setOnAction(e -> {
             finishAction("You forfeited the battle!");

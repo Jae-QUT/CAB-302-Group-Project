@@ -16,6 +16,13 @@
         <junit.version>5.10.2</junit.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- JavaFX -->
         <dependency>
@@ -33,6 +40,11 @@
             <artifactId>javafx-media</artifactId>
             <version>21</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.11.2</version>
+        </dependency>
 
         <!-- Extra UI libraries -->
         <dependency>
@@ -46,7 +58,7 @@
             <version>0.5.0</version>
         </dependency>
 
-        <!-- com.therejects.cab302groupproject.model.Database -->
+        <!-- com.example.mon.app.Database; -->
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
@@ -59,6 +71,11 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
         </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -70,6 +87,15 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <destDir>javadoc</destDir>
+                    <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
                 </configuration>
             </plugin>
             <plugin>

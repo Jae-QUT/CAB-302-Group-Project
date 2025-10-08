@@ -1,17 +1,25 @@
-package com.therejects.cab302groupproject.model;
+package com.example.mon.app;
 
 import java.sql.*;
 import java.util.Optional;
 
-public class UserDAO {
-
+/**
+ *
+ */
+public class UserDao {
+    /**
+     *
+     * @param u
+     * @return
+     * @throws SQLException
+     */
     public boolean insert(User u) throws SQLException {
         String sql = """
-          INSERT INTO LoginRegisterUI
-            (Username, Password, StudentEmail, "Grade/Year Level")
-          VALUES (?, ?, ?, ?)
-        """;
-        try (PreparedStatement ps = Database.get().prepareStatement(sql)) {
+                    INSERT INTO LoginRegisterUI
+                      (Username, PasswordHash, StudentEmail, "GradeYearLevel")
+                    VALUES (?, ?, ?, ?);
+                """;
+        try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
             ps.setString(1, u.getUsername());
             ps.setString(2, u.getPassword());
             ps.setString(3, u.getStudentEmail());
@@ -20,34 +28,54 @@ public class UserDAO {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public Optional<User> findByUsername(String username) throws SQLException {
         String sql = """
-          SELECT Username, Password, StudentEmail, "Grade/Year Level"
-          FROM LoginRegisterUI WHERE Username = ?
-        """;
-        try (PreparedStatement ps = Database.get().prepareStatement(sql)) {
+                    SELECT Username, PasswordHash, StudentEmail, "GradeYearLevel"
+                    FROM LoginRegisterUI
+                    WHERE Username = ?;
+                """;
+        try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return Optional.empty();
-                User u = new User(
+                return Optional.of(new User(
                         rs.getString("Username"),
-                        rs.getString("Password"),
+                        rs.getString("PasswordHash"),
                         rs.getString("StudentEmail"),
-                        rs.getInt("Grade/Year Level")
-                );
-                return Optional.of(u);
+                        rs.getInt("GradeYearLevel")
+                ));
             }
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public boolean exists(String username) throws SQLException {
-        String sql = "SELECT 1 FROM LoginRegisterUI WHERE Username = ? LIMIT 1";
-        try (PreparedStatement ps = Database.get().prepareStatement(sql)) {
+        String sql = "SELECT 1 FROM LoginRegisterUI WHERE Username = ? LIMIT 1;";
+        try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
             ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 
+    /**
+     *
+     * @param u
+     * @return
+     * @throws SQLException
+     */
     public boolean updateProfile(User u) throws SQLException {
         String sql = """
                   UPDATE LoginRegisterUI

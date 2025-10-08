@@ -1,13 +1,19 @@
 package com.therejects.cab302groupproject.Navigation;
 
+import com.example.mon.app.*;
 import com.therejects.cab302groupproject.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Management system to easily add new screens and switch between them when needed.
+ */
 public class ScreenManager {
-
+    /**
+     * The values that get added when we incorporate a new screen and the constructor
+     */
     public enum Screen
     {
         MAIN_MENU("/com/therejects/cab302groupproject/MainMenu.fxml", "Main Menu"),
@@ -15,6 +21,7 @@ public class ScreenManager {
         LEADERBOARD("/com/therejects/cab302groupproject/Leaderboard.fxml", "Leaderboard"),
         PLAYER_PROFILE("/com/therejects/cab302groupproject/ProfileView.fxml", "Player Profile"),
         LOGOUT("/com/therejects/cab302groupproject/login-view.fxml", "Login");
+//        REGISTER_DIALOG("/com/example/mon/app/RegisterDialog.java", "Register Dialog");
 
         private final String fxml;
         private final String title;
@@ -61,29 +68,12 @@ public class ScreenManager {
         }
     }
 
-//          < Redundant. We have the "loadScreen" function now which is a new flow for this >
-//    public void showMainMenu() {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(
-//                    getClass().getResource("/com/therejects/cab302groupproject/MainMenu.fxml")
-//            );
-//            Parent root = loader.load();
-//
-//            MainMenuController controller = loader.getController();
-//            controller.setNavigator(this::navigateTo);
-//
-//            Scene scene = new Scene(root, 1024, 640);
-//            scene.getStylesheets().add(
-//                    getClass().getResource("/theme/theme.css").toExternalForm()
-//            );
-//            stage.setScene(scene);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to load Main Menu", e);
-//        }
-//    }
-
 //    < NEED TO COME BACK AND CHANGE THESE AS THEY ARE PLACEHOLDERS >
 
+    /**
+     * Function that is used to determine which {@link Screen} is assigned to each displau
+     * @param screenId is the enumerable that was assigned in {@link Screen}
+     */
     public void navigateTo(String screenId) {
         switch (screenId) {
             case "PLAY"        -> loadScreen(Screen.PLAY);
@@ -91,7 +81,7 @@ public class ScreenManager {
             case "PLAYER_PROFILE" -> loadScreen(Screen.PLAYER_PROFILE);
             case "LOGOUT"      -> loadScreen(Screen.LOGOUT);
             case "MAIN_MENU" -> loadScreen(Screen.MAIN_MENU);       //
-//            case "" -> loadScreen(Screen.);
+//            case "REGISTER_DIALOG" -> loadScreen(Screen.REGISTER_DIALOG);
 //            case "" -> loadScreen(Screen.);
 //            case "" -> loadScreen(Screen.);
             default            -> System.err.println("Unknown screen: " + screenId);

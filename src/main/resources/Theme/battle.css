@@ -1,0 +1,58 @@
+/* General scene background */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #1e1e1e, #121212);
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-family: "Verdana";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+#battleMessage {
+    -fx-font-size: 18px;
+    -fx-text-fill: #FFD700; /* gold */
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #444, #222);
+    -fx-text-fill: #FFD700;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 2;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #555, #333);
+}
+
+/* HP bars */
+.progress-bar {
+    -fx-accent: #4CAF50;        /* HP bar fill color */
+    -fx-control-inner-background: black;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+/* Default HP bar (green) */
+.hp-green .bar {
+    -fx-background-color: #4CAF50;
+}
+
+/* Yellow for mid HP */
+.hp-yellow .bar {
+    -fx-background-color: #FFD700;
+}
+
+/* Orange for low HP */
+.hp-orange .bar {
+    -fx-background-color: #FF8C00;
+}
+
+/* Red for critical HP */
+.hp-red .bar {
+    -fx-background-color: #FF0000;
+}

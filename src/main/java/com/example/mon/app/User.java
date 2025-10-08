@@ -36,4 +36,23 @@ public class User {
                 ", gradeYearLevel=" + gradeYearLevel +
                 '}';
     }
+    private String resetToken;
+    private long resetExpiry;
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public long getResetExpiry() {
+        return resetExpiry;
+    }
+
+    public void setResetExpiry(long resetExpiry) {
+        this.resetExpiry = resetExpiry;
+    }
+
 }

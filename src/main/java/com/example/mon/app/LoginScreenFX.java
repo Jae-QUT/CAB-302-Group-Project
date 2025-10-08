@@ -102,10 +102,20 @@ public class LoginScreenFX extends Application {
         // --- Wire button actions ---
         signInButton.setOnAction(e -> attemptLogin(stage));
         createAccountButton.setOnAction(e -> openRegisterDialog(stage));
-        forgotPasswordLink.setOnAction(e ->
-                new Alert(Alert.AlertType.INFORMATION,
-                        "Ask your teacher to reset it.").showAndWait()
-        );
+
+        forgotPasswordLink.setOnAction(e -> {
+            Alert choice = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Do you already have a reset token?",
+                        ButtonType.YES, ButtonType.NO);
+            choice.setHeaderText("Forgot Password");
+            choice.showAndWait();
+
+            if (choice.getResult() == ButtonType.NO){
+                new ForgotPasswordDialog().openForgotPasswordDialog(stage);
+            } else if (choice.getResult() == ButtonType.YES) {
+                new ResetPasswordDialog().show(stage);
+            }
+        });
 
         // --- Scene setup ---
         Scene scene = new Scene(grid, 520, 340);
@@ -155,6 +165,7 @@ public class LoginScreenFX extends Application {
                 // Prefill login form with new account
                 setUsername(result.username);
                 setPassword(result.password);
+
 
                 new Alert(Alert.AlertType.INFORMATION,
                         "Account created. You can sign in now.").showAndWait();

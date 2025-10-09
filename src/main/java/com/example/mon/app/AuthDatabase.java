@@ -7,7 +7,6 @@ import java.sql.*;
 public final class AuthDatabase {
     // separate DB file just for users/auth:
     private static final String URL = "jdbc:sqlite:/Users/uni/IdeaProjects/CAB-302-Group-Project/auth.db";
-//    private static final String URL = "jdbc:sqlite:auth.db";
     private static Connection conn;
 
     private AuthDatabase() {}
@@ -40,8 +39,5 @@ public final class AuthDatabase {
     );
 """;
         try (Statement st = get().createStatement()) { st.execute(sql); }
-    }
-    public static void override(Connection c) {
-        conn = c;
     }
 }

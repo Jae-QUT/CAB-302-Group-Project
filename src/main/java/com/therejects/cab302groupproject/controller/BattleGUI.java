@@ -1,6 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.Database;
+import com.example.mon.app.MonDatabase;
 import com.example.mon.app.Monster;
 import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
@@ -76,7 +76,7 @@ public class BattleGUI extends QuestionGenerator {
 
     private void initializeEnemyTeam() {
         try {
-            List<Monster> allMons = Database.getAllMonsters();
+            List<Monster> allMons = MonDatabase.getAllMonsters();
 
             Collections.shuffle(allMons);
             enemyMons = allMons.stream().limit(3).toArray(Monster[]::new);
@@ -122,7 +122,7 @@ public class BattleGUI extends QuestionGenerator {
 
         if (playerMons == null) {
             try {
-                List<Monster> monsFromDb = Database.getAllMonsters();
+                List<Monster> monsFromDb = MonDatabase.getAllMonsters();
                 playerMons = monsFromDb.toArray(new Monster[0]);
             } catch (SQLException e) {
                 e.printStackTrace();

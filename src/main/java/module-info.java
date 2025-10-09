@@ -11,7 +11,7 @@ module com.therejects.cab302groupproject {
     requires java.desktop;
     requires jdk.compiler;
 
-    //  com.example.mon.app.MonDatabase; + logging
+    //  com.example.mon.app.Database; + logging
     requires java.sql;
     requires java.logging;
 

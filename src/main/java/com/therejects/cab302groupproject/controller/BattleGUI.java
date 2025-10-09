@@ -265,5 +265,4 @@ public class BattleGUI extends QuestionGenerator {
 
 
     }
-
 }

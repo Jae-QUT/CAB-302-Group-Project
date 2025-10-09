@@ -43,7 +43,7 @@ public class AuthService {
         return userDao.insert(newUser);
     }
 
-    public boolean register(String u, String pw, String email, int grade) throws SQLException {
-        return register(new User(u, pw, email, grade));
+    public boolean register(String u, String pw, String email, int grade, int score) throws SQLException {
+        return register(new User(u, pw, email, grade, score));
     }
 }

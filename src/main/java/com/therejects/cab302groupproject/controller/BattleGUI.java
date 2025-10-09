@@ -1,14 +1,18 @@
 package com.therejects.cab302groupproject.controller;
 
+import com.therejects.cab302groupproject.controller.*;
+import com.example.mon.app.*;
 import com.example.mon.app.MonDatabase;
 //import com.example.mon.app.Database;
 import com.example.mon.app.Monster;
 import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +37,6 @@ import java.util.Objects;
 import java.util.Random;
 
 
-
 /**
  * A class that inherits the QuestionGenerator class that will generate the main battle screen for users to
  * duel it out with their chosen monsters. Users will be able to answer math questions from this screen
@@ -41,7 +44,6 @@ import java.util.Random;
 
  */
 public class BattleGUI extends QuestionGenerator {
-
 
     @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
@@ -55,6 +57,9 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private Label enemyName;
 
     private ScreenManager screenManager;
+
+    ScoringSystem score = new ScoringSystem();
+    User user = User.getCurrentUser();
 
     /**
      * Creates the current instance of the screen manager for navigating between screens
@@ -116,7 +121,6 @@ public class BattleGUI extends QuestionGenerator {
 
     private int playerCurrentHp = playerMaxHp;
     private int enemyCurrentHp = enemyMaxHp;
-    private String user = this.user;
 
     private Monster[] playerMons;
     private int activePlayerIndex = 0;
@@ -294,12 +298,18 @@ public class BattleGUI extends QuestionGenerator {
             enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
             updateHpBars();
             finishAction("Correct! Attack landed.");
+            score.calculateDelta(true);
+            score.addToScore(this.user.getUsername(), score.delta);
+            System.out.println();
             if (!isBattleOver) {
                 enemyMons[activeEnemyIndex].setCurrentHp(enemyCurrentHp);
                 enemyTurn();
             }
         } else {
             finishAction("Incorrect! Your Attack Missed!");
+            score.calculateDelta(false);
+            score.subtractFromScore(this.user.getUsername(), score.delta);
+            finishAction("Wrong! Your Attack Missed!");
             if (!isBattleOver) {
                 enemyMons[activeEnemyIndex].setCurrentHp(enemyCurrentHp);
                 enemyTurn();
@@ -500,6 +510,8 @@ public class BattleGUI extends QuestionGenerator {
             });
             wait.play();
         });
+        showSubMenu("Are you sure?", confirm);
+        sm().navigateTo("MAIN_MENU");
     }
 
     private void doEnemyAction() {

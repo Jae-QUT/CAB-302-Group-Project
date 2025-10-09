@@ -4,16 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD:src/main/java/com/example/mon/app/Database.java
 /**
  * Links the database URL to so the connection knows what to link to and ensures that the data input matches the schema provided
  */
-public final class Database {
-    private static final String URL = "jdbc:sqlite:mathmonsters.db"; // path to your .db
-=======
 public final class MonDatabase {
     private static final String URL = "jdbc:sqlite:/Users/uni/IdeaProjects/CAB-302-Group-Project/mathmonsters.db"; // path to your .db
->>>>>>> 5392d31 (Added JUnit5 tests and coverage):src/main/java/com/example/mon/app/MonDatabase.java
     private static Connection conn;
 
     private MonDatabase() {}
@@ -31,16 +26,11 @@ public final class MonDatabase {
         return conn;
     }
 
-<<<<<<< HEAD:src/main/java/com/example/mon/app/Database.java
     /**
      * Ensures that mon creation happens in the exact way we want it to
      * @throws SQLException Throws a specific exception in the case of SQL errors for better management purposes
      */
     public static void ensureMonsterSchema() throws SQLException {
-=======
-
-    public static void ensureSchema() throws SQLException {
->>>>>>> 5392d31 (Added JUnit5 tests and coverage):src/main/java/com/example/mon/app/MonDatabase.java
         String sql = """
             CREATE TABLE IF NOT EXISTS monsters (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,5 +66,9 @@ public final class MonDatabase {
             }
         }
         return monsters;
+    }
+
+    public static void override(Connection c) {
+        conn = c;
     }
 }

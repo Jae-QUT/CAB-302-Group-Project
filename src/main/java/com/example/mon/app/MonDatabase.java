@@ -1,7 +1,8 @@
 package com.example.mon.app;
 
 import java.sql.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Links the database URL to so the connection knows what to link to and ensures that the data input matches the schema provided

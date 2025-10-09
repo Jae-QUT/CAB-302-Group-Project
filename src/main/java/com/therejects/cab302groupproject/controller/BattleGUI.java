@@ -12,6 +12,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,6 +60,14 @@ public class BattleGUI extends QuestionGenerator {
 
     ScoringSystem score = new ScoringSystem();
     User user = User.getCurrentUser();
+
+    /**
+     * Creates the current instance of the screen manager for navigating between screens
+     * @param sm Is the instance of the screen manager that we'll reference
+     */
+    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
+
+    // helper to use it safely
 
     /**
      *

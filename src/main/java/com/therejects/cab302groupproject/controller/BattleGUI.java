@@ -100,7 +100,7 @@ public class BattleGUI extends QuestionGenerator {
             e.printStackTrace();
             System.err.println("Failed to load enemy mons from DB. Using default mons.");
             // fallback hardcoded monsters
-            enemyMons = new Monster[]{
+            enemyMons = new Mon  ster[]{
                     new Monster("Zabird", "/images/Sprites/Zabird.png", 50),
                     new Monster("Anqchor", "/images/Sprites/Anqchor.png", 50),
                     new Monster("Sharkle", "/images/Sprites/Sharkle.png", 50)

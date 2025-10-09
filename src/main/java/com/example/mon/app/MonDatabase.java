@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * Links the database URL to so the connection knows what to link to and ensures that the data input matches the schema provided
  */
-public final class Database {
+public final class MonDatabase {
     private static final String URL = "jdbc:sqlite:mathmonsters.db"; // path to your .db
     private static Connection conn;
 
-    private Database() {}
+    private MonDatabase() {}
 
     /**
      * Connection get() is the link to the database and allows us to see if the connection is available or if it is closed

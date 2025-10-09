@@ -1,0 +1,9 @@
+#root { -fx-background-color: linear-gradient(to bottom right, #bfe8ff, #e9f6ff); }
+.app-title { -fx-font-size: 28px; -fx-font-weight: 800; -fx-text-fill: #0b4a7d; }
+.version   { -fx-opacity: 0.7; }
+
+.button {
+  -fx-font-size: 16px;
+  -fx-background-radius: 14;
+  -fx-padding: 10 18 10 18;
+}

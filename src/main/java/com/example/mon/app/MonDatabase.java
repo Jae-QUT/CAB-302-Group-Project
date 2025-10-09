@@ -1,14 +1,13 @@
 package com.example.mon.app;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Links the database URL to so the connection knows what to link to and ensures that the data input matches the schema provided
  */
 public final class MonDatabase {
-    private static final String URL = "jdbc:sqlite:/Users/uni/IdeaProjects/CAB-302-Group-Project/mathmonsters.db"; // path to your .db
+    private static final String URL = "jdbc:sqlite:mathmonsters.db"; // path to your .db
     private static Connection conn;
 
     private MonDatabase() {}

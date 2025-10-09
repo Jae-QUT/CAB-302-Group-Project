@@ -11,6 +11,7 @@ import javafx.stage.Stage;
  * Management system to easily add new screens and switch between them when needed.
  */
 public class ScreenManager {
+
     /**
      * The values that get added when we incorporate a new screen and the constructor
      */
@@ -32,7 +33,6 @@ public class ScreenManager {
         // Constructors for assigning which fxml file the paths go to and their title
         public String fxml() { return fxml; }
         public String title() { return title; }
-
     }
 
     private final Stage stage;

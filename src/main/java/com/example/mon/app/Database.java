@@ -36,7 +36,8 @@ public final class Database {
               Username TEXT NOT NULL PRIMARY KEY,
               Password TEXT NOT NULL,
               StudentEmail TEXT NOT NULL,
-              "Grade/Year Level" INTEGER NOT NULL
+              Grade/Year Level INTEGER NOT NULL
+              Score          INTEGER NOT NULL DEFAULT 0
             );
         """;
         try (Statement st = get().createStatement()) { st.execute(sql); }

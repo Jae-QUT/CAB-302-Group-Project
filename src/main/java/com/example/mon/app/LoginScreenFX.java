@@ -1,5 +1,7 @@
 package com.example.mon.app;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
+import com.example.mon.app.*;
+import com.therejects.cab302groupproject.controller.ScoringSystem;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,6 +42,8 @@ public class LoginScreenFX extends Application {
     private final Button createAccountButton = new Button("Create account");
     private final Hyperlink forgotPasswordLink = new Hyperlink("Forgot password?");
     private final AuthService auth = new AuthService();
+    private final ScoringSystem ScoringSystem = new ScoringSystem();
+
     // --- Authentication service ---
     //private final AuthService auth = new AuthService();
 
@@ -128,13 +132,18 @@ public class LoginScreenFX extends Application {
         String p = getPassword();
         try {
             if (auth.login(u, p)) {
+                UserDao dao = new UserDao();
+                var opt = dao.findByUsername(u);
+                User loggedIn = opt.get();
+                User.setCurrentUser(loggedIn);
                 new Alert(Alert.AlertType.INFORMATION,
                         "Welcome, " + u + "!").showAndWait();
                 ScreenManager sm = new ScreenManager(owner);
                 sm.navigateTo("MAIN_MENU");
                 owner.show();
                 owner.setTitle("Main Menu");
-                // TODO: open your main game window here
+
+
             } else {
                 Alert a = new Alert(Alert.AlertType.WARNING,
                         "Invalid username or password.");
@@ -159,7 +168,7 @@ public class LoginScreenFX extends Application {
         dialog.showAndWait().ifPresent(result -> {
             try {
                 auth.register(result.username, result.password,
-                        result.email, result.gradeYearLevel);
+                        result.email, result.gradeYearLevel, result.score);
 
                 // Prefill login form with new account
                 setUsername(result.username);
@@ -193,7 +202,9 @@ public class LoginScreenFX extends Application {
     public boolean isShowPasswordChecked() { return showPasswordCheckBox.isSelected(); }
 
     /** Sets the username field text. */
-    public void setUsername(String username) { usernameField.setText(username); }
+    public void setUsername(String username) {
+        usernameField.setText(username);
+    }
 
     /** Sets the passord in both hidden and shown fiEld. */
     public void setPassword(String password) {

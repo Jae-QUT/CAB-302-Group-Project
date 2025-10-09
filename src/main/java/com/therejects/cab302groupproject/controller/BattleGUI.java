@@ -1,8 +1,10 @@
 package com.therejects.cab302groupproject.controller;
 
-//import com.almasb.fxgl.quest.Quest;
+import com.therejects.cab302groupproject.controller.*;
+import com.example.mon.app.*;
 import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
-
+import java.sql.SQLException;
 
 
 /**
@@ -28,7 +30,6 @@ import java.io.IOException;
 
  */
 public class BattleGUI extends QuestionGenerator {
-
 
     @FXML private ProgressBar playerHp, enemyHp;
     @FXML private Label playerHpLabel;
@@ -43,13 +44,8 @@ public class BattleGUI extends QuestionGenerator {
 
     private ScreenManager screenManager;
 
-    /**
-     * Creates the current instance of the screen manager for navigating between screens
-     * @param sm Is the instance of the screen manager that we'll reference
-     */
-    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
-
-    // helper to use it safely
+    ScoringSystem score = new ScoringSystem();
+    User user = User.getCurrentUser();
 
     /**
      *
@@ -67,13 +63,10 @@ public class BattleGUI extends QuestionGenerator {
 
     private String winner;
     private String loser;
-    private String outcome;
     private int playerMaxHp = 50;
     private int enemyMaxHp = 50;
-
     private int playerCurrentHp = playerMaxHp;
     private int enemyCurrentHp = enemyMaxHp;
-    private String user = this.user;
     private String enemy = "AI";
 
 
@@ -153,8 +146,8 @@ public class BattleGUI extends QuestionGenerator {
     /* ---------- Button Handlers ---------- */
 
     @FXML
-    private void onFight() throws IOException {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
+    private void onFight() throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
             Parent root = loader.load();
             QuestionGenController ctrl = loader.getController();
             QuestionGenerator qGen = ctrl.generator;
@@ -170,12 +163,17 @@ public class BattleGUI extends QuestionGenerator {
 
             if(qGen.checkAnswer(ctrl.userAnswer))
             {
-                    enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
-                    updateHpBars();
-                    finishAction("Correct! Attack landed.");
+                enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
+                updateHpBars();
+                finishAction("Correct! Attack landed.");
+                score.calculateDelta(true);
+                score.addToScore(this.user.getUsername(), score.delta);
+                System.out.println();
             }
             else
             {
+                score.calculateDelta(false);
+                score.subtractFromScore(this.user.getUsername(), score.delta);
                 finishAction("Wrong! Your Attack Missed!");
             }
 
@@ -262,8 +260,6 @@ public class BattleGUI extends QuestionGenerator {
         });
         showSubMenu("Are you sure?", confirm);
         sm().navigateTo("MAIN_MENU");
-
-
     }
 
 }

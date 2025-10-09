@@ -33,7 +33,9 @@ public final class AuthDatabase {
       Username TEXT NOT NULL PRIMARY KEY,
       PasswordHash TEXT NOT NULL,
       StudentEmail TEXT NOT NULL,
-      GradeYearLevel INTEGER NOT NULL
+      GradeYearLevel INTEGER NOT NULL,
+      Score          INTEGER NOT NULL DEFAULT 0
+                
     );
 """;
         try (Statement st = get().createStatement()) { st.execute(sql); }

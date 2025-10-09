@@ -1,7 +1,7 @@
 package com.therejects.cab302groupproject.controller;
 
+import com.example.mon.app.MonDatabas
 import com.example.mon.app.Database;
-import com.example.mon.app.MonDatabase;
 import com.example.mon.app.Monster;
 import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
@@ -25,8 +25,6 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Random;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Collections;

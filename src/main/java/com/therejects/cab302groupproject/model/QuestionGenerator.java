@@ -82,9 +82,10 @@ public class QuestionGenerator {
      */
     public boolean checkAnswer(int userAnswer)
     {
-        boolean rightOrWrong = (userAnswer == answer);
-        response = rightOrWrong ? "Correct!" : "Wrong!";
-        return rightOrWrong;
+        return userAnswer == answer;
+//        boolean rightOrWrong = (userAnswer == answer);
+//        response = rightOrWrong ? "Correct!" : "Wrong!";
+//        return rightOrWrong;
     }
 
     public String getResponse(){

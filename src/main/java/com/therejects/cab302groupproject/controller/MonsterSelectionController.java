@@ -1,6 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.Database;
+import com.example.mon.app.MonDatabase;
 import com.example.mon.app.Monster;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,7 +35,7 @@ public class MonsterSelectionController {
     private void loadMonstersFromDatabase() {
         String sql = "SELECT name, spritePath, maxHp FROM Monsters"; // your DB table
 
-        try (Connection conn = Database.get();
+        try (Connection conn = MonDatabase.get();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 

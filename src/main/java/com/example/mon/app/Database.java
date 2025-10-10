@@ -6,7 +6,7 @@ import java.sql.*;
  * Links the database URL to so the connection knows what to link to and ensures that the data input matches the schema provided
  */
 public final class Database {
-    private static final String URL = "jdbc:sqlite:/Users/uni/IdeaProjects/CAB-302-Group-Project/mathmonsters.db"; // path to your .db
+    private static final String URL = "jdbc:sqlite:/auth.db"; // path to your .db
     private static Connection conn;
 
     private Database() {}
@@ -36,7 +36,8 @@ public final class Database {
               Username TEXT NOT NULL PRIMARY KEY,
               Password TEXT NOT NULL,
               StudentEmail TEXT NOT NULL,
-              "Grade/Year Level" INTEGER NOT NULL
+              Grade/Year Level INTEGER NOT NULL
+              Score          INTEGER NOT NULL DEFAULT 0
             );
         """;
         try (Statement st = get().createStatement()) { st.execute(sql); }

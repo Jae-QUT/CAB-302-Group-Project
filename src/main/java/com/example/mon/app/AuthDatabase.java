@@ -6,7 +6,7 @@ import java.sql.*;
  */
 public final class AuthDatabase {
     // separate DB file just for users/auth:
-    private static final String URL = "jdbc:sqlite:/Users/uni/IdeaProjects/CAB-302-Group-Project/auth.db";
+    private static final String URL = "jdbc:sqlite:auth.db";
     private static Connection conn;
 
     private AuthDatabase() {}
@@ -33,7 +33,9 @@ public final class AuthDatabase {
       Username TEXT NOT NULL PRIMARY KEY,
       PasswordHash TEXT NOT NULL,
       StudentEmail TEXT NOT NULL,
-      GradeYearLevel INTEGER NOT NULL
+      GradeYearLevel INTEGER NOT NULL,
+      Score          INTEGER NOT NULL DEFAULT 0
+                
     );
 """;
         try (Statement st = get().createStatement()) { st.execute(sql); }

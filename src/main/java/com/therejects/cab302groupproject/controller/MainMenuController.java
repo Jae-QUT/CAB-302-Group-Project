@@ -1,6 +1,7 @@
 package com.therejects.cab302groupproject.controller;
 
 import com.example.mon.app.LoginScreenFX;
+import com.example.mon.app.User;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,6 +18,8 @@ import java.util.function.Consumer;
  */
 public class MainMenuController {
     private Consumer<String> navigator;
+    private ScreenManager screenManager;
+
 
     @FXML private StackPane root;
     @FXML private Button btnPlay, btnLeaderboard, btnChangeTeam, btnLogout;
@@ -42,6 +45,7 @@ public class MainMenuController {
         });
     }
 
+
     @FXML private void onPlay() {
         navigate("PLAY");
     }
@@ -54,12 +58,17 @@ public class MainMenuController {
     { navigate("PLAYER_PROFILE");
     }
 
+    @FXML private void onBackToMainMenu(){
+        navigate("LEADERBOARD");
+    }
+
     @FXML private void onLogout()
-//    { navigate("LOGOUT");
     {try {
+        User.setCurrentUser(null);
         javafx.stage.Stage stage = (javafx.stage.Stage) root.getScene().getWindow();
         LoginScreenFX login = new LoginScreenFX();
         login.start(stage); // reuses the same stage
+//    { navigate("LOGOUT");
     } catch (Exception e) {
         e.printStackTrace();
     }

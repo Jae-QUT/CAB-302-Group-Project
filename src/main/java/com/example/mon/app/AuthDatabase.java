@@ -29,20 +29,15 @@ public final class AuthDatabase {
      * */
     public static void ensureSchema() throws SQLException {
         String sql = """
-                    CREATE TABLE IF NOT EXISTS LoginRegisterUI(
-                      Username TEXT NOT NULL PRIMARY KEY,
-                      PasswordHash TEXT NOT NULL,
-                      StudentEmail TEXT NOT NULL,
-                      GradeYearLevel INTEGER NOT NULL
-                    );
-                """;
-        try (Statement st = get().createStatement()) {
-            st.execute(sql);
-        }
-    }
-
-
-    public static void override(Connection c) {
-        conn = c;
+    CREATE TABLE IF NOT EXISTS LoginRegisterUI(
+      Username TEXT NOT NULL PRIMARY KEY,
+      PasswordHash TEXT NOT NULL,
+      StudentEmail TEXT NOT NULL,
+      GradeYearLevel INTEGER NOT NULL,
+      Score          INTEGER NOT NULL DEFAULT 0
+                
+    );
+""";
+        try (Statement st = get().createStatement()) { st.execute(sql); }
     }
 }

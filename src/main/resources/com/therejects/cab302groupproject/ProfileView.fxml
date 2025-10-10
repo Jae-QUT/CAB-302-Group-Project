@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.therejects.cab302groupproject.controller.ProfileController">
+<VBox alignment="CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1" fx:controller="com.therejects.cab302groupproject.controller.ProfileController">
 
    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Profile" />
 

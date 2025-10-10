@@ -1,0 +1,51 @@
+/* General scene background */
+.app-root {
+    -fx-background-color: linear-gradient(to bottom, #222, #444);
+    -fx-text-fill: white;
+    -fx-font-family: "Verdana";
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+#battleMessage {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFD700;
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #444, #222);
+    -fx-text-fill: #FFD700;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 2;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 4,0,0,2 );
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #555, #333);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #222, #000);
+}
+
+/* HP bars */
+.progress-bar {
+    -fx-accent: #4CAF50; /* Default - Green */
+    -fx-control-inner-background: black;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.hp-green .bar { -fx-background-color: #4CAF50; }
+.hp-yellow .bar { -fx-background-color: #FFD700; }
+.hp-orange .bar { -fx-background-color: #FF8C00; }
+.hp-red .bar { -fx-background-color: #FF0000; }

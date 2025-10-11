@@ -1,8 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.therejects.cab302groupproject.controller.*;
 import com.example.mon.app.*;
-import com.example.mon.app.MonDatabase;
 //import com.example.mon.app.Database;
 import com.example.mon.app.Monster;
 import com.therejects.cab302groupproject.Navigation.*;
@@ -279,7 +277,7 @@ public class BattleGUI extends QuestionGenerator {
     /* ---------- Button Handlers ---------- */
 
     @FXML
-    private void onFight() throws IOException {
+    private void onFight() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
         Parent root = loader.load();
         QuestionGenController ctrl = loader.getController();
@@ -295,7 +293,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.showAndWait();
 
         if (qGen.checkAnswer(ctrl.userAnswer)) {
-            enemyCurrentHp = Math.max(0, enemyCurrentHp - 50);
+            enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
             updateHpBars();
             finishAction("Correct! Attack landed.");
             score.calculateDelta(true);
@@ -510,8 +508,6 @@ public class BattleGUI extends QuestionGenerator {
             });
             wait.play();
         });
-        showSubMenu("Are you sure?", confirm);
-        sm().navigateTo("MAIN_MENU");
     }
 
     private void doEnemyAction() {

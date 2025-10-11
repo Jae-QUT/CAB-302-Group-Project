@@ -18,8 +18,8 @@ public class ScreenManager {
     public enum Screen
     {
         MAIN_MENU("/com/therejects/cab302groupproject/MainMenu.fxml", "Main Menu"),
-        PLAY("/com/therejects/cab302groupproject/MonsterSelection.fxml", "Battle View"),
-        LEADERBOARD("/com/therejects/cab302groupproject/Leaderboard.fxml", "Leaderboard"),
+        PLAY("/com/therejects/cab302groupproject/MonsterSelection.fxml", "Mon Selection"),
+        LEADERBOARD("/com/therejects/cab302groupproject/Leaderboard-view.fxml", "Leaderboard"),
         PLAYER_PROFILE("/com/therejects/cab302groupproject/ProfileView.fxml", "Player Profile"),
         LOGOUT("/com/therejects/cab302groupproject/login-view.fxml", "Login");
 //        REGISTER_DIALOG("/com/example/mon/app/RegisterDialog.java", "Register Dialog");
@@ -54,7 +54,7 @@ public class ScreenManager {
 
             Scene scene = new Scene(root, 1024, 640);
 
-            var cssUrl = getClass().getResource("/theme/theme.css");
+            var cssUrl = getClass().getResource("/ui/JaeGen.css");
             if (cssUrl != null) {
                 scene.getStylesheets().add(cssUrl.toExternalForm());
             } else {

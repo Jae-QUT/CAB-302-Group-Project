@@ -49,6 +49,9 @@ import javafx.scene.paint.Color;
     @FXML private Button    slideCta;
     @FXML private HBox      dots;
     @FXML private StackPane carouselRoot;
+    @FXML private Button prevBtn;
+    @FXML private Button nextBtn;
+
 
 
     /**
@@ -116,7 +119,7 @@ import javafx.scene.paint.Color;
                     double dh = Math.max(dots.prefHeight(-1), dots.getHeight());
 
                     double x = (w - dw) / 2.0;
-                    double y = h - dh + 75;
+                    double y = h - dh + 80;
                     dots.relocate(x, y);
                 };
 
@@ -128,6 +131,15 @@ import javafx.scene.paint.Color;
                 carouselRoot.heightProperty().addListener((o, a, b) -> positionDots.run());
             }
         });
+
+        if (prevBtn != null) {
+            prevBtn.setFocusTraversable(false);
+            prevBtn.toFront();                 // ensure above background/dots
+        }
+        if (nextBtn != null) {
+            nextBtn.setFocusTraversable(false);
+            nextBtn.toFront();
+        }
 
     }
 
@@ -176,8 +188,16 @@ import javafx.scene.paint.Color;
     }
 
     // ===== Carousel handlers =====
-    @FXML private void onNext() { showSlide(current + 1, +1); }
-    @FXML private void onPrev() { showSlide(current - 1, -1); }
+    @FXML
+    private void onNext() {
+        int next = (current + 1) % slides.size();
+        showSlide(next, +1);
+    }
+    @FXML
+    private void onPrev() {
+        int prev = (current - 1 + slides.size()) % slides.size();
+        showSlide(prev, -1);
+    }
     @FXML private void onCarouselCta() {
         if (current < slides.size() - 1) onNext(); else onCloseOverlay();
     }
@@ -185,10 +205,11 @@ import javafx.scene.paint.Color;
     private void showSlide(int index, int direction) {
         if (index < 0 || index >= slides.size()) return;
 
-        // slide-out current
+        // slide-out current (move in direction clicked)
         TranslateTransition outT = new TranslateTransition(Duration.millis(200), slideContent);
         outT.setFromX(0);
-        outT.setToX(direction > 0 ? -20 : 20);
+        outT.setToX(direction < 0 ? 20 : -20); // 🔄 swapped signs
+
         FadeTransition outF = new FadeTransition(Duration.millis(200), slideContent);
         outF.setFromValue(1);
         outF.setToValue(0);
@@ -196,15 +217,19 @@ import javafx.scene.paint.Color;
         ParallelTransition out = new ParallelTransition(outT, outF);
         out.setOnFinished(e -> {
             applySlide(index, true);
-            slideContent.setTranslateX(direction > 0 ? 20 : -20);
 
-            // slide-in new
+            // new slide starts off-screen in opposite direction
+            slideContent.setTranslateX(direction < 0 ? -20 : 20); // 🔄 opposite side entry
+
+            // slide-in new (back to center)
             TranslateTransition inT = new TranslateTransition(Duration.millis(220), slideContent);
             inT.setFromX(slideContent.getTranslateX());
             inT.setToX(0);
+
             FadeTransition inF = new FadeTransition(Duration.millis(220), slideContent);
             inF.setFromValue(0);
             inF.setToValue(1);
+
             new ParallelTransition(inT, inF).play();
         });
         out.play();

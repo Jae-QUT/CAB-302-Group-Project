@@ -39,13 +39,13 @@
                         <Button text="VIEW MORE" onAction="#onViewMore" styleClass="primary"/>
                     </VBox>
 
-                    <!-- 🔵 New Info Overlay Modal (carousel) -->
+                    <!-- New Info Overlay Modal (carousel) -->
                     <StackPane fx:id="infoOverlay" visible="false" opacity="0" styleClass="overlay-pane">
                         <StackPane fx:id="carouselRoot"
                                    styleClass="carousel"
                                    maxWidth="440" maxHeight="360"
                                    prefWidth="440" prefHeight="360">
-                            <!-- Background artwork per slide (optional) -->
+                            <!-- Background artwork per slide -->
                             <ImageView fx:id="slideImage" fitWidth="440" fitHeight="360" preserveRatio="false"
                                        StackPane.alignment="CENTER" opacity="0.18"/>
 
@@ -58,8 +58,15 @@
                             </VBox>
 
                             <!-- Nav buttons -->
-                            <Button text="⟵" onAction="#onPrev" styleClass="nav-btn left" StackPane.alignment="CENTER_LEFT"/>
-                            <Button text="⟶" onAction="#onNext" styleClass="nav-btn right" StackPane.alignment="CENTER_RIGHT"/>
+                            <Button fx:id="prevBtn" text="❮" onAction="#onPrev"
+                                    styleClass="nav-btn left" StackPane.alignment="CENTER_LEFT">
+                                <StackPane.margin><Insets left="16"/></StackPane.margin>
+                            </Button>
+
+                            <Button fx:id="nextBtn" text="❯" onAction="#onNext"
+                                    styleClass="nav-btn right" StackPane.alignment="CENTER_RIGHT">
+                                <StackPane.margin><Insets right="16"/></StackPane.margin>
+                            </Button>
 
                             <!-- Dots -->
                             <HBox fx:id="dots"

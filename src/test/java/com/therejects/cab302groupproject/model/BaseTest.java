@@ -14,7 +14,8 @@ public abstract class BaseTest {
                       Username TEXT PRIMARY KEY,
                       PasswordHash TEXT NOT NULL,
                       StudentEmail TEXT NOT NULL,
-                      GradeYearLevel INTEGER NOT NULL
+                      "GradeYearLevel" INTEGER NOT NULL,
+                      "Score" INTEGER NOT NULL
                     );
                 """);
         AuthDatabase.override(conn);

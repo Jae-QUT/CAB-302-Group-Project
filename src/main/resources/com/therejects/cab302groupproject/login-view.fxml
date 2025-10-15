@@ -41,13 +41,16 @@
 
                     <!-- 🔵 New Info Overlay Modal (carousel) -->
                     <StackPane fx:id="infoOverlay" visible="false" opacity="0" styleClass="overlay-pane">
-                        <StackPane styleClass="carousel" maxWidth="440" maxHeight="360">
+                        <StackPane fx:id="carouselRoot"
+                                   styleClass="carousel"
+                                   maxWidth="440" maxHeight="360"
+                                   prefWidth="440" prefHeight="360">
                             <!-- Background artwork per slide (optional) -->
                             <ImageView fx:id="slideImage" fitWidth="440" fitHeight="360" preserveRatio="false"
                                        StackPane.alignment="CENTER" opacity="0.18"/>
 
                             <!-- Slide content -->
-                            <VBox fx:id="slideContent" alignment="CENTER" spacing="12" maxWidth="360">
+                            <VBox fx:id="slideContent" alignment="CENTER" spacing="12" maxWidth="360" StackPane.alignment="CENTER">
                                 <Label fx:id="slideTitle" styleClass="overlay-title" text="Slide Title"/>
                                 <Label fx:id="slideBody" styleClass="overlay-body" wrapText="true"
                                        text="Body copy goes here and describes the slide."/>
@@ -59,8 +62,13 @@
                             <Button text="⟶" onAction="#onNext" styleClass="nav-btn right" StackPane.alignment="CENTER_RIGHT"/>
 
                             <!-- Dots -->
-                            <HBox fx:id="dots" alignment="CENTER" spacing="8" StackPane.alignment="BOTTOM_CENTER">
-                                <!-- dots populated from controller -->
+                            <HBox fx:id="dots"
+                                  alignment="CENTER"
+                                  spacing="10"
+                                  prefHeight="20">
+                                <StackPane.margin>
+                                    <Insets bottom="16"/>
+                                </StackPane.margin>
                             </HBox>
 
                             <!-- Close -->

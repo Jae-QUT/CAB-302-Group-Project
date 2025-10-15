@@ -24,15 +24,16 @@ import javafx.animation.TranslateTransition;
 import javafx.animation.ParallelTransition;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
-import java.util.Optional;
-import java.util.regex.Pattern;
+import javafx.application.Platform;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
+
 
 /**
  * A controller class responsible for managing the login screen of the application.
- * It handles the initialization of the hero image, validates user credentials, and
+ * It handles the initialisation of the hero image, validates user credentials, and
  * provides interactivity for the login and "View More" actions.
  */
  public class LoginController {
@@ -47,9 +48,11 @@ import java.util.List;
     @FXML private Label     slideBody;
     @FXML private Button    slideCta;
     @FXML private HBox      dots;
+    @FXML private StackPane carouselRoot;
+
 
     /**
-     * Initializes the login screen by loading and displaying the hero image.
+     * Initialises the login screen by loading and displaying the hero image.
      */
     @FXML
     public void initialize() {
@@ -87,8 +90,45 @@ import java.util.List;
                 "/images/MMLogin.png"
         ));
 
+        // Build dots and initial slide
         rebuildDots();
         applySlide(0, false);
+
+        // ----- Force dots location and layout -----
+        Platform.runLater(() -> {
+            if (slideImage != null) slideImage.setMouseTransparent(true);
+            if (slideContent != null) slideContent.setPadding(new Insets(0, 56, 40, 56)); // keeps arrows clear
+
+            if (dots != null && carouselRoot != null) {
+                dots.setManaged(false);
+                dots.setFillHeight(false);
+
+                // define position function
+                Runnable positionDots = () -> {
+                    dots.applyCss();
+                    dots.layout();
+                    carouselRoot.applyCss();
+                    carouselRoot.layout();
+
+                    double w = carouselRoot.getWidth();
+                    double h = carouselRoot.getHeight();
+                    double dw = Math.max(dots.prefWidth(-1), dots.getWidth());
+                    double dh = Math.max(dots.prefHeight(-1), dots.getHeight());
+
+                    double x = (w - dw) / 2.0;
+                    double y = h - dh + 75;
+                    dots.relocate(x, y);
+                };
+
+                // run once immediately
+                positionDots.run();
+
+                // re-run when resized
+                carouselRoot.widthProperty().addListener((o, a, b) -> positionDots.run());
+                carouselRoot.heightProperty().addListener((o, a, b) -> positionDots.run());
+            }
+        });
+
     }
 
     /**
@@ -190,12 +230,13 @@ import java.util.List;
     }
 
     private void rebuildDots() {
-        if (dots == null) return; // safety if FXML not wired yet
+        if (dots == null) return;
         dots.getChildren().clear();
         for (int i = 0; i < slides.size(); i++) {
-            Region dot = new Region();
-            dot.getStyleClass().add("dot");
             final int idx = i;
+            Circle dot = new Circle(4);
+            dot.getStyleClass().add("dot");
+            dot.setFill(Color.rgb(11, 27, 58, 0.28));
             dot.setOnMouseClicked(e -> showSlide(idx, idx > current ? +1 : -1));
             dots.getChildren().add(dot);
         }
@@ -205,9 +246,8 @@ import java.util.List;
     private void refreshDots() {
         if (dots == null) return;
         for (int i = 0; i < dots.getChildren().size(); i++) {
-            var node = dots.getChildren().get(i);
-            node.getStyleClass().remove("active");
-            if (i == current) node.getStyleClass().add("active");
+            Circle c = (Circle) dots.getChildren().get(i);
+            c.setFill(i == current ? Color.web("#1f8fff") : Color.rgb(11,27,58,0.28));
         }
     }
 

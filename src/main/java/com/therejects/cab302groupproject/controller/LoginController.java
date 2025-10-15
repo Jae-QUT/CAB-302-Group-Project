@@ -7,12 +7,28 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
+import javafx.scene.layout.StackPane;
 import java.util.Optional;
 import java.util.regex.Pattern;
+
+/**
+ * For View More Carousel functionality
+ */
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A controller class responsible for managing the login screen of the application.
@@ -24,6 +40,13 @@ import java.util.regex.Pattern;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private CheckBox rememberMe;
+    @FXML private StackPane infoOverlay;
+    @FXML private ImageView slideImage;
+    @FXML private VBox      slideContent;
+    @FXML private Label     slideTitle;
+    @FXML private Label     slideBody;
+    @FXML private Button    slideCta;
+    @FXML private HBox      dots;
 
     /**
      * Initializes the login screen by loading and displaying the hero image.
@@ -32,11 +55,40 @@ import java.util.regex.Pattern;
     public void initialize() {
         var url = MainMenuLauncher.class.getResource("/images/MMLogin.png");
         if (url != null) {
-            heroImage.setImage(new javafx.scene.image.Image(url.toExternalForm()));
+            heroImage.setImage(new Image(url.toExternalForm()));
         } else {
             System.err.println("Missing /images/MMLogin.png on classpath. " +
                     "Put it under src/main/resources/images/ and rebuild.");
         }
+
+        // ▼ Carousel setup (safe if overlay not visible yet)
+        slides.add(new Slide(
+                "Why Kids Love Math Monsters",
+                "Catch cute monsters and level up with quick mini-games that build mental maths without the boredom.",
+                "See Parent Benefits",
+                "/images/MMLogin.png"
+        ));
+        slides.add(new Slide(
+                "Why Parents Trust It",
+                "Aligned with curriculum. No ads or open chat. Progress reports show accuracy and speed gains.",
+                "Benefits of Practice",
+                "/images/MMLogin.png"
+        ));
+        slides.add(new Slide(
+                "Benefits of Practice",
+                "Short daily sessions improve fluency in times tables, number sense, and word problems—boosting classroom confidence.",
+                "What’s New",
+                "/images/MMLogin.png"
+        ));
+        slides.add(new Slide(
+                "What’s Coming Next",
+                "Co-op boss battles, team quests, and Skill Trees for strategies like decomposition and estimation.",
+                "Start Learning",
+                "/images/MMLogin.png"
+        ));
+
+        rebuildDots();
+        applySlide(0, false);
     }
 
     /**
@@ -62,11 +114,103 @@ import java.util.regex.Pattern;
 
     /**
      * Displays additional information about upcoming features.
+     * Slides about: why you should play, why parents should encourage their children to sign up,
+     * why you should practice every day, and new additions added to the game.
      */
     @FXML
     private void onViewMore() {
-        new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer / feature rundown.").showAndWait();
+        infoOverlay.setVisible(true);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), infoOverlay);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.play();
     }
+
+    @FXML
+    private void onCloseOverlay() {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(250), infoOverlay);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setOnFinished(e -> infoOverlay.setVisible(false));
+        fadeOut.play();
+    }
+
+    // ===== Carousel handlers =====
+    @FXML private void onNext() { showSlide(current + 1, +1); }
+    @FXML private void onPrev() { showSlide(current - 1, -1); }
+    @FXML private void onCarouselCta() {
+        if (current < slides.size() - 1) onNext(); else onCloseOverlay();
+    }
+
+    private void showSlide(int index, int direction) {
+        if (index < 0 || index >= slides.size()) return;
+
+        // slide-out current
+        TranslateTransition outT = new TranslateTransition(Duration.millis(200), slideContent);
+        outT.setFromX(0);
+        outT.setToX(direction > 0 ? -20 : 20);
+        FadeTransition outF = new FadeTransition(Duration.millis(200), slideContent);
+        outF.setFromValue(1);
+        outF.setToValue(0);
+
+        ParallelTransition out = new ParallelTransition(outT, outF);
+        out.setOnFinished(e -> {
+            applySlide(index, true);
+            slideContent.setTranslateX(direction > 0 ? 20 : -20);
+
+            // slide-in new
+            TranslateTransition inT = new TranslateTransition(Duration.millis(220), slideContent);
+            inT.setFromX(slideContent.getTranslateX());
+            inT.setToX(0);
+            FadeTransition inF = new FadeTransition(Duration.millis(220), slideContent);
+            inF.setFromValue(0);
+            inF.setToValue(1);
+            new ParallelTransition(inT, inF).play();
+        });
+        out.play();
+    }
+
+    private void applySlide(int index, boolean updateDots) {
+        current = index;
+        Slide s = slides.get(index);
+
+        slideTitle.setText(s.title);
+        slideBody.setText(s.body);
+        slideCta.setText(s.cta != null ? s.cta : "Continue");
+
+        if (s.imagePath != null) {
+            var imgUrl = getClass().getResource(s.imagePath);
+            slideImage.setImage(imgUrl != null ? new Image(imgUrl.toExternalForm()) : null);
+            slideImage.setOpacity(0.18);
+        } else {
+            slideImage.setImage(null);
+        }
+
+        if (updateDots) refreshDots();
+    }
+
+    private void rebuildDots() {
+        if (dots == null) return; // safety if FXML not wired yet
+        dots.getChildren().clear();
+        for (int i = 0; i < slides.size(); i++) {
+            Region dot = new Region();
+            dot.getStyleClass().add("dot");
+            final int idx = i;
+            dot.setOnMouseClicked(e -> showSlide(idx, idx > current ? +1 : -1));
+            dots.getChildren().add(dot);
+        }
+        refreshDots();
+    }
+
+    private void refreshDots() {
+        if (dots == null) return;
+        for (int i = 0; i < dots.getChildren().size(); i++) {
+            var node = dots.getChildren().get(i);
+            node.getStyleClass().remove("active");
+            if (i == current) node.getStyleClass().add("active");
+        }
+    }
+
     // ===== Register dialog =====
 
     @FXML
@@ -222,4 +366,16 @@ import java.util.regex.Pattern;
                     '}';
         }
     }
+
+    /**
+     * Class to handle the slide image in view more.
+     */
+    private static class Slide {
+        final String title, body, cta, imagePath;
+        Slide(String title, String body, String cta, String imagePath) {
+            this.title = title; this.body = body; this.cta = cta; this.imagePath = imagePath;
+        }
+    }
+    private final List<Slide> slides = new ArrayList<>();
+    private int current = 0;
 }

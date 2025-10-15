@@ -38,6 +38,37 @@
 
                         <Button text="VIEW MORE" onAction="#onViewMore" styleClass="primary"/>
                     </VBox>
+
+                    <!-- 🔵 New Info Overlay Modal (carousel) -->
+                    <StackPane fx:id="infoOverlay" visible="false" opacity="0" styleClass="overlay-pane">
+                        <StackPane styleClass="carousel" maxWidth="440" maxHeight="360">
+                            <!-- Background artwork per slide (optional) -->
+                            <ImageView fx:id="slideImage" fitWidth="440" fitHeight="360" preserveRatio="false"
+                                       StackPane.alignment="CENTER" opacity="0.18"/>
+
+                            <!-- Slide content -->
+                            <VBox fx:id="slideContent" alignment="CENTER" spacing="12" maxWidth="360">
+                                <Label fx:id="slideTitle" styleClass="overlay-title" text="Slide Title"/>
+                                <Label fx:id="slideBody" styleClass="overlay-body" wrapText="true"
+                                       text="Body copy goes here and describes the slide."/>
+                                <Button fx:id="slideCta" text="Continue" onAction="#onCarouselCta" styleClass="btn-primary"/>
+                            </VBox>
+
+                            <!-- Nav buttons -->
+                            <Button text="⟵" onAction="#onPrev" styleClass="nav-btn left" StackPane.alignment="CENTER_LEFT"/>
+                            <Button text="⟶" onAction="#onNext" styleClass="nav-btn right" StackPane.alignment="CENTER_RIGHT"/>
+
+                            <!-- Dots -->
+                            <HBox fx:id="dots" alignment="CENTER" spacing="8" StackPane.alignment="BOTTOM_CENTER">
+                                <!-- dots populated from controller -->
+                            </HBox>
+
+                            <!-- Close -->
+                            <Button text="✕" onAction="#onCloseOverlay" styleClass="close-btn" StackPane.alignment="TOP_RIGHT"/>
+                        </StackPane>
+                    </StackPane>
+
+
                 </StackPane>
 
                 <!-- RIGHT: login form -->

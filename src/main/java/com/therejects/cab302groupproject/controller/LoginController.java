@@ -59,6 +59,14 @@ import javafx.scene.paint.Color;
      */
     @FXML
     public void initialize() {
+        // Ensures that the carousel navigation buttons hover properly
+        prevBtn.getStyleClass().add("nav-btn");
+        nextBtn.getStyleClass().add("nav-btn");
+        prevBtn.setMouseTransparent(false);
+        nextBtn.setMouseTransparent(false);
+        prevBtn.setPickOnBounds(true);
+        nextBtn.setPickOnBounds(true);
+
         var url = MainMenuLauncher.class.getResource("/images/MMLogin.png");
         if (url != null) {
             heroImage.setImage(new Image(url.toExternalForm()));
@@ -125,6 +133,7 @@ import javafx.scene.paint.Color;
 
                 // run once immediately
                 positionDots.run();
+                dots.setPickOnBounds(false); // only the circles are clickable, empty space is click-through
 
                 // re-run when resized
                 carouselRoot.widthProperty().addListener((o, a, b) -> positionDots.run());
@@ -199,7 +208,9 @@ import javafx.scene.paint.Color;
         showSlide(prev, -1);
     }
     @FXML private void onCarouselCta() {
-        if (current < slides.size() - 1) onNext(); else onCloseOverlay();
+        new Alert(Alert.AlertType.INFORMATION,
+                "Feature coming soon!\n\nThis section will include more details about " +
+                        "each feature of Math Monsters.").showAndWait();
     }
 
     private void showSlide(int index, int direction) {
@@ -233,6 +244,7 @@ import javafx.scene.paint.Color;
             new ParallelTransition(inT, inF).play();
         });
         out.play();
+
     }
 
     private void applySlide(int index, boolean updateDots) {
@@ -272,7 +284,8 @@ import javafx.scene.paint.Color;
         if (dots == null) return;
         for (int i = 0; i < dots.getChildren().size(); i++) {
             Circle c = (Circle) dots.getChildren().get(i);
-            c.setFill(i == current ? Color.web("#1f8fff") : Color.rgb(11,27,58,0.28));
+            c.getStyleClass().remove("dot-active");
+            if (i == current) c.getStyleClass().add("dot-active");
         }
     }
 
@@ -432,6 +445,8 @@ import javafx.scene.paint.Color;
         }
     }
 
+    // ===== Carousel Helpers =====
+
     /**
      * Class to handle the slide image in view more.
      */
@@ -443,4 +458,5 @@ import javafx.scene.paint.Color;
     }
     private final List<Slide> slides = new ArrayList<>();
     private int current = 0;
+
 }

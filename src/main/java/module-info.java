@@ -14,6 +14,7 @@ module com.therejects.cab302groupproject {
     // com.therejects.cab302groupproject.model.Database + logging
     requires java.sql;
     requires java.logging;
+    requires jakarta.mail;
 
     opens com.therejects.cab302groupproject to javafx.fxml;
     exports com.therejects.cab302groupproject;

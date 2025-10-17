@@ -61,4 +61,64 @@ public class UserDAO {
             return ps.executeUpdate() == 1;
         }
     }
+    public Optional<User> findByUsernameOrEmail(String usernameOrEmail) throws SQLException {
+        String sql = "SELECT * FROM LoginRegisterUI Where Username = ? OR StudentEmail = ?";
+        try (Connection conn = Database.get();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, usernameOrEmail);
+            stmt.setString(2, usernameOrEmail);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return Optional.of(mapRow(rs));
+            return Optional.empty();
+        }
+    }
+    public void saveResetToken(String username, String token, long expiry) throws SQLException {
+        String sql = "UPDATE LoginRegisterUI SET reset_token = ?, reset_expiry = ? WHERE Username = ?";
+        try (Connection conn = Database.get();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, token);
+            stmt.setLong(2, expiry);
+            stmt.setString(3, username);
+            stmt.executeUpdate();
+        }
+    }
+    public Optional<User> findByResetToken(String token) throws SQLException {
+        String sql = "SELECT * FROM LoginRegisterUI WHERE reset_token = ?";
+        try (Connection conn = Database.get();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, token);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return Optional.of(mapRow(rs));
+            return Optional.empty();
+        }
+    }
+    public void updatePassword(String username, String password) throws SQLException {
+        String sql = "UPDATE LoginRegisterUI SET Password = ? WHERE Username = ?";
+        try (Connection conn = Database.get();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, password);
+            stmt.setString(2, username);
+            stmt.executeUpdate();
+        }
+    }
+    public void clearResetToken(String username) throws SQLException {
+        String sql = "UPDATE LoginRegisterUI SET reset_token = NULL, reset_expiry = NULL WHERE Username = ?";
+        try (Connection conn = Database.get();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        }
+    }
+    private User mapRow(ResultSet rs) throws SQLException {
+        User u = new User(
+                rs.getString("Username"),
+                rs.getString("Password"),
+                rs.getString("StudentEmail"),
+                rs.getInt("Grade/Year Level")
+
+        );
+        u.setResetToken(rs.getString("reset_token"));
+        u.setResetExpiry(rs.getLong("reset_expiry"));
+        return u;
+    }
 }

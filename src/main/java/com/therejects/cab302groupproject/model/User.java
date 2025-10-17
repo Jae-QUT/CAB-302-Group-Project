@@ -15,6 +15,8 @@ public class User {
     private int gamesLost;
     private List<String> badges = new ArrayList<>();
     private List<String> friends = new ArrayList<>();
+    private String resetToken;
+    private long resetExpiry;
 
     public User() { }
 
@@ -35,6 +37,12 @@ public class User {
     public int getGamesLost() { return gamesLost; }
     public List<String> getBadges() { return badges; }
     public List<String> getFriends() { return friends; }
+    public void getResetToken(String resetToken){
+        this.resetToken = resetToken;
+    }
+    public long getResetExpiry(){
+        return resetExpiry;
+    }
 
     // Setters
     public void setUsername(String username) { this.username = username; }
@@ -46,4 +54,10 @@ public class User {
     public void setGamesLost(int gamesLost) { this.gamesLost = gamesLost; }
     public void setBadges(List<String> badges) { this.badges = badges; }
     public void setFriends(List<String> friends) { this.friends = friends; }
+    public void setResetToken(String resetToken){
+        this.resetToken = resetToken;
+    }
+    public void setResetExpiry(long resetExpiry){
+        this.resetExpiry = resetExpiry;
+    }
 }

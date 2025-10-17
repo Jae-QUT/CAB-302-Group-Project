@@ -2,10 +2,13 @@ package com.therejects.cab302groupproject.controller;
 
 import com.therejects.cab302groupproject.MainMenuLauncher;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
+import com.therejects.cab302groupproject.model.AuthService;
+import com.therejects.cab302groupproject.model.EmailService;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
@@ -62,4 +65,70 @@ import javafx.stage.Stage;
     private void onViewMore() {
         new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer / feature rundown.").showAndWait();
     }
+
+    @FXML
+    private void onForgotPassword(){
+        TextInputDialog emailDialog = new TextInputDialog();
+        emailDialog.setTitle("Forgot Password");
+        emailDialog.setHeaderText("Reset your PokeMath password");
+        emailDialog.setContentText("Enter your email or username");
+
+        emailDialog.showAndWait().ifPresent(input -> {
+            try{
+                String token = authService.generateResetToken(input);
+                String email = authService.getEmailForUser(input);
+
+                new Alert(Alert.AlertType.INFORMATION,
+                        "A password reset email has been sent to " + email + ",\nCheck your inbox.")
+                        .showAndWait();
+                openResetDialog();
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "Error:" + e.getMessage()).showAndWait();
+            }
+        });
+    }
+    private void openResetDialog() {
+        Dialog<String[]> dialog = new Dialog<>();
+        dialog.setTitle("Reset Password");
+        dialog.setHeaderText("Enter your reset token and new password");
+
+        Label tokenLabel = new Label("Reset Token:");
+        TextField tokenField = new TextField();
+
+        Label passLabel = new Label("New Password:");
+        PasswordField passField = new PasswordField();
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(tokenLabel, 0, 0);
+        grid.add(tokenField, 1, 0);
+        grid.add(passLabel, 0, 1);
+        grid.add(passField, 1,  1);
+
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.setResultConverter(button -> {
+            if(button == ButtonType.OK){
+                return new String[]{tokenField.getText(), passField.getText()};
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(result -> {
+            String token = result[0];
+            String newPassword = result[1];
+            try {
+                authService.resetPassword(token, newPassword);
+                new Alert(Alert.AlertType.INFORMATION,
+                        "Password reset successful! You can now log in with your new password.")
+                        .showAndWait();
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.WARNING, e.getMessage()).showAndWait();
+            }
+        });
+
+    }
+    private final AuthService authService = new AuthService();
 }

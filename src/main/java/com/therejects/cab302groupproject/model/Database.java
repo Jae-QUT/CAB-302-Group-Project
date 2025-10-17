@@ -22,7 +22,9 @@ public final class Database {
               Username TEXT NOT NULL PRIMARY KEY,
               Password TEXT NOT NULL,
               StudentEmail TEXT NOT NULL,
-              "Grade/Year Level" INTEGER NOT NULL
+              "Grade/Year Level" INTEGER NOT NULL,
+              reset_token TEXT,
+              reset_expiry INTEGER
             );
         """;
         try (Statement st = get().createStatement()) { st.execute(sql); }

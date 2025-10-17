@@ -7,16 +7,33 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
+import javafx.scene.layout.StackPane;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
+ * For View More Carousel functionality
+ */
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.application.Platform;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
+
+
+/**
  * A controller class responsible for managing the login screen of the application.
- * It handles the initialization of the hero image, validates user credentials, and
+ * It handles the initialisation of the hero image, validates user credentials, and
  * provides interactivity for the login and "View More" actions.
  */
  public class LoginController {
@@ -24,19 +41,115 @@ import java.util.regex.Pattern;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private CheckBox rememberMe;
+    @FXML private StackPane infoOverlay;
+    @FXML private ImageView slideImage;
+    @FXML private VBox      slideContent;
+    @FXML private Label     slideTitle;
+    @FXML private Label     slideBody;
+    @FXML private Button    slideCta;
+    @FXML private HBox      dots;
+    @FXML private StackPane carouselRoot;
+    @FXML private Button prevBtn;
+    @FXML private Button nextBtn;
+
+
 
     /**
-     * Initializes the login screen by loading and displaying the hero image.
+     * Initialises the login screen by loading and displaying the hero image.
      */
     @FXML
     public void initialize() {
+        // Ensures that the carousel navigation buttons hover properly
+        prevBtn.getStyleClass().add("nav-btn");
+        nextBtn.getStyleClass().add("nav-btn");
+        prevBtn.setMouseTransparent(false);
+        nextBtn.setMouseTransparent(false);
+        prevBtn.setPickOnBounds(true);
+        nextBtn.setPickOnBounds(true);
+
         var url = MainMenuLauncher.class.getResource("/images/MMLogin.png");
         if (url != null) {
-            heroImage.setImage(new javafx.scene.image.Image(url.toExternalForm()));
+            heroImage.setImage(new Image(url.toExternalForm()));
         } else {
             System.err.println("Missing /images/MMLogin.png on classpath. " +
                     "Put it under src/main/resources/images/ and rebuild.");
         }
+
+        // ▼ Carousel setup (safe if overlay not visible yet)
+        slides.add(new Slide(
+                "Why Kids Love Math Monsters",
+                "Catch cute monsters and level up with quick mini-games that build mental maths without the boredom.",
+                "See Parent Benefits",
+                "/images/MMLogin.png"
+        ));
+        slides.add(new Slide(
+                "Why Parents Trust It",
+                "Aligned with curriculum. No ads or open chat. Progress reports show accuracy and speed gains.",
+                "Benefits of Practice",
+                "/images/MMLogin.png"
+        ));
+        slides.add(new Slide(
+                "Benefits of Practice",
+                "Short daily sessions improve fluency in times tables, number sense, and word problems—boosting classroom confidence.",
+                "What’s New",
+                "/images/MMLogin.png"
+        ));
+        slides.add(new Slide(
+                "What’s Coming Next",
+                "Co-op boss battles, team quests, and Skill Trees for strategies like decomposition and estimation.",
+                "Start Learning",
+                "/images/MMLogin.png"
+        ));
+
+        // Build dots and initial slide
+        rebuildDots();
+        applySlide(0, false);
+
+        // ----- Force dots location and layout -----
+        Platform.runLater(() -> {
+            if (slideImage != null) slideImage.setMouseTransparent(true);
+            if (slideContent != null) slideContent.setPadding(new Insets(0, 56, 40, 56)); // keeps arrows clear
+
+            if (dots != null && carouselRoot != null) {
+                dots.setManaged(false);
+                dots.setFillHeight(false);
+
+                // define position function
+                Runnable positionDots = () -> {
+                    dots.applyCss();
+                    dots.layout();
+                    carouselRoot.applyCss();
+                    carouselRoot.layout();
+
+                    double w = carouselRoot.getWidth();
+                    double h = carouselRoot.getHeight();
+                    double dw = Math.max(dots.prefWidth(-1), dots.getWidth());
+                    double dh = Math.max(dots.prefHeight(-1), dots.getHeight());
+
+                    double x = (w - dw) / 2.0;
+                    double y = h - dh + 80;
+                    dots.relocate(x, y);
+                };
+
+                // run once immediately
+                positionDots.run();
+                dots.setPickOnBounds(false); // only the circles are clickable, empty space is click-through
+
+                // re-run when resized
+                carouselRoot.widthProperty().addListener((o, a, b) -> positionDots.run());
+                carouselRoot.heightProperty().addListener((o, a, b) -> positionDots.run());
+            }
+        });
+
+        if (prevBtn != null) {
+            prevBtn.setFocusTraversable(false);
+            prevBtn.toFront();                 // ensure above background/dots
+        }
+        if (nextBtn != null) {
+            nextBtn.setFocusTraversable(false);
+            nextBtn.toFront();
+        }
+
     }
 
     /**
@@ -62,11 +175,120 @@ import java.util.regex.Pattern;
 
     /**
      * Displays additional information about upcoming features.
+     * Slides about: why you should play, why parents should encourage their children to sign up,
+     * why you should practice every day, and new additions added to the game.
      */
     @FXML
     private void onViewMore() {
-        new Alert(Alert.AlertType.INFORMATION, "Coming soon: trailer / feature rundown.").showAndWait();
+        infoOverlay.setVisible(true);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), infoOverlay);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.play();
     }
+
+    @FXML
+    private void onCloseOverlay() {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(250), infoOverlay);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setOnFinished(e -> infoOverlay.setVisible(false));
+        fadeOut.play();
+    }
+
+    // ===== Carousel handlers =====
+    @FXML
+    private void onNext() {
+        int next = (current + 1) % slides.size();
+        showSlide(next, +1);
+    }
+    @FXML
+    private void onPrev() {
+        int prev = (current - 1 + slides.size()) % slides.size();
+        showSlide(prev, -1);
+    }
+    @FXML private void onCarouselCta() {
+        new Alert(Alert.AlertType.INFORMATION,
+                "Feature coming soon!\n\nThis section will include more details about " +
+                        "each feature of Math Monsters.").showAndWait();
+    }
+
+    private void showSlide(int index, int direction) {
+        if (index < 0 || index >= slides.size()) return;
+
+        // slide-out current (move in direction clicked)
+        TranslateTransition outT = new TranslateTransition(Duration.millis(200), slideContent);
+        outT.setFromX(0);
+        outT.setToX(direction < 0 ? 20 : -20); // 🔄 swapped signs
+
+        FadeTransition outF = new FadeTransition(Duration.millis(200), slideContent);
+        outF.setFromValue(1);
+        outF.setToValue(0);
+
+        ParallelTransition out = new ParallelTransition(outT, outF);
+        out.setOnFinished(e -> {
+            applySlide(index, true);
+
+            // new slide starts off-screen in opposite direction
+            slideContent.setTranslateX(direction < 0 ? -20 : 20); // 🔄 opposite side entry
+
+            // slide-in new (back to center)
+            TranslateTransition inT = new TranslateTransition(Duration.millis(220), slideContent);
+            inT.setFromX(slideContent.getTranslateX());
+            inT.setToX(0);
+
+            FadeTransition inF = new FadeTransition(Duration.millis(220), slideContent);
+            inF.setFromValue(0);
+            inF.setToValue(1);
+
+            new ParallelTransition(inT, inF).play();
+        });
+        out.play();
+
+    }
+
+    private void applySlide(int index, boolean updateDots) {
+        current = index;
+        Slide s = slides.get(index);
+
+        slideTitle.setText(s.title);
+        slideBody.setText(s.body);
+        slideCta.setText(s.cta != null ? s.cta : "Continue");
+
+        if (s.imagePath != null) {
+            var imgUrl = getClass().getResource(s.imagePath);
+            slideImage.setImage(imgUrl != null ? new Image(imgUrl.toExternalForm()) : null);
+            slideImage.setOpacity(0.18);
+        } else {
+            slideImage.setImage(null);
+        }
+
+        if (updateDots) refreshDots();
+    }
+
+    private void rebuildDots() {
+        if (dots == null) return;
+        dots.getChildren().clear();
+        for (int i = 0; i < slides.size(); i++) {
+            final int idx = i;
+            Circle dot = new Circle(4);
+            dot.getStyleClass().add("dot");
+            dot.setFill(Color.rgb(11, 27, 58, 0.28));
+            dot.setOnMouseClicked(e -> showSlide(idx, idx > current ? +1 : -1));
+            dots.getChildren().add(dot);
+        }
+        refreshDots();
+    }
+
+    private void refreshDots() {
+        if (dots == null) return;
+        for (int i = 0; i < dots.getChildren().size(); i++) {
+            Circle c = (Circle) dots.getChildren().get(i);
+            c.getStyleClass().remove("dot-active");
+            if (i == current) c.getStyleClass().add("dot-active");
+        }
+    }
+
     // ===== Register dialog =====
 
     @FXML
@@ -222,4 +444,19 @@ import java.util.regex.Pattern;
                     '}';
         }
     }
+
+    // ===== Carousel Helpers =====
+
+    /**
+     * Class to handle the slide image in view more.
+     */
+    private static class Slide {
+        final String title, body, cta, imagePath;
+        Slide(String title, String body, String cta, String imagePath) {
+            this.title = title; this.body = body; this.cta = cta; this.imagePath = imagePath;
+        }
+    }
+    private final List<Slide> slides = new ArrayList<>();
+    private int current = 0;
+
 }

@@ -17,6 +17,12 @@
       </assistant-state>
     </assistants>
   </component>
+  <component name="DBNavigator.Project.DatabaseBrowserManager">
+    <autoscroll-to-editor value="false" />
+    <autoscroll-from-editor value="true" />
+    <show-object-properties value="true" />
+    <loaded-nodes />
+  </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="8e82775d-bae2-4241-b92a-45b884e8ff95">
       <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[-- See table structure
@@ -490,7 +496,7 @@ SELECT COUNT(*) FROM LoginRegisterUI;]]></console>
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="9999.0" />
+          <database-version value="3.5" />
           <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />

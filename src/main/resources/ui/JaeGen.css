@@ -1,0 +1,146 @@
+/*
+@font-face {
+    font-family: "Super Adorable";
+    src: url("fonts/SuperAdorable-MAvyp.ttf");
+}
+
+.root {
+    -fx-background-color: linear-gradient(to right, #DAD299, #B0DAB9);
+    -fx-background-color: linear-gradient(to right, #c21500, #ffc500);
+
+    -fx-padding: 10;
+    -fx-font-family: "Super Adorable";
+    -fx-font-size: 24px;
+}
+
+.app-title {
+    -fx-font-size: 28px;
+    -fx-text-fill: #e6edf3;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-font: 16px "SuperAdorable";
+    -fx-padding: 5;
+    -fx-background-color: #CCFF99;
+    -fx-background-radius: 50;
+}
+*/
+
+/* ui/JaeGen.css */
+
+@font-face {
+    font-family: "Super Adorable";
+    src: url("fonts/SuperAdorable-MAvyp.ttf");
+}
+
+/* 2) Theme “tokens” (looked-up values) + global defaults */
+.root {
+  /* Colors */
+  -color-bg-grad-start: #c21500;
+  -color-bg-grad-end:   #ffc500;
+  -color-surface: rgba(255,255,255,0.10);
+  -color-surface-strong: rgba(0,0,0,0.35);
+  -color-border: rgba(255,255,255,0.18);
+  -color-text: #e6edf3;
+  -color-muted: #c7d0d9;
+  -color-accent: #ffd24d;  /* warm yellow accent */
+  -color-danger: #ff5d5d;
+
+  /* Metrics */
+  -radius: 10;
+  -space-1: 6;
+  -space-2: 12;
+  -space-3: 18;
+  -space-4: 24;
+
+  /* Background + base typography */
+  -fx-background-color: linear-gradient(to right, -color-bg-grad-start, -color-bg-grad-end);
+  -fx-text-fill: -color-text;
+  -fx-font-family: "Super Adorable", Roboto, "San Francisco", Arial, sans-serif; /* readable body */
+  -fx-font-size: 24px;
+
+  /* Global focus – cleaner than default blue glow */
+  -fx-focus-color: derive(-color-accent, -15%);
+  -fx-faint-focus-color: transparent;
+}
+
+/* Heading styles use the display font */
+.h1, .app-title {
+  -fx-font-family: "Super Adorable";
+  -fx-font-size: 24px;
+  -fx-text-fill: -color-text;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 16, 0.2, 0, 3);
+}
+.h2 { -fx-font-family: "Super Adorable"; -fx-font-size: 24px; -fx-text-fill: -color-text; }
+.muted { -fx-text-fill: -color-muted; }
+
+/* Card container (use on VBox/StackPane/GridPane) */
+.card {
+  -fx-background-color: -color-surface;
+  -fx-background-radius: -radius;
+  -fx-background-insets: 0;
+  -fx-padding: -space-4;
+  -fx-border-color: -color-border;
+  -fx-border-radius: -radius;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0.25, 0, 12);
+}
+
+/* Buttons */
+.button {
+  -fx-background-color: -color-accent;
+  -fx-text-fill: #1a1a1a;
+  -fx-font-weight: bold;
+  -fx-background-radius: 999;
+  -fx-padding: 8 16;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0.25, 0, 4);
+  -fx-border-radius: 1000;
+}
+.button:hover   { -fx-background-color: derive(-color-accent, 10%); }
+.button:pressed { -fx-background-color: derive(-color-accent, -10%); -fx-effect: none; }
+.button:disabled { -fx-opacity: 0.6; -fx-effect: none; }
+
+/* Secondary / ghost button variants (add styleClass in FXML) */
+.btn-ghost {
+  -fx-background-color: transparent;
+  -fx-text-fill: -color-text;
+  -fx-border-color: -color-border;
+  -fx-border-radius: 999;
+  -fx-background-radius: 999;
+}
+.btn-danger { -fx-background-color: -color-danger; -fx-text-fill: white; }
+
+/* Inputs */
+.text-field, .password-field {
+  -fx-prompt-text-fill: rgba(230,237,243,0.55); /* placeholder */
+  -fx-background-color: rgba(255,255,255,0.12);
+  -fx-highlight-text-fill: #0f1114;     /* text when selected */
+
+  -fx-text-fill: -color-text;
+  -fx-background-radius: 10;
+  -fx-border-color: -color-border;
+  -fx-border-radius: 10;
+  -fx-padding: 8 12;
+}
+.text-field:focused, .password-field:focused {
+  -fx-border-color: -color-accent;
+}
+
+/* Pagination */
+.pagination {
+  -fx-padding: 0;
+}
+.pagination .button {
+  -fx-background-radius: 999;
+  -fx-padding: 4 10;
+}
+.pagination .button:selected,
+.pagination .number-button:selected {
+  -fx-background-color: -color-accent;
+  -fx-text-fill: #1a1a1a;
+}
+
+/* Leaderboard grid labels */
+.leaderboard-header { -fx-font-family: "Super Adorable"; -fx-font-size: 32px; -fx-font-weight: bold; }
+.leaderboard-cell   { -fx-text-fill: -color-text; }

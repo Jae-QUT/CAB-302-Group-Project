@@ -8,7 +8,8 @@ public class User {
     private String password;
     private String studentEmail;
     private int gradeYearLevel;
-
+    private int score;
+    private static User currentUser;
     // Profile extras
     private int gamesPlayed;
     private int gamesWon;
@@ -18,7 +19,7 @@ public class User {
     private String resetToken;
     private long resetExpiry;
 
-    public User() { }
+    public User(String username, String password, String studentEmail, int anInt, int score) { }
 
     public User(String username, String password, String studentEmail, int gradeYearLevel) {
         this.username = username;
@@ -37,12 +38,12 @@ public class User {
     public int getGamesLost() { return gamesLost; }
     public List<String> getBadges() { return badges; }
     public List<String> getFriends() { return friends; }
-    public void getResetToken(String resetToken){
-        this.resetToken = resetToken;
+    public String getResetToken(){
+        return resetToken;
     }
-    public long getResetExpiry(){
-        return resetExpiry;
-    }
+    public long getResetExpiry(){return resetExpiry;}
+    public int getScore() {return score;}
+    public static User getCurrentUser() {return currentUser;}
 
     // Setters
     public void setUsername(String username) { this.username = username; }
@@ -60,4 +61,6 @@ public class User {
     public void setResetExpiry(long resetExpiry){
         this.resetExpiry = resetExpiry;
     }
+    public void setScore(int score) {this.score = score;}
+    public static void setCurrentUser(User user) {currentUser = user;}
 }

@@ -4,6 +4,11 @@
     <mappings />
     <preferences />
   </component>
+  <component name="DBNavigator.Project.DataEditorManager">
+    <record-view-column-sorting-type value="BY_INDEX" />
+    <value-preview-text-wrapping value="false" />
+    <value-preview-pinned value="false" />
+  </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
       <assistant-state connection-id="81b87e6f-6bfc-48de-9c52-337b24761b97" default-profile-name="" selected-conversation-id="" assistant-type="GENERIC" availability="UNAVAILABLE" acknowledgement="NONE">
@@ -20,7 +25,7 @@
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="true" />
+    <show-object-properties value="false" />
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
@@ -35,7 +40,7 @@ SELECT * FROM LoginRegisterUI;
 SELECT COUNT(*) FROM LoginRegisterUI;]]></console>
     </connection>
     <connection id="81b87e6f-6bfc-48de-9c52-337b24761b97">
-      <console name="User/Password" type="STANDARD" schema="main" session="Main"><![CDATA[PRAGMA table_info(LoginRegisterUI);]]></console>
+      <console name="User/Password" type="STANDARD" schema="main" session="Main"><![CDATA[SELECT Username, StudentEmail, GradeYearLevel FROM LoginRegisterUI;]]></console>
     </connection>
     <connection id="0c2fe3d1-a6a9-43b2-8d93-23caa3e62cd9">
       <console name="Connection 1" type="STANDARD" schema="auth" session="Main" />
@@ -47,12 +52,24 @@ SELECT COUNT(*) FROM LoginRegisterUI;]]></console>
       <console name="Connection 2" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
+  </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="8e82775d-bae2-4241-b92a-45b884e8ff95" />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
+  </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
@@ -1022,5 +1039,9 @@ SELECT COUNT(*) FROM LoginRegisterUI;]]></console>
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
+    <execution-variable-types />
   </component>
 </project>

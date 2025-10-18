@@ -1,10 +1,11 @@
 package com.therejects.cab302groupproject.model;
+import com.therejects.cab302groupproject.model.UserDao;
 
 import java.sql.SQLException;
 import java.util.UUID;
 
 public class AuthService {
-    private final UserDAO userDao = new UserDAO();
+    private final UserDao userDao = new UserDao();
 
     public String generateResetToken(String usernameOrEmail) {
         try {

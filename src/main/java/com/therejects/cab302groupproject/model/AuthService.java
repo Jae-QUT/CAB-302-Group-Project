@@ -34,13 +34,37 @@ public class AuthService {
         try {
             User u = userDao.findByResetToken(token)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid or expired token."));
+
             long now = System.currentTimeMillis();
-            if (u.getResetExpiry() < now)
+            if (u.getResetExpiry() < now) {
                 throw new IllegalArgumentException("Reset token has expired.");
+            }
+
             userDao.updatePassword(u.getUsername(), newPassword);
             userDao.clearResetToken(u.getUsername());
+
         } catch (SQLException e) {
             throw new RuntimeException("Database error during reset: " + e.getMessage());
         }
+    }
+
+    public boolean login(String username, String password) throws SQLException {
+        var opt = userDao.findByUsername(username);
+        if (opt.isEmpty()) {
+            return false; // user not found
+        }
+
+        User u = opt.get();
+        // 🔑 If you’re hashing passwords, replace with PasswordUtil.verifyHash(password, u.getPassword())
+        return u.getPassword().equals(password);
+    }
+    public void register(String username, String password, String email,
+                         int gradeYearLevel, int score) throws SQLException {
+        if (userDao.exists(username)) {
+            throw new IllegalArgumentException("That username already exists.");
+        }
+
+        User newUser = new User(username, password, email, gradeYearLevel, score);
+        userDao.insert(newUser);
     }
 }

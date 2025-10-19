@@ -67,26 +67,35 @@ import javafx.stage.Stage;
     }
 
     @FXML
-    private void onForgotPassword(){
+    private void onForgotPassword() {
+        System.out.println("Forgot password clicked");
         TextInputDialog emailDialog = new TextInputDialog();
         emailDialog.setTitle("Forgot Password");
-        emailDialog.setHeaderText("Reset your PokeMath password");
-        emailDialog.setContentText("Enter your email or username");
+        emailDialog.setHeaderText("Reset your PokéMath password");
+        emailDialog.setContentText("Enter your email or username:");
 
         emailDialog.showAndWait().ifPresent(input -> {
-            try{
+            try {
                 String token = authService.generateResetToken(input);
                 String email = authService.getEmailForUser(input);
 
+                // Send token (or simulate)
+                emailService.sendPasswordResetEmail(email, token);
+                System.out.println("Reset token for " + email + ": " + token); // debug
+
                 new Alert(Alert.AlertType.INFORMATION,
-                        "A password reset email has been sent to " + email + ",\nCheck your inbox.")
+                        "A password reset email has been sent to " + email + ".\nCheck your inbox.")
                         .showAndWait();
+
                 openResetDialog();
+
             } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Error:" + e.getMessage()).showAndWait();
+                new Alert(Alert.AlertType.ERROR,
+                        "Error: " + e.getMessage()).showAndWait();
             }
         });
     }
+
     private void openResetDialog() {
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("Reset Password");
@@ -131,4 +140,5 @@ import javafx.stage.Stage;
 
     }
     private final AuthService authService = new AuthService();
+    private final EmailService emailService = new EmailService();
 }

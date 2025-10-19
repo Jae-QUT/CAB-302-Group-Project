@@ -1,6 +1,7 @@
 package com.therejects.cab302groupproject.controller;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import com.therejects.cab302groupproject.model.User;
+import com.therejects.cab302groupproject.model.*;
 import com.therejects.cab302groupproject.model.UserDao;
 import com.therejects.cab302groupproject.model.AuthService;
 import javafx.application.Application;
@@ -183,6 +184,7 @@ public class LoginScreenFX extends Application {
                 new Alert(Alert.AlertType.ERROR,
                         "Registration error: " + ex.getMessage()).showAndWait();
             }
+
         });
     }
 
@@ -207,7 +209,7 @@ public class LoginScreenFX extends Application {
         usernameField.setText(username);
     }
 
-    /** Sets the passord in both hidden and shown fiEld. */
+    /** Sets the password in both hidden and shown fiEld. */
     public void setPassword(String password) {
         passwordHidden.setText(password);
         passwordShown.setText(password);
@@ -227,4 +229,5 @@ public class LoginScreenFX extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

@@ -8,7 +8,7 @@ public class EmailService {
     private final String from = "mathbattlemonsters@gmail.com";
     private final String password = System.getenv("POKEMATH_APP_PASSWORD");
 
-    public void sendPasswordReset(String to, String token) throws MessagingException {
+    public void sendPasswordResetEmail(String to, String token) throws MessagingException {
         if (password == null || password.isBlank()) {
             throw new IllegalStateException("Missing Gmail app password. Please set POKEMATH_APP_PASSWORD env variable.");
         }
@@ -48,5 +48,6 @@ public class EmailService {
         """.formatted(token));
 
         Transport.send(message);
+        System.out.println("Password reset email has been successfully sent to " + to);
     }
 }

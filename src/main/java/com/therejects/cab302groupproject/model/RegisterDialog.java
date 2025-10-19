@@ -1,5 +1,4 @@
 package com.therejects.cab302groupproject.model;
-import com.example.mon.app.RegisterResult;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;

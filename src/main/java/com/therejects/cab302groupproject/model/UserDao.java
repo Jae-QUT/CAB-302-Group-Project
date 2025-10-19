@@ -1,7 +1,6 @@
 package com.therejects.cab302groupproject.model;
 
-import com.example.mon.app.AuthDatabase;
-import com.example.mon.app.Database;
+import com.therejects.cab302groupproject.model.AuthDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -89,10 +88,10 @@ public class UserDao {
     public boolean updateProfile(User u) throws SQLException {
         String sql = """
                   UPDATE LoginRegisterUI
-                  SET StudentEmail = ?, "Grade/Year Level" = ?
+                  SET StudentEmail = ?, "GradeYearLevel" = ?
                   WHERE Username = ?
                 """;
-        try (PreparedStatement ps = com.example.mon.app.Database.get().prepareStatement(sql)) {
+        try (PreparedStatement ps = AuthDatabase.get().prepareStatement(sql)) {
             ps.setString(1, u.getStudentEmail());
             ps.setInt(2, u.getGradeYearLevel());
             ps.setString(3, u.getUsername());
@@ -101,7 +100,7 @@ public class UserDao {
     }
     public Optional<User> findByUsernameOrEmail(String usernameOrEmail) throws SQLException {
         String sql = "SELECT * FROM LoginRegisterUI Where Username = ? OR StudentEmail = ?";
-        try (Connection conn = com.example.mon.app.Database.get();
+        try (Connection conn = AuthDatabase.get();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, usernameOrEmail);
             stmt.setString(2, usernameOrEmail);
@@ -112,7 +111,7 @@ public class UserDao {
     }
     public void saveResetToken(String username, String token, long expiry) throws SQLException {
         String sql = "UPDATE LoginRegisterUI SET reset_token = ?, reset_expiry = ? WHERE Username = ?";
-        try (Connection conn = com.example.mon.app.Database.get();
+        try (Connection conn = AuthDatabase.get();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, token);
             stmt.setLong(2, expiry);
@@ -122,7 +121,7 @@ public class UserDao {
     }
     public Optional<User> findByResetToken(String token) throws SQLException {
         String sql = "SELECT * FROM LoginRegisterUI WHERE reset_token = ?";
-        try (Connection conn = com.example.mon.app.Database.get();
+        try (Connection conn = AuthDatabase.get();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, token);
             ResultSet rs = stmt.executeQuery();
@@ -131,8 +130,8 @@ public class UserDao {
         }
     }
     public void updatePassword(String username, String password) throws SQLException {
-        String sql = "UPDATE LoginRegisterUI SET Password = ? WHERE Username = ?";
-        try (Connection conn = com.example.mon.app.Database.get();
+        String sql = "UPDATE LoginRegisterUI SET PasswordHash = ? WHERE Username = ?";
+        try (Connection conn = AuthDatabase.get();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, password);
             stmt.setString(2, username);
@@ -141,7 +140,7 @@ public class UserDao {
     }
     public void clearResetToken(String username) throws SQLException {
         String sql = "UPDATE LoginRegisterUI SET reset_token = NULL, reset_expiry = NULL WHERE Username = ?";
-        try (Connection conn = Database.get();
+        try (Connection conn = AuthDatabase.get();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.executeUpdate();
@@ -150,9 +149,9 @@ public class UserDao {
     private User mapRow(ResultSet rs) throws SQLException {
         User u = new User(
                 rs.getString("Username"),
-                rs.getString("Password"),
+                rs.getString("PasswordHash"),
                 rs.getString("StudentEmail"),
-                rs.getInt("Grade/Year Level"),
+                rs.getInt("GradeYearLevel"),
                 rs.getInt("Score")
 
         );

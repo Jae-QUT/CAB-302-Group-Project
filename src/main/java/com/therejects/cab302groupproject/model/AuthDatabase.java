@@ -1,4 +1,4 @@
-package com.example.mon.app;
+package com.therejects.cab302groupproject.model;
 import java.sql.*;
 
 /**
@@ -34,7 +34,9 @@ public final class AuthDatabase {
       PasswordHash TEXT NOT NULL,
       StudentEmail TEXT NOT NULL,
       GradeYearLevel INTEGER NOT NULL,
-      Score          INTEGER NOT NULL DEFAULT 0
+      Score          INTEGER NOT NULL DEFAULT 0,
+      reset_token TEXT,
+      reset_expiry INTEGER
                 
     );
 """;

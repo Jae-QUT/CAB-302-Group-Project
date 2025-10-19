@@ -1,6 +1,5 @@
 package com.therejects.cab302groupproject.Navigation;
 
-import com.example.mon.app.*;
 import com.therejects.cab302groupproject.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

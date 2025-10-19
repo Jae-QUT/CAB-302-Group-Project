@@ -1,4 +1,4 @@
-package com.example.mon.app;
+package com.therejects.cab302groupproject.model;
 
 public class RegisterResult {
     public final String username;

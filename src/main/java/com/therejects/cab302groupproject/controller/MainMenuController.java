@@ -3,23 +3,22 @@ package com.therejects.cab302groupproject.controller;
 import com.example.mon.app.LoginScreenFX;
 import com.example.mon.app.User;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
-import javafx.animation.AnimationTimer;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.Scale;
+import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
@@ -38,7 +37,10 @@ import java.util.function.Consumer;
  */
 public class MainMenuController {
 
+    /** Function reference used to change screens (usually ScreenManager::navigateTo). */
     private Consumer<String> navigator;
+
+    /** Optional ScreenManager reference kept for parity with the architecture. */
     private ScreenManager screenManager;
 
     // ----------- FXML-injected nodes -----------
@@ -46,12 +48,19 @@ public class MainMenuController {
     @FXML private Button btnPlay, btnLeaderboard, btnChangeTeam, btnLogout;
     @FXML private ImageView bgImage;
     @FXML private Pane monsterLayer;
+    @FXML private BorderPane uiRoot;
 
     // ----------- Roaming sprite state -----------
-    private final List<ImageView> monsters = new ArrayList<>();
-    private final List<double[]> velocities = new ArrayList<>();
+    private final List<Monster> monsters = new ArrayList<>();
     private AnimationTimer timer;
     private long lastNs = 0L;
+
+    // ===== Fence play-area bounds (inset from layer edges so they bounce inside the fence tiles) =====
+    // Tweak these 4 numbers to match your fence image thickness.
+    private static final double INSET_LEFT   = 70;
+    private static final double INSET_RIGHT  = 70;
+    private static final double INSET_TOP    = 90;
+    private static final double INSET_BOTTOM = 110;
 
     /**
      * Injects the navigation used by this controller to change screens. The navigator is a reference to the 'navigateTo'
@@ -70,26 +79,46 @@ public class MainMenuController {
      */
     @FXML
     private void initialize() {
-        // UX: focus first actionable button
         Platform.runLater(() -> btnPlay.requestFocus());
+        root.sceneProperty().addListener((o, oldS, s) -> {
+            if (s != null) {
+                var url = getClass().getResource("/ui/mainmenu.css");
+                if (url != null) {
+                    String u = url.toExternalForm();
+                    s.getStylesheets().remove(u);
+                    s.getStylesheets().add(u);
+                }
+            }
+        });
 
-        // ESC → Logout
+
         root.setOnKeyPressed(e -> {
             if (Objects.requireNonNull(e.getCode()) == KeyCode.ESCAPE) onLogout();
         });
 
-        // Visual boot
         loadBackground();
         spawnMonsters();
         startWander();
 
-        // Keep background sized with scene
         root.sceneProperty().addListener((obs, oldS, newS) -> {
             if (newS != null) {
                 bgImage.fitWidthProperty().bind(newS.widthProperty());
                 bgImage.fitHeightProperty().bind(newS.heightProperty());
             }
         });
+
+        bgImage.setViewOrder(10);
+        monsterLayer.setViewOrder(5);
+        uiRoot.setViewOrder(0);
+
+        // Make sure the UI layer can receive input
+        uiRoot.setMouseTransparent(false);
+
+        // (Optional) if sprites were still covering, bring each button to front
+        btnPlay.toFront();
+        btnLeaderboard.toFront();
+        btnChangeTeam.toFront();
+        btnLogout.toFront();
     }
 
     // =====================================================================
@@ -111,8 +140,8 @@ public class MainMenuController {
     }
 
     /**
-     * Creates five monster sprites from {@code /images/Sprites/*.png}, gives them subtle opacity and blur,
-     * randomizes their scale and velocity, and adds them to the {@code monsterLayer}.
+     * Creates five monster sprites from {@code /images/Sprites/*.png}, sets size, full opacity,
+     * random velocity, and attaches hover/click interactions.
      * <p>File names are case-sensitive on macOS/Linux; ensure they exactly match.</p>
      */
     private void spawnMonsters() {
@@ -132,21 +161,27 @@ public class MainMenuController {
                 continue;
             }
 
-            ImageView m = new ImageView(new Image(url.toExternalForm(), true));
-            m.setPreserveRatio(true);
-            m.setOpacity(rand(0.18, 0.28));          // keep background feel
-            m.setEffect(new GaussianBlur(1.8));
-            m.setFitWidth(120 * rand(0.60, 1.15));   // scale variety
+            ImageView node = new ImageView(new Image(url.toExternalForm(), true));
+            node.setPreserveRatio(true);
+            node.setFitWidth(rand(70, 100)); // smaller per request
+            node.setOpacity(1.0);            // not transparent
+            node.setPickOnBounds(true);
 
-            monsterLayer.getChildren().add(m);
+            monsterLayer.getChildren().add(node);
+
+            double vx = rand(35, 70) * (Math.random() < 0.5 ? -1 : 1);
+            double vy = rand(25, 55) * (Math.random() < 0.5 ? -1 : 1);
+
+            Monster m = new Monster(node, vx, vy);
             monsters.add(m);
 
-            double vx = rand(20, 55) * (Math.random() < 0.5 ? -1 : 1);
-            double vy = rand(8, 20)  * (Math.random() < 0.5 ? -1 : 1);
-            velocities.add(new double[]{vx, vy});
+            // Face initial direction
+            node.setScaleX(vx < 0 ? -1 : 1);
 
-            // Face toward movement
-            if (vx < 0) m.getTransforms().add(new Scale(-1, 1, 0, 0));
+            // Interactions: pause on hover, jump on click
+            node.setOnMouseEntered(e -> m.setPaused(true));
+            node.setOnMouseExited (e -> m.setPaused(false));
+            node.setOnMouseClicked(e -> jump(node));
         }
 
         // Place once bounds are known
@@ -157,7 +192,7 @@ public class MainMenuController {
     }
 
     /**
-     * Randomly places sprites within a central vertical band so they remain behind the main menu UI.
+     * Randomly places sprites within the fence play area.
      *
      * @param b the current layout bounds of the {@code monsterLayer}
      */
@@ -165,68 +200,103 @@ public class MainMenuController {
         double w = b.getWidth(), h = b.getHeight();
         if (w <= 0 || h <= 0) return;
 
-        for (Node n : monsters) {
-            ImageView m = (ImageView) n;
-            double mw = m.getBoundsInParent().getWidth();
-            double mh = m.getBoundsInParent().getHeight();
+        double left   = INSET_LEFT;
+        double right  = w - INSET_RIGHT;
+        double top    = INSET_TOP;
+        double bottom = h - INSET_BOTTOM;
 
-            double x = rand(0, Math.max(0, w - mw));
-            double y = rand(h * 0.18, h * 0.78 - mh);
-            m.setLayoutX(x);
-            m.setLayoutY(y);
+        for (Monster m : monsters) {
+            ImageView node = m.node;
+            double mw = node.getBoundsInParent().getWidth();
+            double mh = node.getBoundsInParent().getHeight();
+            double x = rand(left, Math.max(left, right - mw));
+            double y = rand(top,  Math.max(top,  bottom - mh));
+            node.setLayoutX(x);
+            node.setLayoutY(y);
         }
     }
 
     /**
-     * Starts the per-frame wander animation. Sprites wrap horizontally and softly bounce within a vertical band.
-     * Speeds gently drift over time for a “living” background feel.
+     * Starts the per-frame wander animation. Sprites bounce at fence edges, gently drift,
+     * and add a small sinusoidal bob to feel alive. Hover pauses movement.
      */
     private void startWander() {
         timer = new AnimationTimer() {
+            private double bobT = 0; // shared phase; fine for subtle coherence
+
             @Override public void handle(long now) {
                 if (lastNs == 0L) { lastNs = now; return; }
                 double dt = (now - lastNs) / 1_000_000_000.0;
                 lastNs = now;
 
+                bobT += dt;
+
                 Bounds b = monsterLayer.getLayoutBounds();
                 double w = b.getWidth(), h = b.getHeight();
 
-                for (int i = 0; i < monsters.size(); i++) {
-                    ImageView m = monsters.get(i);
-                    double[] v = velocities.get(i);
-                    double vx = v[0], vy = v[1];
+                double left   = INSET_LEFT;
+                double right  = w - INSET_RIGHT;
+                double top    = INSET_TOP;
+                double bottom = h - INSET_BOTTOM;
 
-                    double x = m.getLayoutX() + vx * dt;
-                    double y = m.getLayoutY() + vy * dt;
+                for (Monster m : monsters) {
+                    ImageView n = m.node;
 
-                    double mw = m.getBoundsInParent().getWidth();
-                    double mh = m.getBoundsInParent().getHeight();
+                    if (m.paused) continue; // stop on hover
 
-                    // Horizontal wrap
-                    if (x > w)       x = -mw;
-                    if (x + mw < 0)  x =  w;
+                    double x = n.getLayoutX() + m.vx * dt;
+                    double y = n.getLayoutY() + m.vy * dt;
 
-                    // Vertical band bounce
-                    double top = h * 0.18, bottom = h * 0.80 - mh;
-                    if (y > bottom) { y = bottom; vy = -Math.abs(vy); }
-                    if (y < top)    { y = top;    vy =  Math.abs(vy); }
+                    double mw = n.getBoundsInParent().getWidth();
+                    double mh = n.getBoundsInParent().getHeight();
 
-                    m.setLayoutX(x);
-                    m.setLayoutY(y);
+                    // Bounce on walls (reverse velocity)
+                    if (x < left)            { x = left;             m.vx = Math.abs(m.vx); }
+                    if (x > right - mw)      { x = right - mw;       m.vx = -Math.abs(m.vx); }
+                    if (y < top)             { y = top;              m.vy = Math.abs(m.vy); }
+                    if (y > bottom - mh)     { y = bottom - mh;      m.vy = -Math.abs(m.vy); }
 
-                    // Face toward movement
-                    m.setScaleX(vx < 0 ? -Math.abs(m.getScaleX()) : Math.abs(m.getScaleX()));
+                    // Flip facing by vx sign
+                    n.setScaleX(m.vx < 0 ? -1 : 1);
 
-                    // Tiny random drift for life
-                    if (Math.random() < 0.002) {
-                        vx = clamp(vx + rand(-8, 8), -65, 65);
-                        vy = clamp(vy + rand(-5, 5), -25, 25);
-                    }
-                    v[0] = vx; v[1] = vy;
+                    // Organic drift: tiny random nudges + sinusoidal bob
+                    m.vx = clamp(m.vx + rand(-4, 4) * dt * 25, -90, 90);
+                    m.vy = clamp(m.vy + rand(-3, 3) * dt * 25, -70, 70);
+
+                    double bob = Math.sin(bobT * (1.2 + m.bobSpeed)) * m.bobAmp; // 2–4 px bob
+                    n.setLayoutX(x);
+                    n.setLayoutY(y + bob);
                 }
             }
         };
         timer.start();
+    }
+
+    /**
+     * Plays a quick “hop” using a Timeline on the sprite node (no threads).
+     *
+     * @param node sprite ImageView
+     */
+    private void jump(ImageView node) {
+        double startY = node.getLayoutY();
+        double peakY  = startY - 26; // hop height
+
+        Timeline tl = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(node.layoutYProperty(), startY, Interpolator.EASE_OUT),
+                        new KeyValue(node.scaleXProperty(), node.getScaleX() * 1.0),
+                        new KeyValue(node.scaleYProperty(), 1.0)
+                ),
+                new KeyFrame(Duration.millis(120),
+                        new KeyValue(node.layoutYProperty(), peakY, Interpolator.EASE_OUT),
+                        new KeyValue(node.scaleYProperty(), 1.07, Interpolator.EASE_OUT)
+                ),
+                new KeyFrame(Duration.millis(240),
+                        new KeyValue(node.layoutYProperty(), startY, Interpolator.EASE_IN),
+                        new KeyValue(node.scaleYProperty(), 1.0, Interpolator.EASE_IN)
+                )
+        );
+        tl.play();
     }
 
     /**
@@ -256,19 +326,13 @@ public class MainMenuController {
     // Button handlers & navigation
     // =====================================================================
 
-    /**
-     * Navigates to the Play screen.
-     */
+    /** Navigates to the Play screen. */
     @FXML private void onPlay() { navigate("PLAY"); }
 
-    /**
-     * Navigates to the Leaderboard screen.
-     */
+    /** Navigates to the Leaderboard screen. */
     @FXML private void onLeaderboard() { navigate("LEADERBOARD"); }
 
-    /**
-     * Navigates to the Player Profile screen.
-     */
+    /** Navigates to the Player Profile screen. */
     @FXML private void onPlayerProfile() { navigate("PLAYER_PROFILE"); }
 
     /**
@@ -303,6 +367,25 @@ public class MainMenuController {
             navigator.accept(screenId);
         } else {
             System.err.println("Navigator not set for: " + screenId);
+        }
+    }
+
+    // ===== simple record for sprite state =====
+    private static class Monster {
+        final ImageView node;
+        double vx;
+        double vy;
+        boolean paused = false;
+        // per-sprite bob parameters for variety
+        final double bobAmp   = randStatic(2.0, 4.0);
+        final double bobSpeed = randStatic(0.2, 0.8);
+
+        Monster(ImageView node, double vx, double vy) {
+            this.node = node; this.vx = vx; this.vy = vy;
+        }
+        void setPaused(boolean p) { this.paused = p; }
+        private static double randStatic(double a, double b) {
+            return ThreadLocalRandom.current().nextDouble(a, b);
         }
     }
 }

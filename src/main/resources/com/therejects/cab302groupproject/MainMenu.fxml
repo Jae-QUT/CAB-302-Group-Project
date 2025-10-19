@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
@@ -11,30 +11,46 @@
            styleClass="main-menu-root"
            stylesheets="@../../../ui/mainmenu.css">
 
-    <!-- Background fence (fills the scene) -->
-    <ImageView fx:id="bgImage" preserveRatio="false" fitWidth="1280" fitHeight="800"
-               StackPane.alignment="CENTER"/>
+    <!-- Background fence -->
+    <ImageView fx:id="bgImage"
+               StackPane.alignment="CENTER"
+               preserveRatio="false"
+               fitWidth="1280" fitHeight="800"
+               mouseTransparent="true"/>
 
-    <!-- Sprite layer: monsters roam here -->
-    <Pane fx:id="monsterLayer" pickOnBounds="false" StackPane.alignment="CENTER"/>
+    <!-- Sprite layer -->
+    <Pane fx:id="monsterLayer"
+          StackPane.alignment="CENTER"
+          pickOnBounds="false"/>
 
-    <!-- Foreground layout: left-aligned menu -->
-    <HBox spacing="24" alignment="CENTER_LEFT" StackPane.alignment="CENTER_LEFT">
-        <Region HBox.hgrow="ALWAYS" prefWidth="48"/> <!-- left gutter -->
+    <!-- FOREGROUND UI (ON TOP) -->
+    <BorderPane fx:id="uiRoot" StackPane.alignment="CENTER_LEFT" pickOnBounds="false">
+        <left>
+            <VBox alignment="TOP_LEFT" spacing="14" fillWidth="false">
+                <BorderPane.margin>
+                    <Insets top="40" right="0" bottom="0" left="40"/>
+                </BorderPane.margin>
 
-        <VBox spacing="18" alignment="CENTER_LEFT" maxWidth="360" styleClass="menu-box">
-            <Label text="Math Battle Monsters" styleClass="title"/>
+                <Label text="Math Battle Monsters" styleClass="title"/>
 
-            <VBox spacing="12" alignment="CENTER_LEFT" maxWidth="320">
-                <Button fx:id="btnPlay"         text="_Play"            onAction="#onPlay"/>
-                <Button fx:id="btnLeaderboard"  text="_Leaderboard"     onAction="#onLeaderboard"/>
-                <Button fx:id="btnChangeTeam"   text="_Player Profile"  onAction="#onPlayerProfile"/>
-                <Button fx:id="btnLogout"       text="_Logout"          onAction="#onLogout"/>
+                <VBox spacing="12" alignment="TOP_LEFT" fillWidth="false">
+                    <Button fx:id="btnPlay"        text="_Play"
+                            onAction="#onPlay"          styleClass="menu-btn"/>
+                    <Button fx:id="btnLeaderboard" text="_Leaderboard"
+                            onAction="#onLeaderboard"  styleClass="menu-btn"/>
+                    <Button fx:id="btnChangeTeam"  text="_Player Profile"
+                            onAction="#onPlayerProfile" styleClass="menu-btn"/>
+                </VBox>
             </VBox>
+        </left>
 
-            <Label text="v0.1.0" styleClass="version"/>
-        </VBox>
-
-        <Region HBox.hgrow="ALWAYS"/> <!-- pushes menu left but keeps center vertical alignment -->
-    </HBox>
+        <bottom>
+            <Button fx:id="btnLogout" text="_Logout" onAction="#onLogout" styleClass="logout-btn"
+                    BorderPane.alignment="BOTTOM_LEFT">
+                <BorderPane.margin>
+                    <Insets top="0" right="0" bottom="40" left="40"/>
+                </BorderPane.margin>
+            </Button>
+        </bottom>
+    </BorderPane>
 </StackPane>

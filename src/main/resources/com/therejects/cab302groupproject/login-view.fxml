@@ -36,8 +36,54 @@
                             <VBox.margin><Insets top="0" right="0" bottom="10" left="0"/></VBox.margin>
                         </Label>
 
-                        <Button text="VIEW MORE" onAction="#onViewMore" styleClass="primary"/>
+                        <Button text="VIEW MORE" onAction="#onViewMore" styleClass="btn-yellow"/>
                     </VBox>
+
+                    <!-- New Info Overlay Modal (carousel) -->
+                    <StackPane fx:id="infoOverlay" visible="false" opacity="0" styleClass="overlay-pane">
+                        <StackPane fx:id="carouselRoot"
+                                   styleClass="carousel"
+                                   maxWidth="440" maxHeight="360"
+                                   prefWidth="440" prefHeight="360">
+                            <!-- Background artwork per slide -->
+                            <ImageView fx:id="slideImage" fitWidth="440" fitHeight="360" preserveRatio="false"
+                                       StackPane.alignment="CENTER" opacity="0.18"/>
+
+                            <!-- Slide content -->
+                            <VBox fx:id="slideContent" alignment="CENTER" spacing="12" maxWidth="360" StackPane.alignment="CENTER">
+                                <Label fx:id="slideTitle" wrapText="true" textAlignment="CENTER" styleClass="overlay-title" text="Slide Title"/>
+                                <Label fx:id="slideBody" styleClass="overlay-body" wrapText="true"
+                                       text="Body copy goes here and describes the slide."/>
+                                <Button fx:id="slideCta" text="Continue" onAction="#onCarouselCta" styleClass="btn-primary"/>
+                            </VBox>
+
+                            <!-- Nav buttons -->
+                            <Button fx:id="prevBtn" text="❮" onAction="#onPrev"
+                                    styleClass="nav-btn left" StackPane.alignment="CENTER_LEFT">
+                                <StackPane.margin><Insets left="16"/></StackPane.margin>
+                            </Button>
+
+                            <Button fx:id="nextBtn" text="❯" onAction="#onNext"
+                                    styleClass="nav-btn right" StackPane.alignment="CENTER_RIGHT">
+                                <StackPane.margin><Insets right="16"/></StackPane.margin>
+                            </Button>
+
+                            <!-- Dots -->
+                            <HBox fx:id="dots"
+                                  alignment="CENTER"
+                                  spacing="10"
+                                  prefHeight="20">
+                                <StackPane.margin>
+                                    <Insets bottom="16"/>
+                                </StackPane.margin>
+                            </HBox>
+
+                            <!-- Close -->
+                            <Button text="✕" onAction="#onCloseOverlay" styleClass="close-btn" StackPane.alignment="TOP_RIGHT"/>
+                        </StackPane>
+                    </StackPane>
+
+
                 </StackPane>
 
                 <!-- RIGHT: login form -->

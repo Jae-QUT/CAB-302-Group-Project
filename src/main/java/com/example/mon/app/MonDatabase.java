@@ -3,7 +3,7 @@ package com.example.mon.app;
 import java.sql.*;
 
 public final class MonDatabase {
-    private static final String URL = "jdbc:sqlite:/Users/uni/IdeaProjects/CAB-302-Group-Project/mathmonsters.db"; // path to your .db
+    private static final String URL = "mathmonsters.db"; // path to your .db
     private static Connection conn;
 
     private MonDatabase() {}

@@ -1,7 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
-import com.therejects.cab302groupproject.model.*;           // * means "ALL". Takes ALL things from that menu
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +9,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -31,41 +29,41 @@ public class ProfileController {
     @FXML private Button backButton;
 
     private final UserDao userDao = new UserDao();
-    private User currentUser;
+
+
+    @FXML
+    public void initialize() {
+        loadProfile();
+    }
 
     /**
-     * Loads the profile data for the given username from SQlite DB, and populates fields.
-     *
-     * @param username the username of the profile to load
+     * Loads the profile data for the given username from SQlite DB, and populates fields
      */
-    public void loadProfile(String username) {
-        try {
-            Optional<User> result = userDao.findByUsername(username);
-            if (result.isPresent()) {
-                currentUser = result.get();
-                usernameField.setText(currentUser.getUsername());
-                emailField.setText(currentUser.getStudentEmail());
-                yearLevelField.setText(String.valueOf(currentUser.getGradeYearLevel()));
+    public void loadProfile() {
+        User currentUser = User.getCurrentUser();
 
-                currentUser.setGamesPlayed(10);
-                currentUser.setGamesWon(7);
-                currentUser.setGamesLost(3);
-                currentUser.getBadges().addAll(java.util.List.of("Math Novice", "Quick Thinker"));
-                currentUser.getFriends().addAll(java.util.List.of("Alice", "Bob"));
-
-                refreshExtras();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "User not found");
-            }
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Database error loading profile");
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "No user logged in");
+            return;
         }
+        usernameField.setText(currentUser.getUsername());
+        emailField.setText(currentUser.getStudentEmail());
+        yearLevelField.setText(String.valueOf(currentUser.getGradeYearLevel()));
+
+        currentUser.setGamesPlayed(10);
+        currentUser.setGamesWon(7);
+        currentUser.setGamesLost(3);
+        currentUser.getBadges().addAll(java.util.List.of("Math Novice", "Quick Thinker"));
+        currentUser.getFriends().addAll(java.util.List.of("Alice", "Bob"));
+
+        refreshExtras();
     }
 
     /**
      * Refresh stats, badges and friend sections with data from current user
      */
     private void refreshExtras() {
+        User currentUser = User.getCurrentUser();
         statsLabel.setText("Games: " + currentUser.getGamesPlayed()
                 + " | Won: " + currentUser.getGamesWon()
                 + " | Lost: " + currentUser.getGamesLost());
@@ -79,6 +77,7 @@ public class ProfileController {
      */
     @FXML
     private void handleSave() {
+        User currentUser = User.getCurrentUser();
         if (currentUser == null) return;
 
         try {
@@ -95,6 +94,7 @@ public class ProfileController {
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Year Level must be a number.");
         } catch (SQLException e) {
+            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database error saving profile.");
         }
     }

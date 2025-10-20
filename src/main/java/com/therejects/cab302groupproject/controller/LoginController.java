@@ -1,6 +1,5 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.User;
 import com.therejects.cab302groupproject.MainMenuLauncher;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.fxml.FXML;

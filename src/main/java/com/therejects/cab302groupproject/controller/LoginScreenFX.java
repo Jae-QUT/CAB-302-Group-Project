@@ -4,15 +4,24 @@ import com.therejects.cab302groupproject.model.User;
 import com.therejects.cab302groupproject.model.*;
 import com.therejects.cab302groupproject.model.UserDao;
 import com.therejects.cab302groupproject.model.AuthService;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -56,7 +65,7 @@ public class LoginScreenFX extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setTitle("PokéMath — Sign in");
+        stage.setTitle("Math Monsters — Sign in");
 
         // Ensure the separate AUTH database/table exists
         try {
@@ -67,8 +76,10 @@ public class LoginScreenFX extends Application {
         }
 
         // Heading label
-        Label heading = new Label("Welcome to PokéMath");
+        Label heading = new Label("Welcome to Math Monsters!");
         heading.setFont(Font.font(26));
+        heading.getStyleClass().add("heading");
+
 
         // --- Password show/hide binding ---
         passwordShown.managedProperty().bind(showPasswordCheckBox.selectedProperty());
@@ -82,18 +93,24 @@ public class LoginScreenFX extends Application {
         grid.setHgap(10);
         grid.setVgap(12);
         grid.setPadding(new Insets(16));
+        grid.getStyleClass().add("grid-pane");
 
         int r = 0;
         grid.add(heading, 0, r, 3, 1);
 
+        // --- Input fields with placeholder text ---
+        usernameField.setPromptText("Email / Username");
+        passwordHidden.setPromptText("Password");
+        passwordShown.setPromptText("Password");
+
+        // Adjust layout: no labels, just fields centered
         r++;
-        grid.add(new Label("Email / Username"), 0, r);
-        grid.add(usernameField, 1, r);
+        grid.add(usernameField, 0, r, 2, 1);
 
         r++;
-        grid.add(new Label("Password"), 0, r);
-        grid.add(passwordHidden, 1, r);
-        grid.add(passwordShown, 1, r); // stacked; visibility handled by binding
+        grid.add(passwordHidden, 0, r, 2, 1);
+        grid.add(passwordShown, 0, r, 2, 1); // stacked, managed by binding
+
 
         r++;
         HBox toggles = new HBox(16, rememberMeCheckBox, showPasswordCheckBox);
@@ -117,10 +134,109 @@ public class LoginScreenFX extends Application {
         );
 
         // --- Scene setup ---
-        Scene scene = new Scene(grid, 520, 340);
-        ScreenManager sm = new ScreenManager(stage);
-        sm.navigateTo("LOGOUT");
+        // --- Static Background Layer ---
+        Pane backgroundLayer = new Pane();
+        backgroundLayer.setMouseTransparent(true);
+
+        // --- Background image (fills the entire window) ---
+        ImageView background = new ImageView(new Image(
+                getClass().getResource("/images/Sprites/Background.png").toExternalForm()
+        ));
+
+        // Fill the full scene, oversizing slightly to eliminate blue edges
+        background.setPreserveRatio(false);
+        background.setFitWidth(530);   // +10px to ensure full bleed
+        background.setFitHeight(350);  // +10px to cover top bar
+        background.setLayoutX(-32);     // offset left
+        background.setLayoutY(-32);     // offset up
+        background.setSmooth(true);
+
+        backgroundLayer.getChildren().add(background);
+
+
+        // --- Monster Sprites ---
+
+        // Bottom-left: Batmon
+        ImageView Batmon = new ImageView(new Image(
+                getClass().getResource("/images/Sprites/Batmon.png").toExternalForm()
+        ));
+        Batmon.setFitWidth(90);
+        Batmon.setPreserveRatio(true);
+        Batmon.setLayoutX(-10);
+        Batmon.setLayoutY(220);
+
+        // Bottom-right: Sharkle
+        ImageView Sharkle = new ImageView(new Image(
+                getClass().getResource("/images/Sprites/Sharkle.png").toExternalForm()
+        ));
+        Sharkle.setFitWidth(120);
+        Sharkle.setPreserveRatio(true);
+        Sharkle.setLayoutX(365);
+        Sharkle.setLayoutY(190);
+
+        // Top-right: Hawtosaur
+        ImageView Hawtosaur = new ImageView(new Image(
+                getClass().getResource("/images/Sprites/Hawtosaur.png").toExternalForm()
+        ));
+        Hawtosaur.setFitWidth(80);
+        Hawtosaur.setPreserveRatio(true);
+        Hawtosaur.setLayoutX(375);
+        Hawtosaur.setLayoutY(15);
+
+        // Optional: soft drop shadow to separate from background
+        Batmon.setEffect(new javafx.scene.effect.DropShadow(10, javafx.scene.paint.Color.rgb(0,0,0,0.4)));
+        Sharkle.setEffect(new javafx.scene.effect.DropShadow(10, javafx.scene.paint.Color.rgb(0,0,0,0.4)));
+        Hawtosaur.setEffect(new javafx.scene.effect.DropShadow(10, javafx.scene.paint.Color.rgb(0,0,0,0.4)));
+
+        backgroundLayer.getChildren().addAll(Batmon, Sharkle, Hawtosaur);
+
+        // --- Bobbing animations ---
+        Timeline bob1 = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(Batmon.translateYProperty(), 0)),
+                new KeyFrame(Duration.seconds(2), new KeyValue(Batmon.translateYProperty(), -10))
+        );
+        bob1.setAutoReverse(true);
+        bob1.setCycleCount(Animation.INDEFINITE);
+        bob1.play();
+
+        Timeline bob2 = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(Sharkle.translateYProperty(), 0)),
+                new KeyFrame(Duration.seconds(2.3), new KeyValue(Sharkle.translateYProperty(), -8))
+        );
+        bob2.setAutoReverse(true);
+        bob2.setCycleCount(Animation.INDEFINITE);
+        bob2.play();
+
+        Timeline bob3 = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(Hawtosaur.translateYProperty(), 0)),
+                new KeyFrame(Duration.seconds(1.8), new KeyValue(Hawtosaur.translateYProperty(), -12))
+        );
+        bob3.setAutoReverse(true);
+        bob3.setCycleCount(Animation.INDEFINITE);
+        bob3.play();
+
+
+
+        // --- Layer everything together ---
+        // Create a wrapper to center the login grid
+        StackPane gridWrapper = new StackPane(grid);
+        gridWrapper.setAlignment(Pos.CENTER); // centers the grid
+        gridWrapper.setPadding(new Insets(0, 0, 0, 0));
+        grid.setMaxWidth(375);
+        StackPane.setAlignment(gridWrapper, Pos.CENTER);//
+
+        // Combine background + centered content
+        StackPane root = new StackPane(backgroundLayer, gridWrapper);
+
+        root.getStyleClass().addAll("login-root", "app-root");
+
+        Scene scene = new Scene(root, 520, 340);
+        scene.getStylesheets().add(getClass().getResource("/ui/login.css").toExternalForm());
+
+        root.getStyleClass().addAll("login-root", "app-root");
+
         stage.setScene(scene);
+        stage.setTitle("Math Monsters - Login");
         stage.show();
     }
 

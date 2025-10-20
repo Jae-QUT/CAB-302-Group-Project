@@ -76,7 +76,7 @@
 .h2 { -fx-font-family: "Super Adorable"; -fx-font-size: 24px; -fx-text-fill: -color-text; }
 .muted { -fx-text-fill: -color-muted; }
 
-/* Card container (use on VBox/StackPane/GridPane) */
+/* Card container (use on VBox/StackPane/GridPane)
 .card {
   -fx-background-color: -color-surface;
   -fx-background-radius: -radius;
@@ -86,6 +86,7 @@
   -fx-border-radius: -radius;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0.25, 0, 12);
 }
+*/
 
 /* Buttons */
 .button {

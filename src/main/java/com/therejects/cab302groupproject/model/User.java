@@ -19,13 +19,16 @@ public class User {
     private String resetToken;
     private long resetExpiry;
 
-    public User(String username, String password, String studentEmail, int anInt, int score) { }
-
     public User(String username, String password, String studentEmail, int gradeYearLevel) {
+        this(username, password, studentEmail, gradeYearLevel, 0);
+    }
+
+    public User(String username, String password, String studentEmail, int gradeYearLevel, int score) {
         this.username = username;
         this.password = password;
         this.studentEmail = studentEmail;
         this.gradeYearLevel = gradeYearLevel;
+        this.score = score;
     }
 
     // Getters

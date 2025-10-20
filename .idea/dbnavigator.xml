@@ -11,6 +11,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
+      <assistant-state connection-id="0c2fe3d1-a6a9-43b2-8d93-23caa3e62cd9" default-profile-name="" selected-conversation-id="" assistant-type="GENERIC" availability="UNAVAILABLE" acknowledgement="NONE">
+        <conversations />
+      </assistant-state>
       <assistant-state connection-id="81b87e6f-6bfc-48de-9c52-337b24761b97" default-profile-name="" selected-conversation-id="" assistant-type="GENERIC" availability="UNAVAILABLE" acknowledgement="NONE">
         <conversations />
       </assistant-state>
@@ -30,7 +33,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="8e82775d-bae2-4241-b92a-45b884e8ff95">
-      <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[-- See table structure
+      <console name="Connection" type="STANDARD" schema="MonDatabase" session="Main"><![CDATA[-- See table structure
 PRAGMA table_info(LoginRegisterUI);
 
 -- Check all rows
@@ -60,6 +63,10 @@ SELECT COUNT(*) FROM LoginRegisterUI;]]></console>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="8e82775d-bae2-4241-b92a-45b884e8ff95" />
+    <connection id="81b87e6f-6bfc-48de-9c52-337b24761b97" />
+    <connection id="0c2fe3d1-a6a9-43b2-8d93-23caa3e62cd9" />
+    <connection id="ce37b2d6-da1b-4456-8c5b-d6fd3dd0c714" />
+    <connection id="df874b8c-f3a6-4536-8fcf-698f61a98f91" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />

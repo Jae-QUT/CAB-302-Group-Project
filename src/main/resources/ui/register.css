@@ -1,0 +1,48 @@
+.dialog-pane {
+    -fx-background-color: linear-gradient(to bottom right, #f8fcff, #e6f1ff);
+    -fx-border-color: #0099ff;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-font-family: "Comic Sans MS", "Poppins", "Segoe UI";
+}
+
+/* Header text styling */
+.dialog-pane > .header-panel > .label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #003366;
+}
+
+/* Input fields */
+.text-field,
+.password-field,
+.spinner {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #99ccff;
+    -fx-border-width: 1;
+    -fx-padding: 6;
+}
+
+/* Placeholder (prompt) text */
+.text-field:prompt-text,
+.password-field:prompt-text {
+    -fx-text-fill: #7faedc;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #0088ff, #0066cc);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 18;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #00aaff, #0088ff);
+    -fx-cursor: hand;
+}

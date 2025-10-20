@@ -11,6 +11,8 @@
 
    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Profile" />
 
+   <!-- Profile Fields -->
+
    <TextField fx:id="usernameField" editable="false" promptText="Username" />
    <TextField fx:id="emailField" promptText="Email" />
    <TextField fx:id="yearLevelField" promptText="Year Level" />

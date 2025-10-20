@@ -40,4 +40,17 @@ public final class AuthDatabase {
 """;
         try (Statement st = get().createStatement()) { st.execute(sql); }
     }
+
+    /**
+     * Allows test classes to override the normal file-based connection
+     * with an in-memory SQLite connection for unit testing.
+     */
+    public static synchronized void override(Connection testConn) throws SQLException {
+        if (conn != null && !conn.isClosed()) {
+            conn.close(); // Close old connection if needed
+        }
+        conn = testConn;
+    }
+
+
 }

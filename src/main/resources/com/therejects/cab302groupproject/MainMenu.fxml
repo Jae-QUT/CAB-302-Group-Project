@@ -1,25 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<StackPane  xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.therejects.cab302groupproject.controller.MainMenuController"
-           id="root" fx:id="root">
-    <AnchorPane>
-        <VBox spacing="16" alignment="CENTER"
-              AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-            <Label text="Math Battle Monsters" styleClass="app-title"
-            />
-            <VBox spacing="10" maxWidth="320" alignment="CENTER">
-                <Button fx:id="btnPlay"       text="_Play"        onAction="#onPlay"/>
-                <Button fx:id="btnLeaderboard" text="_Leaderboard" onAction="#onLeaderboard"/>
-                <Button fx:id="btnChangeTeam" text="_Player Profile" onAction="#onPlayerProfile"/>
-                <Button fx:id="btnLogout"     text="_Logout"      onAction="#onLogout"/>
-            </VBox>
 
-            <Label text="v0.1.0" styleClass="version"
-            />
-        </VBox>
-    </AnchorPane>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.therejects.cab302groupproject.controller.MainMenuController"
+           fx:id="root"
+           styleClass="main-menu-root"
+           stylesheets="@../../../ui/mainmenu.css">
+
+    <!-- Background fence -->
+    <ImageView fx:id="bgImage"
+               StackPane.alignment="CENTER"
+               preserveRatio="false"
+               fitWidth="1280" fitHeight="800"
+               mouseTransparent="true"/>
+
+    <!-- Sprite layer -->
+    <Pane fx:id="monsterLayer"
+          StackPane.alignment="CENTER"
+          pickOnBounds="false"/>
+
+    <!-- FOREGROUND UI (ON TOP) -->
+    <BorderPane fx:id="uiRoot" StackPane.alignment="CENTER_LEFT" pickOnBounds="false">
+        <left>
+            <VBox alignment="TOP_LEFT" spacing="14" fillWidth="false">
+                <BorderPane.margin>
+                    <Insets top="40" right="0" bottom="0" left="40"/>
+                </BorderPane.margin>
+
+                <Label text="Math Battle Monsters" styleClass="title"/>
+
+                <VBox spacing="12" alignment="TOP_LEFT" fillWidth="false">
+                    <Button fx:id="btnPlay"        text="_Play"
+                            onAction="#onPlay"          styleClass="menu-btn"/>
+                    <Button fx:id="btnLeaderboard" text="_Leaderboard"
+                            onAction="#onLeaderboard"  styleClass="menu-btn"/>
+                    <Button fx:id="btnChangeTeam"  text="_Player Profile"
+                            onAction="#onPlayerProfile" styleClass="menu-btn"/>
+                </VBox>
+            </VBox>
+        </left>
+
+        <bottom>
+            <Button fx:id="btnLogout" text="_Logout" onAction="#onLogout" styleClass="logout-btn"
+                    BorderPane.alignment="BOTTOM_LEFT">
+                <BorderPane.margin>
+                    <Insets top="0" right="0" bottom="40" left="40"/>
+                </BorderPane.margin>
+            </Button>
+        </bottom>
+    </BorderPane>
 </StackPane>

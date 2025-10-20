@@ -1,19 +1,34 @@
-/* Background gradient like the reference */
+/* ============= Root / Theme Lookups ============= */
 .app-root {
-    -fx-background-color: linear-gradient(to bottom right, #1c86ff, #2bb8ff);
+    /* Palette (looked-up colors) */
+    -primary: #1f8fff;           /* bright sky blue */
+    -primary-dark: #167cf0;
+    -accent: #ffd54f;            /* warm yellow */
+    -ok: #4cd964;                /* success green */
+    -ink: #0b1b3a;               /* headings */
+    -text: #263238;              /* body */
+    -muted: rgba(0,0,0,0.55);
+    -surface: rgba(255,255,255,0.92);
+
+    -fx-background-color:
+        radial-gradient(center 20% 15%, radius 80%, #7bd3ff66, transparent),
+        linear-gradient(to bottom right, #68b6ff, #9be2ff);
     -fx-padding: 32;
+
+    /* Subtle parallax vibe */
+    -fx-background-insets: 0, 0;
 }
 
-/* Card shell */
+/* ============= Card Shell ============= */
 .card {
-    -fx-background-color: transparent; /* panes define their own bg */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.32), 24, 0.2, 0, 10);
-    -fx-background-radius: 16;
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 24, 0.2, 0, 10);
+    -fx-background-radius: 24;
 }
 
-/* Left side (image) */
+/* ============= Left Pane (Hero) ============= */
 .left-pane {
-    -fx-background-radius: 16 0 0 16;
+    -fx-background-radius: 24 0 0 24;
     -fx-min-width: 520;
     -fx-max-width: 520;
     -fx-alignment: center;
@@ -23,59 +38,298 @@
 }
 .brand {
     -fx-text-fill: white;
-    -fx-font-size: 35px;
-    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-font-weight: 900;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0.2, 0, 2);
 }
 .tagline {
-    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-text-fill: rgba(255,255,255,0.95);
     -fx-font-size: 13px;
     -fx-max-width: 360;
     -fx-alignment: center;
     -fx-text-alignment: center;
 }
 .primary {
-    -fx-background-color: #0f7aff;
-    -fx-text-fill: white;
-    -fx-background-radius: 24;
+    -fx-background-color: -accent;
+    -fx-text-fill: #2e2e2e;
+    -fx-background-radius: 999;
     -fx-padding: 10 20;
-    -fx-font-weight: bold;
+    -fx-font-weight: 800;
 }
 
-/* Right side (form) */
+/* ============= Right Pane (Form) ============= */
 .right-pane {
-    -fx-background-color: rgba(255,255,255,0.88);
-    -fx-background-radius: 0 16 16 0;
+    -fx-background-color: -surface;
+    -fx-background-radius: 0 24 24 0;
     -fx-padding: 28 32;
-    -fx-min-width: 420;
-    -fx-max-width: 420;
+    -fx-min-width: 440;
+    -fx-max-width: 460;
 }
 
-/* Inputs: rounded “pill” look */
+/* Headings & small text */
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -ink;
+    -fx-padding: 0 0 6 0;
+}
+.small-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: -muted;
+}
+
+/* ============= Inputs (Pill fields) ============= */
 .text-field, .password-field {
-    -fx-background-radius: 22;
+    -fx-background-radius: 999;
     -fx-background-color: white;
-    -fx-padding: 10 14;
-    -fx-border-radius: 22;
+    -fx-padding: 12 16;
+    -fx-border-radius: 999;
     -fx-border-color: #c7d2fe;
     -fx-border-width: 1;
-    -fx-font-size: 13px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -text;
 }
 
-/* Big login button */
-.button:default {
-    -fx-background-color: #1f8fff;
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -primary;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(31,143,255,0.25), 10, 0.3, 0, 2);
+}
+
+/* Validation helpers (add styleClass "error" to field) */
+.text-field.error, .password-field.error {
+    -fx-border-color: #ff6b6b;
+    -fx-border-width: 2;
+}
+
+/* ============= Buttons ============= */
+/* Primary action (use Button.setDefaultButton(true) or styleClass "btn-primary") */
+.button:default, .btn-primary {
+    -fx-background-color: linear-gradient(to bottom, -primary, -primary-dark);
     -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 24;
-    -fx-padding: 10 22;
+    -fx-font-weight: 800;
+    -fx-background-radius: 999;
+    -fx-padding: 12 24;
+    -fx-font-size: 15px;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
 }
-.button:default:hover {
-    -fx-background-color: #167cf0;
+.button:default:hover, .btn-primary:hover {
+    -fx-background-color: -primary-dark;
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+.button:default:pressed, .btn-primary:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
 }
 
-.title {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
+/* Secondary / Ghost (for less-important actions) */
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: -primary;
+    -fx-font-weight: 700;
+    -fx-background-radius: 999;
+    -fx-padding: 10 16;
+    -fx-border-color: transparent;
+}
+.btn-ghost:hover {
+    -fx-background-color: rgba(31,143,255,0.08);
+    -fx-cursor: hand;
+}
+
+/* ============= Hyperlink (for "Register") ============= */
+.hyperlink, .link-like {
+    -fx-text-fill: -primary;
+    -fx-font-weight: 800;
+    -fx-underline: true;
+    -fx-padding: 0 0 0 12; /* space when placed to the right of Login */
+}
+.hyperlink:hover, .link-like:hover {
+    -fx-text-fill: -primary-dark;
+    -fx-cursor: hand;
+}
+
+/* Remember Me (circular checkbox to match rounded fields) */
+.check-box {
+    -fx-text-fill: -text;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-alignment: center-left;
+}
+
+.check-box > .box {
+    -fx-background-color: white;
+    -fx-background-radius: 50%; /* makes it a perfect circle */
+    -fx-border-color: #c7d2fe;
+    -fx-border-radius: 50%;
+    -fx-padding: 10;
+    -fx-min-width: 24;
+    -fx-min-height: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0.3, 0, 1);
+}
+
+.check-box:hover > .box {
+    -fx-border-color: -primary;
+}
+
+.check-box:selected > .box {
+    -fx-border-color: -primary;
+    -fx-background-color: white;
+}
+
+/* Inner check mark */
+.check-box:selected > .box > .mark {
+    -fx-background-color: -primary;
+    -fx-background-radius: 50%;
+    -fx-min-width: 10;
+    -fx-min-height: 10;
+}
+
+/* ============= Helper Chips / Badges (optional) ============= */
+.badge {
+    -fx-background-color: #fffdfa;
+    -fx-text-fill: #7a5b00;
+    -fx-background-radius: 999;
+    -fx-padding: 4 10;
+    -fx-font-weight: 800;
+    -fx-font-size: 12px;
+    -fx-border-color: #ffe08a;
+    -fx-border-radius: 999;
+}
+
+/* ============= Tiny Footer / Legal ============= */
+.footer-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: -muted;
+}
+
+/* ============= Micro layout utilities ============= */
+.row-gap-8 { -fx-spacing: 8; }
+.row-gap-12 { -fx-spacing: 12; }
+.row-gap-16 { -fx-spacing: 16; }
+
+
+/* ============= View More Overlay Modal ============= */
+.overlay-pane {
+    -fx-background-color: rgba(255,255,255,0.96);
+    -fx-background-radius: 24;
+    -fx-alignment: center;
+    -fx-padding: 24;
+}
+
+/* Carousel frame */
+.carousel {
+    -fx-background-color: rgba(255,255,255,0.85);
+    -fx-background-radius: 24;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 16, 0.24, 0, 4);
+}
+
+/* Title & body*/
+.overlay-title { -fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #0b1b3a; }
+.overlay-body  { -fx-font-size: 14px; -fx-text-fill: #37474f; -fx-text-alignment: center; }
+
+/* Carousel nav buttons */
+.button.nav-btn {
+    -fx-pref-width: 44; -fx-pref-height: 44;
+    -fx-min-width: 44;  -fx-min-height: 44;
+    -fx-max-width: 44;  -fx-max-height: 44;
+
+    -fx-alignment: center;
+    -fx-content-display: center;
+    -fx-text-alignment: center;
+    -fx-background-radius: 999;
+    -fx-background-color: #ffd54f;   /* bright yellow base */
     -fx-text-fill: #0b1b3a;
-    -fx-padding: 0 0 6 0;
+
+    -fx-font-weight: 800;
+    -fx-font-size: 18px;
+    -fx-font-family: "Super Adorable";
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.22), 10, 0.3, 0, 3);
+}
+
+/* Hover + pressed states */
+.button.nav-btn:hover {
+    -fx-background-color: #FFCA28; /* slightly darker yellow */
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+.button.nav-btn:pressed {
+    -fx-background-color: #f4b400;   /* darker yellow on press */
+    -fx-translate-y: 1;              /* small press-down animation */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 6, 0.25, 0, 2);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Left/right positioning tweaks */
+.nav-btn.left  { -fx-translate-x: -12; }
+.nav-btn.right { -fx-translate-x: 12; }
+
+/* Close */
+.close-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #546e7a;
+    -fx-font-size: 16px;
+    -fx-padding: 4 8;
+}
+.close-btn:hover {
+    -fx-background-color: rgba(0,0,0,0.06);
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+/* ============= Carousel Dots ============= */
+.dot {
+    -fx-background-color: rgba(11,27,58,0.25);
+    -fx-background-radius: 999;
+    -fx-min-width: 8; -fx-min-height: 8;
+    -fx-pref-width: 8; -fx-pref-height: 8;
+    -fx-transition: all 0.2s ease;
+}
+/* Active (current slide) dot */
+.dot-active {
+    -fx-fill: #1f8fff;
+    -fx-scale-x: 1.4;
+    -fx-scale-y: 1.4;
+}
+
+/* Hover effect — similar to button hover */
+.dot:hover {
+    -fx-fill: #5a5a5a;                  /* same blue as your active dot */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+
+/* ============= Yellow Primary Button (VIEW MORE) ============= */
+.button.btn-yellow {
+    -fx-background-color: linear-gradient(to bottom, #ffd54f, #fbc02d); /* light → dark yellow */
+    -fx-text-fill: #0b1b3a;          /* same deep navy as your headings */
+    -fx-font-weight: 800;
+    -fx-background-radius: 999;
+    -fx-padding: 12 24;
+    -fx-font-size: 15px;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0.2, 2, 2);
+}
+
+/* Hover */
+.button.btn-yellow:hover {
+    -fx-background-color: #ffca28;   /* slightly deeper gold */
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-cursor: hand;
+}
+
+/* Pressed */
+.button.btn-yellow:pressed {
+    -fx-background-color: #f9a825;   /* darker yellow when pressed */
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
 }

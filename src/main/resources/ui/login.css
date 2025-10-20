@@ -74,8 +74,12 @@
 }
 
 .title {
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #0b1b3a;
     -fx-padding: 0 0 6 0;
+}
+
+.small-text {
+    -fx-font-size: 15px;
 }

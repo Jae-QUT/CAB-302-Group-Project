@@ -20,7 +20,8 @@ public class UserDaoTest {
               Username TEXT PRIMARY KEY,
               PasswordHash TEXT NOT NULL,
               StudentEmail TEXT NOT NULL,
-              GradeYearLevel INTEGER NOT NULL
+              "GradeYearLevel" INTEGER NOT NULL,
+              "Score" INTEGER NOT NULL
             );
         """);
         AuthDatabase.override(conn); // add static setter in AuthDatabase
@@ -29,7 +30,7 @@ public class UserDaoTest {
 
     @Test
     void testInsertAndFind() throws Exception {
-        User u = new User("bob", "pw123", "bob@qut.edu.au", 10);
+        User u = new User("bob", "pw123", "bob@qut.edu.au", 10, 150);
         assertTrue(dao.insert(u));
 
         var found = dao.findByUsername("bob");
@@ -39,7 +40,7 @@ public class UserDaoTest {
 
     @Test
     void testExists() throws Exception {
-        User u = new User("alice", "pw321", "alice@qut.edu.au", 9);
+        User u = new User("alice", "pw321", "alice@qut.edu.au", 9, 35);
         dao.insert(u);
         assertTrue(dao.exists("alice"));
         assertFalse(dao.exists("ghost"));
@@ -47,7 +48,7 @@ public class UserDaoTest {
 
     @Test
     void testUpdateProfile() throws Exception {
-        User u = new User("sam", "pw", "s@qut.edu.au", 7);
+        User u = new User("sam", "pw", "s@qut.edu.au", 7, 50);
         dao.insert(u);
 
         u.setStudentEmail("new@qut.edu.au");

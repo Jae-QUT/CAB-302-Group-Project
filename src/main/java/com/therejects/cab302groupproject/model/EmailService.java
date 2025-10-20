@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class EmailService {
     private final String from = "mathbattlemonsters@gmail.com";
-    private final String password = System.getenv("POKEMATH_APP_PASSWORD");
+    private final String password = "dvzw fbxc ggtp izpa";
 
     public void sendPasswordResetEmail(String to, String token) throws MessagingException {
         if (password == null || password.isBlank()) {

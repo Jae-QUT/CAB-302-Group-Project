@@ -135,7 +135,9 @@ public class LoginScreenFX extends Application {
         Scene scene = new Scene(root, 520, 340);
 
         /// Hopefully sets the whole window to blue, removing the ugly Windows bars///
-        stage.initStyle(StageStyle.TRANSPARENT);
+        if (!stage.isShowing()) {
+            stage.initStyle(StageStyle.TRANSPARENT);
+        }
         root.setOnMousePressed(e -> xOffset = e.getSceneX());
         root.setOnMouseDragged(e -> stage.setX(e.getScreenX() - xOffset));
 

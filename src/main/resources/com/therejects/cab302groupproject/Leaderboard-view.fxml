@@ -20,11 +20,11 @@
 
       <StackPane prefHeight="82.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Pagination fx:id="leaderboardPage" maxPageIndicatorCount="100" pageCount="3" prefHeight="110.0" prefWidth="1000.0" stylesheets="@../../../ui/JaeGen.css" />
+            <Pagination fx:id="leaderboardPage" maxPageIndicatorCount="100" pageCount="3" prefHeight="110.0" prefWidth="1000.0" />
          </children>
       </StackPane>
 
-      <GridPane alignment="TOP_CENTER" layoutX="10.0" layoutY="76.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="566.0" prefWidth="956.0" stylesheets="@../../../ui/JaeGen.css" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="75.0">
+      <GridPane fx:id="leaderboardGrid" alignment="TOP_CENTER" prefHeight="569.0" prefWidth="900.0" styleClass="leaderboard-grid" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="75.0">
 
          <columnConstraints>
             <ColumnConstraints fx:id="scorePosition" halignment="CENTER" hgrow="ALWAYS" maxWidth="271.0" minWidth="0.0" prefWidth="266.0" />

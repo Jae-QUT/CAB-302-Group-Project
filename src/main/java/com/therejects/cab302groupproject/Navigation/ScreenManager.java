@@ -21,7 +21,7 @@ public class ScreenManager {
         LEADERBOARD("/com/therejects/cab302groupproject/Leaderboard-view.fxml", "Leaderboard"),
         PLAYER_PROFILE("/com/therejects/cab302groupproject/ProfileView.fxml", "Player Profile"),
         LOGOUT("/com/therejects/cab302groupproject/login-view.fxml", "Login");
-//        REGISTER_DIALOG("/com/example/mon/app/LoginScreen.java", "Register Dialog");
+//        REGISTER_DIALOG("/com/example/mon/app/RegisterDialog.java", "Register Dialog");
 
         private final String fxml;
         private final String title;
@@ -69,14 +69,6 @@ public class ScreenManager {
 
 //    < NEED TO COME BACK AND CHANGE THESE AS THEY ARE PLACEHOLDERS >
 
-    private void loadLoginProgrammatic() {
-        try {
-            new com.therejects.cab302groupproject.controller.LoginScreenFX().start(stage);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load Login screen", e);
-        }
-    }
-
     /**
      * Function that is used to determine which {@link Screen} is assigned to each displau
      * @param screenId is the enumerable that was assigned in {@link Screen}
@@ -86,7 +78,7 @@ public class ScreenManager {
             case "PLAY"        -> loadScreen(Screen.PLAY);
             case "LEADERBOARD" -> loadScreen(Screen.LEADERBOARD);
             case "PLAYER_PROFILE" -> loadScreen(Screen.PLAYER_PROFILE);
-            case "LOGOUT"          -> loadLoginProgrammatic(); // <-- back to LoginScreenFX
+            case "LOGOUT"      -> loadScreen(Screen.LOGOUT);
             case "MAIN_MENU" -> loadScreen(Screen.MAIN_MENU);       //
 //            case "REGISTER_DIALOG" -> loadScreen(Screen.REGISTER_DIALOG);
 //            case "" -> loadScreen(Screen.);

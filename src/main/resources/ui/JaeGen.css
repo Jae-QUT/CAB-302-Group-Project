@@ -86,7 +86,21 @@
   -fx-border-radius: -radius;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0.25, 0, 12);
 }
+.leaderboard-grid .label {
+    -fx-font-family: "Super Adorable";
+    -fx-font-size: 24px;
+    -fx-text-fill: #222;
+}
 
+/* Make header labels stand out */
+.leaderboard-grid .leaderboard-header {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 0 10px 0;
+}
+
+
+}
 /* Buttons */
 .button {
   -fx-background-color: -color-accent;

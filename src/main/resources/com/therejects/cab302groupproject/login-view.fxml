@@ -93,7 +93,7 @@
                     <PasswordField fx:id="passwordField" promptText="Password" maxWidth="320"/>
                     <HBox spacing="8" alignment="CENTER_LEFT">
                         <CheckBox fx:id="rememberMe" text="Remember me" styleClass="small-text"/>
-                        <!--                        <Hyperlink text="Forgot password?" styleClass="small-text" onAction="#onForgotPassword"/>-->
+<!--                        <Hyperlink text="Forgot password?" styleClass="small-text" onAction="#onForgotPassword"/>-->
                     </HBox>
                     <Button text="LOGIN" defaultButton="true" onAction="#onLogin" maxWidth="160"/>
                     <Button text="CREATE ACCOUNT" onAction="#onRegister" maxWidth="320" styleClass="secondary"/>

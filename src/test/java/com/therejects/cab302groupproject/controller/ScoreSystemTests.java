@@ -1,8 +1,9 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.AuthDatabase;
-import com.example.mon.app.User;
-import com.example.mon.app.UserDao;
+
+import com.therejects.cab302groupproject.model.AuthDatabase;
+import com.therejects.cab302groupproject.model.User;
+import com.therejects.cab302groupproject.model.UserDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.sql.Connection;

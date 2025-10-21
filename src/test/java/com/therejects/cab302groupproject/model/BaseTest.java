@@ -1,6 +1,5 @@
 package com.therejects.cab302groupproject.model;
 
-import com.example.mon.app.AuthDatabase;
 import org.junit.jupiter.api.BeforeEach;
 import java.sql.Connection;
 import java.sql.DriverManager;

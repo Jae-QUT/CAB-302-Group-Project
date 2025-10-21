@@ -1,0 +1,67 @@
+/* =========================================================
+   Math Monsters — Reset Token Dialog Theme
+   ========================================================= */
+
+/* === Dialog Background === */
+.dialog-pane {
+    -fx-background-color: #f7fbff;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #3498db;
+    -fx-border-width: 1.5;
+}
+
+/* === Header === */
+.dialog-pane > .header-panel {
+    -fx-background-color: linear-gradient(to bottom, #5dade2, #3498db);
+    -fx-background-radius: 12 12 0 0;
+    -fx-padding: 10;
+}
+
+.dialog-pane > .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* === Labels === */
+.label {
+    -fx-text-fill: #263238;
+    -fx-font-weight: bold;
+}
+
+/* === Text + Password Fields === */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #3498db;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 6 10;
+}
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #2980b9;
+    -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.3), 10, 0.3, 0, 0);
+}
+
+/* === Buttons === */
+.button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+}
+.button:hover {
+    -fx-background-color: #5dade2;
+}
+.button:cancel {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #263238;
+}
+.button:cancel:hover {
+    -fx-background-color: #bdbdbd;
+}
+
+/* === General Alignment === */
+.dialog-pane > .content {
+    -fx-padding: 20;
+}

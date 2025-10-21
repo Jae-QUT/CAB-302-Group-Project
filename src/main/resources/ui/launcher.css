@@ -1,0 +1,101 @@
+/* ============= Math Monsters Launcher Theme ============= */
+
+/* Scene background */
+
+:root {
+    -text: #0b1b3a; /* main text color lookup for all controls */
+}
+
+.login-root {
+    -fx-background-color:
+        radial-gradient(center 25% 20%, radius 80%, #7bd3ff33, transparent),
+        linear-gradient(to bottom right, #ffd54f, #fbc02d);
+    -fx-padding: 30;
+}
+
+/* Grid panel box */
+.grid-pane {
+    -fx-background-color: rgba(255,255,255,0.92);
+    -fx-background-radius: 24;
+    -fx-padding: 32;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 24, 0.25, 0, 6);
+}
+
+/* Headings */
+.heading {
+    -fx-font-size: 26px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0b1b3a;
+}
+
+/* Labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #263238;
+    -fx-font-weight: bold;
+}
+
+/* Text fields */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #c7d2fe;
+    -fx-border-radius: 999;
+    -fx-background-radius: 999;
+    -fx-padding: 10 16;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #1f8fff;
+    -fx-effect: dropshadow(gaussian, rgba(31,143,255,0.2), 10, 0.3, 0, 2);
+}
+
+/* Checkboxes */
+.check-box {
+    -fx-text-fill: #263238;
+    -fx-font-size: 13px;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #ffd54f, #fbc02d);
+    -fx-text-fill: #0b1b3a;
+    -fx-font-weight: 800;
+    -fx-background-radius: 999;
+    -fx-padding: 10 20;
+    -fx-font-size: 15px;
+}
+.button:hover {
+    -fx-background-color: #ffca28;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+.button:pressed {
+    -fx-background-color: #f9a825;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Hyperlink */
+.hyperlink {
+    -fx-text-fill: #0b1b3a;
+    -fx-font-weight: bold;
+}
+.hyperlink:hover {
+    -fx-text-fill: #f57c00;
+}
+.button:default {
+    -fx-background-color: linear-gradient(to bottom, #ffd54f, #fbc02d);
+    -fx-text-fill: #0b1b3a;
+}
+.dialog-pane {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 16;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0b1b3a;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: linear-gradient(to right, #ffd54f, #fbc02d);
+    -fx-background-radius: 16 16 0 0;
+}
+

@@ -1,0 +1,77 @@
+/* =========================================================
+   Math Monsters — Create Account Theme (Sky Blue Edition)
+   ========================================================= */
+
+/* === Background for Dialog === */
+.dialog-pane {
+    -fx-background-color: #f5fbff;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #3498db;
+    -fx-border-width: 1.5;
+}
+
+/* === Labels === */
+.label {
+    -fx-text-fill: #263238; /* Dark readable text */
+    -fx-font-weight: bold;
+}
+
+/* === Input Fields === */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #3498db;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 6 10;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #2980b9;
+    -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.3), 10, 0.3, 0, 0);
+}
+
+/* === Buttons === */
+.button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #5dade2;
+}
+
+.button:cancel {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #263238;
+}
+
+.button:cancel:hover {
+    -fx-background-color: #bdbdbd;
+}
+
+/* === Checkbox === */
+.check-box {
+    -fx-text-fill: #263238;
+}
+
+/* === Dialog Header === */
+.dialog-pane > .header-panel {
+    -fx-background-color: linear-gradient(to bottom, #3498db, #2980b9);
+    -fx-background-radius: 12 12 0 0;
+    -fx-padding: 10;
+}
+
+.dialog-pane > .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* === Buttons Bar === */
+.dialog-pane > .button-bar .button {
+    -fx-min-width: 75;
+    -fx-font-weight: bold;
+}

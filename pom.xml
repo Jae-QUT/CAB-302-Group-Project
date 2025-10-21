@@ -57,6 +57,11 @@
             <artifactId>validatorfx</artifactId>
             <version>0.5.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
 
         <!-- com.example.mon.app.Database; -->
         <dependency>
@@ -102,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.6.3</version>
                 <configuration>
                     <destDir>javadoc</destDir>
                     <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>

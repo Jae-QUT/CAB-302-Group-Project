@@ -1,22 +1,26 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.MonDatabase;
-import com.example.mon.app.Monster;
+import com.therejects.cab302groupproject.model.Database;
+import com.therejects.cab302groupproject.model.Monster;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MonsterSelectionController {
+
     @FXML private FlowPane monsterContainer;
     @FXML private Label selectionCount;
     @FXML private Button confirmButton;
@@ -31,11 +35,11 @@ public class MonsterSelectionController {
         updateSelectionLabel();
     }
 
-    /** Load monsters from your SQLite database */
+    /** Load monsters from the SQLite database */
     private void loadMonstersFromDatabase() {
-        String sql = "SELECT name, spritePath, maxHp FROM Monsters"; // your DB table
+        String sql = "SELECT name, spritePath, maxHp FROM Monsters";
 
-        try (Connection conn = MonDatabase.get();
+        try (Connection conn = Database.get();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -43,11 +47,12 @@ public class MonsterSelectionController {
                 String name = rs.getString("name");
                 String sprite = rs.getString("spritePath");
                 int hp = rs.getInt("maxHp");
+
                 allMons.add(new Monster(name, sprite, hp));
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error loading monsters: " + e.getMessage());
         }
     }
 
@@ -70,8 +75,9 @@ public class MonsterSelectionController {
         try {
             image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(mon.getSpritePath()))));
         } catch (Exception e) {
-            image.setImage(null);
+            System.err.println("Missing image for: " + mon.getName());
         }
+
         image.setFitWidth(100);
         image.setFitHeight(100);
         image.setPreserveRatio(true);
@@ -80,8 +86,6 @@ public class MonsterSelectionController {
         name.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
 
         box.getChildren().addAll(image, name);
-
-        // selection click handler
         box.setOnMouseClicked(e -> toggleSelection(mon, box));
 
         return box;
@@ -99,7 +103,6 @@ public class MonsterSelectionController {
             selectedMons.add(mon);
             box.setStyle("-fx-border-color: #00cc00; -fx-border-width: 3; -fx-padding: 10; -fx-alignment: center;");
         }
-
         updateSelectionLabel();
     }
 
@@ -123,7 +126,7 @@ public class MonsterSelectionController {
             stage.setScene(scene);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error loading battle scene: " + e.getMessage());
         }
     }
 }

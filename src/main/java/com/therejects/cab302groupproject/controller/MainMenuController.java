@@ -1,7 +1,7 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.LoginScreenFX;
-import com.example.mon.app.User;
+//import com.example.mon.app.LoginScreenFX;
+import com.therejects.cab302groupproject.model.User;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -420,7 +420,7 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
-
+    /// let me push///
     /**
      * Performs a navigation action using the injected {@link #navigator}. If the navigator has not been set,
      * a warning is printed to stderr.

@@ -40,10 +40,6 @@ public class User {
         this.score = score;
     }
 
-    public static void setCurrentUser(User user) {
-        currentUser = user;
-    }
-
     public static User getCurrentUser() {
         return currentUser;
     }
@@ -59,7 +55,7 @@ public class User {
     public int getScore(){return score;}
     public List<String> getBadges() { return badges; }
     public List<String> getFriends() { return friends; }
-
+    public static User getcurrentUser(){ return currentUser;}
 
     // Setters
     public void setUsername(String username)            { this.username = username; }
@@ -72,5 +68,6 @@ public class User {
     public void setBadges(List<String> badges) { this.badges = badges; }
     public void setFriends(List<String> friends) { this.friends = friends; }
     public void setScore(int score){this.score = score;}
+    public static void setCurrentUser(User u){ currentUser = u;}
 
 }

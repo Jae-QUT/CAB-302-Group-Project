@@ -1,8 +1,9 @@
 package com.therejects.cab302groupproject.controller;
 
-import com.example.mon.app.*;
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
 
+import com.therejects.cab302groupproject.model.User;
+import com.therejects.cab302groupproject.model.UserDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

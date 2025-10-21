@@ -1,4 +1,4 @@
-package com.example.mon.app;
+package com.therejects.cab302groupproject.model;
 
 import java.sql.*;
 import java.util.ArrayList;

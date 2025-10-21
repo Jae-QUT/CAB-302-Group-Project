@@ -1,0 +1,47 @@
+/* =========================================================
+   Math Monsters — Generic Dialog Styling
+   ========================================================= */
+
+.dialog-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3498db;
+    -fx-border-width: 1.2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+/* Header Bar */
+.dialog-pane > .header-panel {
+    -fx-background-color: linear-gradient(to right, #5dade2, #3498db);
+    -fx-background-radius: 12 12 0 0;
+    -fx-padding: 10;
+}
+.dialog-pane > .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* Content Text */
+.dialog-pane .content {
+    -fx-text-fill: #263238;
+    -fx-font-size: 13px;
+}
+
+/* Buttons */
+.dialog-pane > .button-bar .button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+}
+.dialog-pane > .button-bar .button:hover {
+    -fx-background-color: #5dade2;
+}
+.dialog-pane > .button-bar .button:cancel {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #263238;
+}
+.dialog-pane > .button-bar .button:cancel:hover {
+    -fx-background-color: #bdbdbd;
+}

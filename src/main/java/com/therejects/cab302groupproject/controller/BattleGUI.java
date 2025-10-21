@@ -227,7 +227,7 @@ public class BattleGUI extends QuestionGenerator {
 
     private Button createBackButton() {
         Button back = new Button("Back");
-        back.setPrefWidth(200);
+        back.setPrefWidth(250);
         back.setPrefHeight(44);
         back.setOnAction(e -> {
             subMenu.getChildren().clear();
@@ -344,8 +344,8 @@ public class BattleGUI extends QuestionGenerator {
         Button potion = new Button("Health Potion (x"+ playerPotions +")");
         // Button manaRestore = new Button("Mana Restore (not working)");
 
-        potion.setPrefWidth(200);
-        potion.setPrefHeight(44);
+        potion.setPrefWidth(250);
+        potion.setPrefHeight(40);
         // manaRestore.setPrefWidth(200);
         // manaRestore.setPrefHeight(44);
 
@@ -435,7 +435,7 @@ public class BattleGUI extends QuestionGenerator {
         for (int i = 0; i < playerMons.length; i++) {
             Monster mon = playerMons[i];
             Button btn = new Button(mon.getName() + " (" + mon.getCurrentHp() + " HP)");
-            btn.setPrefWidth(200);
+            btn.setPrefWidth(250);
             btn.setPrefHeight(44);
 
             if (mon.getCurrentHp() == 0 || i == activePlayerIndex) {
@@ -470,7 +470,7 @@ public class BattleGUI extends QuestionGenerator {
     @FXML
     private void onForfeit() {
         Button confirm = new Button("Confirm Forfeit");
-        confirm.setPrefWidth(200);
+        confirm.setPrefWidth(250);
         confirm.setPrefHeight(44);
         confirm.setOnAction(e -> {
             finishAction("You forfeited the battle!");

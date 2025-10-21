@@ -9,7 +9,6 @@
             fx:controller="com.therejects.cab302groupproject.controller.MonsterSelectionController"
             prefWidth="980" prefHeight="560"
             styleClass="app-root">
-
     <top>
         <Label text="Choose Your 3 Mons"
                style="-fx-font-size: 24px; -fx-font-weight: bold;"
@@ -30,7 +29,7 @@
             <Button fx:id="confirmButton" text="Confirm Team"
                     onAction="#onConfirm"
                     disable="true"
-                    prefWidth="150" prefHeight="44" />
+                    prefWidth="250" prefHeight="40" />
         </HBox>
     </bottom>
 </BorderPane>

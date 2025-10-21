@@ -12,7 +12,7 @@ public class BattleApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxml = new FXMLLoader(BattleApplication.class.getResource("/com/therejects/cab302groupproject/MonsterSelection.fxml"));
-        Scene scene = new Scene(fxml.load(), 980, 560);
+        Scene scene = new Scene(fxml.load(), 1000, 600);
         stage.setScene(scene);
         stage.setTitle("Monster Selection");
         stage.show();

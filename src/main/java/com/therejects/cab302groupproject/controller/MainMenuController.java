@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.transform.Scale;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -230,6 +231,7 @@ public class MainMenuController {
         }
     }
 
+
     /**
      * Starts the per-frame wander animation. Sprites bounce at fence edges, gently drift,
      * and add a small sinusoidal bob to feel alive. Hover pauses movement.
@@ -411,13 +413,14 @@ public class MainMenuController {
      */
     @FXML
     private void onLogout() {
-        try {
-            User.setCurrentUser(null);
-            javafx.stage.Stage stage = (javafx.stage.Stage) root.getScene().getWindow();
-            LoginScreenFX login = new LoginScreenFX();
-            login.start(stage); // reuse stage
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (timer != null) { timer.stop(); timer = null; }
+        User.setCurrentUser(null);
+        if (navigator != null) {
+            navigator.accept("LOGIN"); // or "LOGOUT" if you routed it to login
+        } else {
+            // fallback if navigator wasn't injected
+            Stage stage = (Stage) root.getScene().getWindow();
+            new ScreenManager(stage).navigateTo("LOGIN");
         }
     }
     /// let me push///

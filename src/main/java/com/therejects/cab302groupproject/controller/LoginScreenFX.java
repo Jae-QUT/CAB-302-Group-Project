@@ -121,10 +121,10 @@ public class LoginScreenFX extends Application {
         exitButton.setOnMouseEntered(e -> exitButton.setStyle("-fx-text-fill: #FF6F61; -fx-background-color: transparent; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;"));
         exitButton.setOnMouseExited(e -> exitButton.setStyle("-fx-text-fill: white; -fx-background-color: transparent; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;"));
 
-// Exit action
+        // Exit action
         exitButton.setOnAction(e -> stage.close());
 
-// Position the button top-right
+        // Position the button top-right
         StackPane.setAlignment(exitButton, Pos.TOP_RIGHT);
         StackPane.setMargin(exitButton, new Insets(8, 10, 0, 0));
         root.getChildren().add(exitButton);

@@ -411,15 +411,24 @@ public class LoginScreenFX extends Application {
         alert.setHeaderText(null);
 
         DialogPane pane = alert.getDialogPane();
+
+
         pane.getScene().setFill(Color.TRANSPARENT);
 
-      /// colour based alert styling///
+
         String bgColor = switch (type) {
             case INFORMATION -> "#3BA8FF"; // blue
-            case WARNING -> "#FFD54F";     // yellow
+            case WARNING -> "#A8E6CF";     // light green
             case ERROR -> "#FF6F61";       // red
-            default -> "#3BA8FF";
+            default -> "#A8E6CF";          // fallback: green
         };
+
+        pane.setBackground(new Background(
+                new BackgroundFill(Color.web(bgColor), new CornerRadii(20), Insets.EMPTY)
+        ));
+        pane.setBorder(new Border(new BorderStroke(
+                Color.web(bgColor), BorderStrokeStyle.SOLID, new CornerRadii(20), BorderWidths.DEFAULT
+        )));
 
         makeDialogDraggable(alert);
 

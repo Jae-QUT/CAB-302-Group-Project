@@ -30,22 +30,7 @@ public final class AuthDatabase {
      * Data can be pulled as needed based on the Username with the intention of using it for the profile and leaderboard
      */
     public static void ensureSchema() throws SQLException {
-        // Step 1: Create table if it doesn't exist
-        try (Statement st = get().createStatement()) {
-            st.execute("""
-                        CREATE TABLE IF NOT EXISTS LoginRegisterUI(
-                          Username TEXT NOT NULL PRIMARY KEY,
-                          PasswordHash TEXT NOT NULL,
-                          StudentEmail TEXT NOT NULL,
-                          GradeYearLevel INTEGER NOT NULL,
-                          Score INTEGER NOT NULL DEFAULT 0
-                        );
-                    """);
-        }
 
-        // Step 2: Add new columns safely if missing
-        addColumnIfMissing("reset_token", "TEXT");
-        addColumnIfMissing("reset_expiry", "INTEGER");
     }
 
     /**

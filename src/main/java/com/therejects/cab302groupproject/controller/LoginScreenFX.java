@@ -125,13 +125,107 @@ public class LoginScreenFX extends Application {
         r++;
         grid.add(forgotPasswordLink, 1, r);
 
-        // --- Wire button actions ---
+        /// --- Wire button actions ---///
         signInButton.setOnAction(e -> attemptLogin(stage));
         createAccountButton.setOnAction(e -> openRegisterDialog(stage));
-        forgotPasswordLink.setOnAction(e ->
-                new Alert(Alert.AlertType.INFORMATION,
-                        "Ask your teacher to reset it.").showAndWait()
-        );
+        forgotPasswordLink.setOnAction(e -> {
+            // Always show choice first
+            Alert choice = new Alert(Alert.AlertType.CONFIRMATION);
+            choice.setTitle("Forgot Password");
+            choice.setHeaderText("Do you already have a reset token?");
+
+
+            ButtonType yesBtn = new ButtonType("Yes");
+            ButtonType noBtn = new ButtonType("No");
+            ButtonType cancelBtn = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            choice.getButtonTypes().setAll(yesBtn, noBtn, cancelBtn);
+
+            ButtonType result = choice.showAndWait().orElse(cancelBtn);
+
+            // === Path A: user ALREADY has token ===
+            if (result == yesBtn) {
+                Dialog<String[]> resetDialog = new Dialog<>();
+                resetDialog.setTitle("Enter Reset Token");
+                resetDialog.setHeaderText("Paste your token and set a new password");
+
+                TextField tokenField = new TextField();
+                tokenField.setPromptText("Reset Token");
+                PasswordField newPasswordField = new PasswordField();
+                newPasswordField.setPromptText("New Password");
+
+                GridPane tokenGrid = new GridPane();
+                tokenGrid.setHgap(10);
+                tokenGrid.setVgap(10);
+                tokenGrid.setPadding(new Insets(20, 150, 10, 10));
+                tokenGrid.add(new Label("Token:"), 0, 0);
+                tokenGrid.add(tokenField, 1, 0);
+                tokenGrid.add(new Label("New Password:"), 0, 1);
+                tokenGrid.add(newPasswordField, 1, 1);
+
+                resetDialog.getDialogPane().setContent(tokenGrid);
+                ButtonType confirmBtn = new ButtonType("Reset Password", ButtonBar.ButtonData.OK_DONE);
+                resetDialog.getDialogPane().getButtonTypes().addAll(confirmBtn, ButtonType.CANCEL);
+                resetDialog.setResultConverter(btn ->
+                        btn == confirmBtn ? new String[]{tokenField.getText().trim(), newPasswordField.getText()} : null
+                );
+
+                resetDialog.showAndWait().ifPresent(values -> {
+                    try {
+                        auth.resetPassword(values[0], values[1]);
+                        new Alert(Alert.AlertType.INFORMATION, "Password successfully updated!").showAndWait();
+                    } catch (Exception ex) {
+                        new Alert(Alert.AlertType.ERROR, "Reset failed: " + ex.getMessage()).showAndWait();
+                    }
+                });
+                return;
+            }
+
+            // === Path B: user NEEDS a token ===
+            if (result == noBtn) {
+                Dialog<String> requestDialog = new Dialog<>();
+                requestDialog.setTitle("Request Reset Token");
+                requestDialog.setHeaderText("Enter your registered email or username:");
+
+                TextField accountField = new TextField();
+                accountField.setPromptText("Email or Username");
+
+                GridPane accountGrid = new GridPane();
+                accountGrid.setHgap(10);
+                accountGrid.setVgap(10);
+                accountGrid.setPadding(new Insets(20, 150, 10, 10));
+                accountGrid.add(new Label("Account:"), 0, 0);
+                accountGrid.add(accountField, 1, 0);
+                requestDialog.getDialogPane().setContent(accountGrid);
+
+                ButtonType sendBtn = new ButtonType("Send Reset Email", ButtonBar.ButtonData.OK_DONE);
+                requestDialog.getDialogPane().getButtonTypes().addAll(sendBtn, ButtonType.CANCEL);
+                requestDialog.setResultConverter(btn -> btn == sendBtn ? accountField.getText().trim() : null);
+
+                requestDialog.showAndWait().ifPresent(identifier -> {
+                    if (identifier.isEmpty()) {
+                        new Alert(Alert.AlertType.WARNING, "Please enter your email or username.").showAndWait();
+                        return;
+                    }
+
+                    try {
+                        String token = auth.generateResetToken(identifier);
+                        String email = auth.getEmailForUser(identifier);
+
+                        EmailService emailService = new EmailService();
+                        emailService.sendPasswordResetEmail(email, token);
+
+                        new Alert(Alert.AlertType.INFORMATION,
+                                "A password reset email has been sent to " + email +
+                                        ".\nWhen you receive it, click 'Forgot password?' again and choose 'Yes'.")
+                                .showAndWait();
+                    } catch (Exception ex) {
+                        new Alert(Alert.AlertType.ERROR, "Error: " + ex.getMessage()).showAndWait();
+                    }
+                });
+            }
+        });
+
+
 
         // --- Scene setup ---
         // --- Static Background Layer ---

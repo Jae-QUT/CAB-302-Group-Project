@@ -1,6 +1,11 @@
 /* ============= Math Monsters Launcher Theme ============= */
 
 /* Scene background */
+
+:root {
+    -text: #0b1b3a; /* main text color lookup for all controls */
+}
+
 .login-root {
     -fx-background-color:
         radial-gradient(center 25% 20%, radius 80%, #7bd3ff33, transparent),
@@ -79,3 +84,18 @@
 .hyperlink:hover {
     -fx-text-fill: #f57c00;
 }
+.button:default {
+    -fx-background-color: linear-gradient(to bottom, #ffd54f, #fbc02d);
+    -fx-text-fill: #0b1b3a;
+}
+.dialog-pane {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 16;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0b1b3a;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: linear-gradient(to right, #ffd54f, #fbc02d);
+    -fx-background-radius: 16 16 0 0;
+}
+

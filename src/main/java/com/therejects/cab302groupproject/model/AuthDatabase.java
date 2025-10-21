@@ -79,5 +79,8 @@ public final class AuthDatabase {
             }
         }
     }
+
+    public static void override(Connection conn) {
+    }
 }
 

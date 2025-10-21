@@ -1,12 +1,9 @@
 package com.therejects.cab302groupproject.model;
-
-import com.example.mon.app.UserDao;
 import org.junit.jupiter.api.*;
 import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.example.mon.app.AuthDatabase;
-import com.example.mon.app.User;
+
 
 
 public class UserDaoTest {

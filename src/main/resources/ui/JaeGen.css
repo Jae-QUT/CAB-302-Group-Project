@@ -38,11 +38,11 @@
 .root {
   /* Colors */
   -color-bg-grad-start: #E4EFF5;
-   -color-bg-grad-end:   #2875A1;
+  -color-bg-grad-end:   #2875A1;
   -color-surface: rgba(255,255,255,0.10);
   -color-surface-strong: rgba(0,0,0,0.35);
   -color-border: rgba(255,255,255,0.18);
-  -color-text: #000;
+  -color-text: #1a1a1a;
   -color-muted: #c7d0d9;
   -color-accent: #ffd24d;  /* warm yellow accent */
   -color-danger: #ff5d5d;
@@ -158,3 +158,16 @@
 /* Leaderboard grid labels */
 .leaderboard-header { -fx-font-family: "Super Adorable"; -fx-font-size: 32px; -fx-font-weight: bold; }
 .leaderboard-cell   { -fx-text-fill: -color-text; }
+
+/* HP bars */
+.progress-bar {
+    -fx-accent: #4CAF50; /* Default - Green */
+    -fx-control-inner-background: black;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.hp-green .bar { -fx-background-color: #4CAF50; }
+.hp-yellow .bar { -fx-background-color: #FFD700; }
+.hp-orange .bar { -fx-background-color: #FF8C00; }
+.hp-red .bar { -fx-background-color: #FF0000; }

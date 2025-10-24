@@ -3,7 +3,6 @@ package com.therejects.cab302groupproject.controller;
 import com.therejects.cab302groupproject.model.Monster;
 import com.therejects.cab302groupproject.model.MonDatabase;
 import com.therejects.cab302groupproject.model.User;
-//import com.example.mon.app.Database;
 
 import com.therejects.cab302groupproject.Navigation.*;
 import com.therejects.cab302groupproject.model.QuestionGenerator;
@@ -55,6 +54,7 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private VBox subMenu;
     @FXML private Label playerName;
     @FXML private Label enemyName;
+    @FXML private ImageView battleBackground;
 
     private ScreenManager screenManager;
 
@@ -101,11 +101,13 @@ public class BattleGUI extends QuestionGenerator {
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Failed to load enemy mons from DB. Using default mons.");
-            // fallback hardcoded monsters
+            // fallback hardcoded enemy mons if DB fails
             enemyMons = new Monster[]{
-                    new Monster("Zabird", "/images/Sprites/Zabird.png", 50),
-                    new Monster("Anqchor", "/images/Sprites/Anqchor.png", 50),
-                    new Monster("Sharkle", "/images/Sprites/Sharkle.png", 50)
+                    new Monster("Zabird", "/images/Sprites/Anqchor.png", 50),
+                    new Monster("Anqchor", "/images/Sprites/Batmon.png", 50),
+                    new Monster("Sharkle", "/images/Sprites/Hawtosaur.png", 50),
+                    new Monster("Sharkle", "/images/Sprites/Sharkle.png", 50),
+                    new Monster("Sharkle", "/images/Sprites/Zabird.png", 50),
             };
             activeEnemyIndex = 0;
             loadActiveEnemy();
@@ -142,6 +144,29 @@ public class BattleGUI extends QuestionGenerator {
 
     @FXML
     private void initialize() {
+        // Randomly select battle background
+        String[] backgrounds = {
+                "/images/backgrounds/forest.png",
+                "/images/backgrounds/crystalcave.gif",
+                "/images/backgrounds/desert.png",
+                "/images/backgrounds/clouds.png",
+                "/images/backgrounds/snow.png",
+                "/images/backgrounds/cave.png",
+        };
+        Random rand = new Random();
+        String chosenBackground = backgrounds[rand.nextInt(backgrounds.length)];
+        battleBackground.setImage(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream(chosenBackground))
+        ));
+
+        // Make background scale with scene size
+        battleBackground.setPreserveRatio(false);
+        battleBackground.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                battleBackground.fitWidthProperty().bind(newScene.widthProperty());
+                battleBackground.fitHeightProperty().bind(newScene.heightProperty());
+            }
+        });
 
         if (playerMons == null) {
             try {
@@ -149,9 +174,6 @@ public class BattleGUI extends QuestionGenerator {
                 playerMons = monsFromDb.toArray(new Monster[0]);
             } catch (SQLException e) {
                 e.printStackTrace();
-                playerMons = new Monster[] {
-                        new Monster(playerMons[activePlayerIndex].getName(), "/images/Sprites/" + playerMons[activePlayerIndex] + ".png", 50)
-                };
             }
         }
 
@@ -164,19 +186,10 @@ public class BattleGUI extends QuestionGenerator {
         initializeEnemyTeam();
         activeEnemyIndex = 0;
         enemyName.setText(enemyMons[0].getName());
-        String path = enemyMons[0].getSpritePath();
-        URL imageUrl = getClass().getResource(path);
-
-        if (imageUrl == null) {
-            System.err.println("Sprite not found: " + path);
-        } else {
-            enemySprite.setImage(new Image(imageUrl.toString()));
-        }
-
-        enemyCurrentHp = enemyMons[0].getCurrentHp();
-        enemyMaxHp = enemyMons[0].getMaxHp();
+        enemySprite.setScaleX(-1); // flip enemy sprite to face player
         updateHpBars();
     }
+
 
     private void loadActiveMon() {
         Monster active = playerMons[activePlayerIndex];
@@ -209,7 +222,7 @@ public class BattleGUI extends QuestionGenerator {
         pause.play();
     }
 
-    // show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
+    // Show submenu: hides mainMenu and fills subMenu with provided buttons + a Back button
     private void showSubMenu(String title, Button... options) {
         subMenu.getChildren().clear();
 
@@ -225,9 +238,10 @@ public class BattleGUI extends QuestionGenerator {
         subMenu.setVisible(true);
     }
 
+    // Creates a reusable Back button
     private Button createBackButton() {
         Button back = new Button("Back");
-        back.setPrefWidth(200);
+        back.setPrefWidth(250);
         back.setPrefHeight(44);
         back.setOnAction(e -> {
             subMenu.getChildren().clear();
@@ -258,6 +272,7 @@ public class BattleGUI extends QuestionGenerator {
         setHpBarColor(playerHp, playerPercent);
         setHpBarColor(enemyHp, enemyPercent);
 
+        // track potential winner/loser
         winner = (enemyCurrentHp == 0) ? playerName.getText() : enemyName.getText();
         loser = (enemyCurrentHp == 0) ? enemyName.getText() : playerName.getText();
     }
@@ -280,6 +295,7 @@ public class BattleGUI extends QuestionGenerator {
 
     @FXML
     private void onFight() throws IOException, SQLException {
+        // Open question popup to attack
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/therejects/cab302groupproject/QuestionGen-view.fxml"));
         Parent root = loader.load();
         QuestionGenController ctrl = loader.getController();
@@ -294,6 +310,7 @@ public class BattleGUI extends QuestionGenerator {
         popup.initOwner(owner);
         popup.showAndWait();
 
+        // Damage or miss based on answer
         if (qGen.checkAnswer(ctrl.userAnswer)) {
             enemyCurrentHp = Math.max(0, enemyCurrentHp - 10);
             updateHpBars();
@@ -344,8 +361,8 @@ public class BattleGUI extends QuestionGenerator {
         Button potion = new Button("Health Potion (x"+ playerPotions +")");
         // Button manaRestore = new Button("Mana Restore (not working)");
 
-        potion.setPrefWidth(200);
-        potion.setPrefHeight(44);
+        potion.setPrefWidth(250);
+        potion.setPrefHeight(40);
         // manaRestore.setPrefWidth(200);
         // manaRestore.setPrefHeight(44);
 
@@ -435,7 +452,7 @@ public class BattleGUI extends QuestionGenerator {
         for (int i = 0; i < playerMons.length; i++) {
             Monster mon = playerMons[i];
             Button btn = new Button(mon.getName() + " (" + mon.getCurrentHp() + " HP)");
-            btn.setPrefWidth(200);
+            btn.setPrefWidth(250);
             btn.setPrefHeight(44);
 
             if (mon.getCurrentHp() == 0 || i == activePlayerIndex) {
@@ -470,7 +487,7 @@ public class BattleGUI extends QuestionGenerator {
     @FXML
     private void onForfeit() {
         Button confirm = new Button("Confirm Forfeit");
-        confirm.setPrefWidth(200);
+        confirm.setPrefWidth(250);
         confirm.setPrefHeight(44);
         confirm.setOnAction(e -> {
             finishAction("You forfeited the battle!");
@@ -512,6 +529,7 @@ public class BattleGUI extends QuestionGenerator {
         });
     }
 
+    // Enemy AI decides action and damage
     private void doEnemyAction() {
         mainMenu.setDisable(true);
 

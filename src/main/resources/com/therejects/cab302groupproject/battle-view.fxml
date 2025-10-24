@@ -10,48 +10,54 @@
            stylesheets="@../../../ui/JaeGen.css"
            styleClass="app-root">
 
-   <!-- ✅ Full-screen background behind everything -->
+   <!-- Fullscreen background -->
    <ImageView fx:id="battleBackground"
-              fitWidth="800" fitHeight="600"
               preserveRatio="false"
               smooth="true"
-              StackPane.alignment="CENTER" />
+              pickOnBounds="true"
+              fitWidth="800"
+              fitHeight="600"
+              StackPane.alignment="CENTER"/>
 
-   <!-- Main content on top -->
+   <!-- Main layout on top of background -->
    <BorderPane prefHeight="600" prefWidth="800">
 
-      <!-- TOP: HUD with HP bars -->
-      <top>
-         <HBox spacing="400" alignment="CENTER" style="-fx-padding: 10;">
-            <VBox alignment="CENTER_LEFT" spacing="5">
-               <Label fx:id="playerName" text="Player 1"/>
-               <ProgressBar fx:id="playerHp" prefWidth="250" progress="1.0"/>
-               <Label fx:id="playerHpLabel" text="50 / 50"/>
-            </VBox>
-
-            <VBox alignment="CENTER_RIGHT" spacing="5">
-               <Label fx:id="enemyName" text="Player 2"/>
-               <ProgressBar fx:id="enemyHp" prefWidth="250" progress="1.0"/>
-               <Label/>
-            </VBox>
-         </HBox>
-      </top>
-
-      <!-- CENTER: Stage with sprites facing each other -->
+      <!-- TOP + CENTER (HP bars + sprites) -->
       <center>
-         <StackPane>
-            <HBox alignment="CENTER" spacing="200">
-               <ImageView fx:id="playerSprite" fitHeight="280" fitWidth="220" preserveRatio="true"/>
-               <ImageView fx:id="enemySprite" fitHeight="280" fitWidth="220" preserveRatio="true"/>
+         <VBox alignment="CENTER" spacing="10">
+
+            <!-- HP bars -->
+            <HBox spacing="400" alignment="CENTER" style="-fx-padding: 10;">
+               <VBox alignment="CENTER_LEFT" spacing="5">
+                  <Label fx:id="playerName" text="Player 1"/>
+                  <ProgressBar fx:id="playerHp" prefWidth="250" progress="1.0"/>
+                  <Label fx:id="playerHpLabel" text="50 / 50"/>
+               </VBox>
+
+               <VBox alignment="CENTER_RIGHT" spacing="5">
+                  <Label fx:id="enemyName" text="Player 2"/>
+                  <ProgressBar fx:id="enemyHp" prefWidth="250" progress="1.0"/>
+                  <Label fx:id="enemyHpLabel" text="50 / 50"/>
+               </VBox>
             </HBox>
-         </StackPane>
+
+            <!-- Sprites -->
+            <HBox alignment="CENTER" spacing="200">
+               <ImageView fx:id="playerSprite"
+                          fitHeight="280" fitWidth="220"
+                          preserveRatio="true"/>
+               <ImageView fx:id="enemySprite"
+                          fitHeight="280" fitWidth="220"
+                          preserveRatio="true"/>
+            </HBox>
+
+         </VBox>
       </center>
 
-      <!-- BOTTOM: Battle hub (buttons + message) -->
+      <!-- BOTTOM: Battle hub -->
       <bottom>
          <AnchorPane prefHeight="120" style="-fx-padding: 20;">
             <Label fx:id="battleMessage" text="Battle!"
-                   style="-fx-font-size: 18px; -fx-font-weight: bold;"
                    AnchorPane.leftAnchor="12" AnchorPane.topAnchor="12"/>
 
             <GridPane fx:id="mainMenu" hgap="10" vgap="10"

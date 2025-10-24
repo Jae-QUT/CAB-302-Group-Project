@@ -55,6 +55,7 @@ public class BattleGUI extends QuestionGenerator {
     @FXML private VBox subMenu;
     @FXML private Label playerName;
     @FXML private Label enemyName;
+    @FXML private ImageView battleBackground;
 
     private ScreenManager screenManager;
 
@@ -142,6 +143,9 @@ public class BattleGUI extends QuestionGenerator {
 
     @FXML
     private void initialize() {
+        battleBackground.setImage(
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/backgrounds/forest.png")))
+        );
 
         if (playerMons == null) {
             try {
@@ -173,6 +177,7 @@ public class BattleGUI extends QuestionGenerator {
             enemySprite.setImage(new Image(imageUrl.toString()));
         }
 
+        enemySprite.setScaleX(-1);
         enemyCurrentHp = enemyMons[0].getCurrentHp();
         enemyMaxHp = enemyMons[0].getMaxHp();
         updateHpBars();

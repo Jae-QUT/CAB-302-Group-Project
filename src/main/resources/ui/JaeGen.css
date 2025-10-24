@@ -38,11 +38,11 @@
 .root {
   /* Colors */
   -color-bg-grad-start: #E4EFF5;
-  -color-bg-grad-end:   #2875A1;
+   -color-bg-grad-end:   #2875A1;
   -color-surface: rgba(255,255,255,0.10);
   -color-surface-strong: rgba(0,0,0,0.35);
   -color-border: rgba(255,255,255,0.18);
-  -color-text: #e6edf3;
+  -color-text: #000;
   -color-muted: #c7d0d9;
   -color-accent: #ffd24d;  /* warm yellow accent */
   -color-danger: #ff5d5d;
@@ -76,7 +76,7 @@
 .h2 { -fx-font-family: "Super Adorable"; -fx-font-size: 24px; -fx-text-fill: -color-text; }
 .muted { -fx-text-fill: -color-muted; }
 
-/* Card container (use on VBox/StackPane/GridPane)
+/* Card container (use on VBox/StackPane/GridPane) */
 .card {
   -fx-background-color: -color-surface;
   -fx-background-radius: -radius;
@@ -86,8 +86,21 @@
   -fx-border-radius: -radius;
   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0.25, 0, 12);
 }
-*/
+.leaderboard-grid .label {
+    -fx-font-family: "Super Adorable";
+    -fx-font-size: 24px;
+    -fx-text-fill: #222;
+}
 
+/* Make header labels stand out */
+.leaderboard-grid .leaderboard-header {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 0 10px 0;
+}
+
+
+}
 /* Buttons */
 .button {
   -fx-background-color: -color-accent;

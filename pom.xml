@@ -133,7 +133,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.therejects.cab302groupproject/com.therejects.cab302groupproject.MainMenuLauncher
+                                com.therejects.cab302groupproject.controller.LoginScreenFX
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

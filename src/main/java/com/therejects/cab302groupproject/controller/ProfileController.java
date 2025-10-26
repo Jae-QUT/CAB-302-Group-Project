@@ -1,7 +1,7 @@
 package com.therejects.cab302groupproject.controller;
 
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
-
+import com.therejects.cab302groupproject.model.AuthDatabase;
 import com.therejects.cab302groupproject.model.User;
 import com.therejects.cab302groupproject.model.UserDao;
 import javafx.event.ActionEvent;
@@ -10,8 +10,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for the profile page. Handles the display and update of
@@ -26,9 +30,7 @@ public class ProfileController {
     @FXML private Label statsLabel;
     @FXML private ListView<String> badgesList;
     @FXML private ListView<String> friendsList;
-    private Consumer<String> navigator;
-    @FXML private StackPane root;
-    @FXML private Button backButton;
+
 
     private final UserDao userDao = new UserDao();
 
@@ -52,26 +54,90 @@ public class ProfileController {
         emailField.setText(currentUser.getStudentEmail());
         yearLevelField.setText(String.valueOf(currentUser.getGradeYearLevel()));
 
-        currentUser.setGamesPlayed(10);
-        currentUser.setGamesWon(7);
-        currentUser.setGamesLost(3);
-        currentUser.getBadges().addAll(java.util.List.of("Math Novice", "Quick Thinker"));
-        currentUser.getFriends().addAll(java.util.List.of("Alice", "Bob"));
-
-        refreshExtras();
+        refreshStats();
+        refreshBadges();
     }
 
-    /**
-     * Refresh stats, badges and friend sections with data from current user
-     */
-    private void refreshExtras() {
+    private void refreshStats() {
         User currentUser = User.getCurrentUser();
-        statsLabel.setText("Games: " + currentUser.getGamesPlayed()
-                + " | Won: " + currentUser.getGamesWon()
-                + " | Lost: " + currentUser.getGamesLost());
 
-        badgesList.getItems().setAll(currentUser.getBadges());
-        friendsList.getItems().setAll(currentUser.getFriends());
+        int score = currentUser.getScore();
+        int rank = getLeaderboardRank(currentUser.getUsername());
+
+        String rankStr = (rank > 0) ? ordinal(rank) : "Unranked";
+
+        statsLabel.setText(String.format(
+                "Score: %d | Leaderboard Rank: %s | Year Level: %d",
+                score, rankStr, currentUser.getGradeYearLevel()
+        ));
+
+        refreshFriends(currentUser.getUsername());
+    }
+
+    private void refreshFriends(String currentUsername) {
+        List<String> friends = getAllUsersExceptCurrent(currentUsername);
+        friendsList.getItems().setAll(friends);
+    }
+
+    private List<String> getAllUsersExceptCurrent(String currentUsername) {
+        List<String> users = new ArrayList<>();
+        String sql = "SELECT Username FROM LoginRegisterUI WHERE Username != ? ORDER BY Username ASC";
+
+        try (Connection conn = AuthDatabase.get();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, currentUsername);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    users.add(rs.getString("Username"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    private void refreshBadges() {
+        User currentUser = User.getCurrentUser();
+        List<String> badges = calculateBadges(currentUser.getUsername(), currentUser.getScore());
+        badgesList.getItems().setAll(badges);
+    }
+
+    private int getLeaderboardRank(String username) {
+        String sql = """
+            SELECT COUNT(*) + 1 as rank
+            FROM LoginRegisterUI
+            WHERE Score > (SELECT Score FROM LoginRegisterUI WHERE Username = ?)
+        """;
+        try (Connection conn = AuthDatabase.get();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("rank");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    private List<String> calculateBadges(String username, int score) {
+        List<String> badges = new ArrayList<>();
+
+        badges.add("🎓 Welcome - Created an account");
+
+        if (score >= 15) badges.add("Novice - Score 15+");
+        if (score >= 50) badges.add("Rising Star - Score 50+");
+        if (score >= 100) badges.add("Champion - Score 100+");
+        if (score >= 500) badges.add("Master - Score 500+");
+
+        int rank = getLeaderboardRank(username);
+        if (rank == 1) badges.add("#1 - Top of the Leaderboard!");
+        else if (rank <= 3 && rank > 0) badges.add("Top 3 - Podium Finish");
+        else if (rank <= 10 && rank > 0) badges.add("Top 10 - Overachiever");
+
+        return badges;
     }
 
     /**
@@ -119,6 +185,15 @@ public class ProfileController {
         Stage stage = (Stage) ((Button) e.getSource()).getScene().getWindow();
         if (screenManager == null) screenManager = new ScreenManager(stage);
         screenManager.navigateTo("MAIN_MENU");
+    }
+
+    private static String ordinal(int n) {
+        int mod100 = n % 100, mod10 = n % 10;
+        String suf = (mod100 >= 11 && mod100 <= 13) ? "th"
+                : (mod10 == 1) ? "st"
+                : (mod10 == 2) ? "nd"
+                : (mod10 == 3) ? "rd" : "th";
+        return n + suf;
     }
 
 //    }

@@ -1,7 +1,6 @@
 package com.therejects.cab302groupproject.controller;
 
 import com.therejects.cab302groupproject.Navigation.ScreenManager;
-// IMPORTANT: use your actual AuthDatabase package:
 import com.example.mon.app.AuthDatabase;
 
 import javafx.fxml.FXML;
@@ -39,7 +38,6 @@ public class LeaderboardController {
 
     @FXML
     private void initialize() {
-        // If you already call ensureSchema() at startup, you can remove this.
         try { com.example.mon.app.AuthDatabase.ensureSchema(); } catch (SQLException e) { e.printStackTrace(); }
 
         refreshPagination();
@@ -67,7 +65,6 @@ public class LeaderboardController {
         leaderboardPage.setPageCount(pageCount);
         leaderboardPage.setMaxPageIndicatorCount(10);
 
-        // We render into a separate GridPane; return a dummy node to satisfy API.
         leaderboardPage.setPageFactory(pageIndex -> {
             populateGrid(pageIndex, filter);
             return new StackPane();
@@ -77,7 +74,6 @@ public class LeaderboardController {
     }
 
     private void populateGrid(int pageIndex, String filter) {
-        // Remove data rows (keep header/separator at row 0)
         leaderboardGrid.getChildren().removeIf(node -> {
             Integer ri = GridPane.getRowIndex(node);
             return ri != null && ri >= 1;
@@ -114,7 +110,6 @@ public class LeaderboardController {
         leaderboardGrid.getChildren().add(n);
     }
 
-    // ---------------- DB ----------------
 
     private record UserScore(String username, int score) {}
 
@@ -168,7 +163,6 @@ public class LeaderboardController {
         return out;
     }
 
-    // ---------------- Helpers ----------------
 
     private static String ordinal(int n) {
         int mod100 = n % 100, mod10 = n % 10;

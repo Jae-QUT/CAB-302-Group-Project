@@ -55,7 +55,6 @@ public class AuthService {
         }
 
         User u = opt.get();
-        // 🔑 If you’re hashing passwords, replace with PasswordUtil.verifyHash(password, u.getPassword())
         return u.getPassword().equals(password);
     }
     public void register(String username, String password, String email,

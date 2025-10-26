@@ -68,7 +68,6 @@ public class RegisterDialog extends Dialog<RegisterResult> {
             pw2Hidden.setManaged(!is); pw2Hidden.setVisible(!is);
         });
 
-        // === Layout ===
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);

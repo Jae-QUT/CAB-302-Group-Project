@@ -67,7 +67,7 @@ public class QuestionGenController {
     }
 
     private void nextQuestion() {
-        String q = generator.generateAdditionQuestion(); // uses YOUR generator
+        String q = generator.generateAdditionQuestion();
         promptLabel.setText(q);
         answerField.clear();
         feedbackLabel.setText("");

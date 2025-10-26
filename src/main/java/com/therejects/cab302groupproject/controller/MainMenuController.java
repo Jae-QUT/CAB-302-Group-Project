@@ -65,7 +65,6 @@ public class MainMenuController {
     private long lastNs = 0L;
 
     // ===== Fence play-area bounds (inset from layer edges so they bounce inside the fence tiles) =====
-    // Tweak these 4 numbers to match your fence image thickness.
     private static final double INSET_LEFT = 70;
     private static final double INSET_RIGHT = 70;
     private static final double INSET_TOP = 90;
@@ -136,7 +135,6 @@ public class MainMenuController {
 
     /**
      * Loads the pixel-fence background image and configures it to fill the scene.
-     * <p>Update the resource path if your asset differs.</p>
      */
     private void loadBackground() {
         var url = getClass().getResource("/images/pixel_fence.png"); // change if needed

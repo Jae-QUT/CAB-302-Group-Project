@@ -23,8 +23,6 @@ public class QuestionGenerator {
     private int sum;
     private String questionText;
     private String response;    // This will be the system saying correct or incorrect
-    // private Operator operator;      // Make an operator method from the
-                                    // Which kind of arithmetic will be done
 
 
     // --- Constructors ---

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -18,15 +19,21 @@
    <TextField fx:id="yearLevelField" promptText="Year Level" />
 
    <Button onAction="#handleSave" text="Save Changes" />
-<Button fx:id="backButton" onAction="#stepBack" text="Back" />
-   <Separator />
+   <Button fx:id="backButton" onAction="#stepBack" text="Back" />
 
-   <Label style="-fx-font-weight: bold;" text="Stats" />
-   <Label fx:id="statsLabel" text="Games: 0 | Won: 0 | Lost: 0" />
+   <Separator style="-fx-background-color: rgba(255,255,255,0.5);" />
 
-   <Label style="-fx-font-weight: bold;" text="Badges" />
-   <ListView fx:id="badgesList" prefHeight="80" />
+   <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="Stats" />
+   <Label fx:id="statsLabel" text="Loading..." style="-fx-font-size: 14px; -fx-text-fill: white; -fx-font-weight: bold;" />
 
-   <Label style="-fx-font-weight: bold;" text="Friends" />
-   <ListView fx:id="friendsList" prefHeight="80" />
+   <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="Badges" />
+   <ListView fx:id="badgesList" prefHeight="120" style="-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 10; -fx-border-radius: 10;" />
+
+   <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="Friends" />
+   <ListView fx:id="friendsList" prefHeight="120" style="-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 10; -fx-border-radius: 10;" />
+
+   <VBox.margin>
+      <Insets bottom="10" left="10" right="10" top="10" />
+   </VBox.margin>
+
 </VBox>

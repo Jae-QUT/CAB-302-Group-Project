@@ -122,6 +122,9 @@ public class MonsterSelectionController {
             // pass the chosen mons to the battle
             controller.initializePlayerTeam(selectedMons);
 
+            confirmButton.setPrefWidth(250);
+            confirmButton.setPrefHeight(40);
+
             Stage stage = (Stage) confirmButton.getScene().getWindow();
             stage.setScene(scene);
 

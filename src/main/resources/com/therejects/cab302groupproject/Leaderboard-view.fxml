@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane id="ui/JaeGen.css" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../../../ui/JaeGen.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.therejects.cab302groupproject.controller.LeaderboardController">
+<AnchorPane id="ui/JaeGen.css" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../../../ui/JaeGen.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.therejects.cab302groupproject.controller.LeaderboardController">
    <children>
 
       <StackPane prefHeight="82.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
